@@ -3,10 +3,12 @@ package server;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -56,10 +58,11 @@ public class Server extends Thread
 		    info.add(clientSentence);
 		    clientSentence = "";
 		    FileDecoder fd = new FileDecoder();
-		    //fd.convertToFile(info.get(3), info.get(5));
-		    //Activity act = new Activity(Integer.parseInt(info.get(0)), info.get(1), info.get(2), new Timestamp(System.currentTimeMillis()), info.get(4), info.get(5));
+		    fd.convertToFile(info.get(2), info.get(5));
+		    Activity act = new Activity(Integer.parseInt(info.get(0)), info.get(1), new File(System.getProperty("user.dir")+"/src/"+info.get(5)), 
+		    		new Timestamp(System.currentTimeMillis()), new Date(System.currentTimeMillis()), info.get(5));
 		    ActivityDAO adao = new ActivityDAO();
-		    //adao.addActivity(act);
+		    adao.addActivity(act);
 		}
 		else if(type.equals("deliverable"))
 		{
@@ -74,9 +77,11 @@ public class Server extends Thread
 		    clientSentence = "";
 		    FileDecoder fd = new FileDecoder();
 		    fd.convertToFile(info.get(3), info.get(5));
-		    //Deliverable del = new Deliverable(Integer.parseInt(info.get(0)), Integer.parseInt(info.get(1)), Integer.parseInt(info.get(2)), new File(System.getProperty("user.dir")+"/src/"+info.get(3)), new Timestamp(System.currentTimeMillis()), info.get(5), Float.parseFloat(info.get(6)));
+		    Deliverable del = new Deliverable(Integer.parseInt(info.get(0)), Integer.parseInt(info.get(1)), 
+		    		Integer.parseInt(info.get(2)), new File(System.getProperty("user.dir")+"/src/"+info.get(5)), 
+		    		new Timestamp(System.currentTimeMillis()), info.get(5), Float.parseFloat(info.get(6)));
 		    DeliverableDAO ddao = new DeliverableDAO();
-		    //ddao.addDeliverable(del);
+		    ddao.addDeliverable(del);
 		}
 		else
 		{

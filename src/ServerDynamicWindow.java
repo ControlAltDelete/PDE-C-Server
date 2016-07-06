@@ -21,6 +21,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.io.*;
+import java.awt.CardLayout;
 
 public class ServerDynamicWindow {
 	
@@ -68,24 +69,28 @@ public class ServerDynamicWindow {
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanel dynamicMainPanel = new JPanel();
+		dynamicMainPanel.setBounds(100, 100, 800, 600);
 		frame.getContentPane().add(dynamicMainPanel, BorderLayout.CENTER);
-		dynamicMainPanel.setLayout(Layout);
 		
 		/*Panel1*/
 		Panel1 p1;
+		dynamicMainPanel.setLayout(new CardLayout(0, 0));
 		p1 = new Panel1();
-		GridBagConstraints gbc_p1 = new GridBagConstraints();
-		gbc_p1.gridx = 0;
-		gbc_p1.gridy = 0;
-		dynamicMainPanel.add(p1, gbc_p1);
+		dynamicMainPanel.add(p1, "name_420733528968378");
 		
 		/*Panel2*/
 		Panel2 p2;
 		p2 = new Panel2();
-		GridBagConstraints gbc_p2 = new GridBagConstraints();
-		gbc_p2.gridx = 0;
-		gbc_p2.gridy = 0;
-		dynamicMainPanel.add(p2, gbc_p2);
+		dynamicMainPanel.add(p2, "name_420733536558155");
+		
+		/*Panel3*/
+		submitScoresPanel p3;
+		p3 = new submitScoresPanel();
+		dynamicMainPanel.add(p3, "name_420733543961847");
+		p1.setVisible(false);
+		p2.setVisible(false);
+		p3.setVisible(false);
+		
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.setBackground(Color.LIGHT_GRAY);
@@ -98,10 +103,6 @@ public class ServerDynamicWindow {
 		panelButtons.setLayout(gbl_panelButtons);
 		
 		JButton uploadActivityBtn = new JButton("Upload Activity");
-		uploadActivityBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
 		GridBagConstraints gbc_uploadActivityBtn = new GridBagConstraints();
 		gbc_uploadActivityBtn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_uploadActivityBtn.insets = new Insets(0, 0, 5, 0);
@@ -115,9 +116,11 @@ public class ServerDynamicWindow {
 			public void actionPerformed(ActionEvent arg0) {
 				p1.setVisible(true);
 				p2.setVisible(false);
+				p3.setVisible(false);
 			}
 		});
 		GridBagConstraints gbc_viewStudentLBtn = new GridBagConstraints();
+		gbc_viewStudentLBtn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_viewStudentLBtn.insets = new Insets(0, 0, 5, 0);
 		gbc_viewStudentLBtn.gridx = 0;
 		gbc_viewStudentLBtn.gridy = 2;
@@ -127,16 +130,25 @@ public class ServerDynamicWindow {
 		viewSubmissionBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				p2.setVisible(true);
+				p3.setVisible(false);
 				p1.setVisible(false);
 			}
 		});
 		GridBagConstraints gbc_viewSubmissionBtn = new GridBagConstraints();
+		gbc_viewSubmissionBtn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_viewSubmissionBtn.insets = new Insets(0, 0, 5, 0);
 		gbc_viewSubmissionBtn.gridx = 0;
 		gbc_viewSubmissionBtn.gridy = 3;
 		panelButtons.add(viewSubmissionBtn, gbc_viewSubmissionBtn);
 		
 		JButton submitScoresBtn = new JButton("Submit Scores");
+		submitScoresBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				p3.setVisible(true);
+				p2.setVisible(false);
+				p1.setVisible(false);
+			}
+		});
 		GridBagConstraints gbc_submitScoresBtn = new GridBagConstraints();
 		gbc_submitScoresBtn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_submitScoresBtn.gridx = 0;
@@ -144,5 +156,5 @@ public class ServerDynamicWindow {
 		panelButtons.add(submitScoresBtn, gbc_submitScoresBtn);
 		
 	}
-
 }
+

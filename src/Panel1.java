@@ -8,8 +8,11 @@ public class Panel1 extends JPanel {
 	 */
 	public Panel1() {
 		
+		
 		JLabel lblSample = new JLabel("sample1");
 		add(lblSample);
+		
+		
 
 	}
 

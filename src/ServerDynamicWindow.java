@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
@@ -12,16 +13,24 @@ import java.awt.Component;
 import java.awt.Container;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.io.*;
 
 public class ServerDynamicWindow {
 	
 	private JFrame frame;
 	GridBagLayout Layout = new GridBagLayout();
+	
+	final JFileChooser fileChooser = new JFileChooser();
+	FileNameExtensionFilter cFilter = new FileNameExtensionFilter(
+	     "PDF (*.PDF)", "pdf");
+
 	
 	/**
 	 * Launch the application.

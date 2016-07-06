@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="resource/mysql-connector-java-5.1.39-bin.jar"/>
 	<classpathentry kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
 	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
+	<classpathentry kind="lib" path="C:/Users/Raymund Pua/Documents/GitHub/PDE-C-Server/src/tablelayout.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

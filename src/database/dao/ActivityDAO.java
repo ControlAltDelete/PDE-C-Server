@@ -26,7 +26,7 @@ public class ActivityDAO extends DAO{
     	Date activityDeadline = amdl.getActivityDeadline();
     	String activityFilename = amdl.getActivityFilename();
         Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into Activity (ActivityID, ActivityName, ActivityFile, ActivityTimestamp, ActivityDeadline, ActivityFilename) values(?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into Activity (ActivityID, ActivityName, ActivityFile, ActivityTimestamp, ActivityDeadline, ActivityFilename) values(?, ?, ?, ?, ?, ?)");
         preparedStatement.setInt(1, activityID);
         preparedStatement.setString(2, activityName);
         preparedStatement.setBlob(3, new FileInputStream(activityFile));

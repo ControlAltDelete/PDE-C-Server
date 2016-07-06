@@ -16,7 +16,7 @@ public class StudentDAO extends DAO{
         String studentLastName = smdl.getStudentLastName();
         String studentSection = smdl.getStudentSection();
         Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into Student (StudentID, StudentPasssword, StudentFirstName, StudentLastName, StudentSection) values(?, ?, ?, ?, ?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into Student (StudentID, StudentPassword, StudentFirstName, StudentLastName, StudentSection) values(?, ?, ?, ?, ?)");
         preparedStatement.setInt(1, studentID);
         preparedStatement.setString(2, studentPassword);
         preparedStatement.setString(3, studentFirstName);

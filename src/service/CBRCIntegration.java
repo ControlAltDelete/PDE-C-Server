@@ -40,284 +40,118 @@ public class CBRCIntegration
 			try 
 			{
 				Boolean valid = false;
-				String debug = null;
-				while (valid != true) 
-				{
-					System.out.println("Debug mode? Y/N: ");
-					debug = Driver.getInput(br);
-					 if (debug.equals("Y") || debug.equals("N") || debug.equals("A")) valid = true;
-					 else System.out.println("Invalid input!\n");
+				System.out.println("Please define goal/problem.\n");
+				System.out.println("Input problem name: ");
+				String goalName = Driver.getInput(br);
+				
+				System.out.println("Input problem description: ");
+				String goalDescript = Driver.getInput(br);
+				
+				int newGoalKey = DerbyUtils.addNewGoal(goalName, goalDescript);
+				
+				CASTGDTStudentTracker students = new CASTGDTStudentTracker();
+				CASTGDTBuilder builder = new CASTGDTBuilder(newGoalKey, goalDescript);
+				
+				builder.setDebug(true);
+				System.out.println("Problem defined!\n");
+				
+				valid = false;
+				String recover = null;
+				while (valid != true) {
+					System.out.println("Would you like to recover student list? Y/N: ");
+					recover = Driver.getInput(br);
+					if (recover.equals("Y") || recover.equals("N")) valid = true;
+					else System.out.println("Invalid input!\n");
 				}
 				
-				if (debug.equals("A")) {
-					System.out.println("CODES CHECKER ACTIVATED!\n\n");
-					
-					System.out.println("Put all codes in C:\\CodesToCheck\\. What is the base filename? : ");
-					String tempPath = Driver.getInput(br);
-					
-					path = "C:\\CodesToCheck\\" + tempPath;
-					
-					System.out.println("Input filename of correct solution: ");
-					String firstSolutionFileName = Driver.getInput(br);
-					
-					File file1 = new File("C:\\CodesToCheck\\" + firstSolutionFileName);
-					CASTCodeAnnotator codeAnnotator = new CASTCodeAnnotator(file1);
-					codeAnnotator.annotateCode();
-					CASTGDTBuilder builder = new CASTGDTBuilder();
-					PlanGDTNode correctPlan = builder.createPlanFromTransUnitNode(codeAnnotator.getHeadNode());
-					
-//					ArrayList<File> tci = new ArrayList<File>();
-//					ArrayList<File> tco = new ArrayList<File>();
-//					File tcInput, tcOutput;
-//						
-//					System.out.println("Put all testcases in C:\\CodesToCheck\\TestCases. How many test cases are there?: ");
-//					String testcaseCount = Driver.getInput(br);
-//					int tcCount = Integer.parseInt(testcaseCount);
-//					for (int i = 0; i < tcCount; i++) {
-//						tcInput = new File("C:\\CodesToCheck\\TestCases\\I" + i + ".txt");
-//						tci.add(tcInput);
-//						tcOutput = new File("C:\\CodesToCheck\\TestCases\\O" + i + ".txt");
-//						tco.add(tcOutput);
-//					}
-					
-					System.out.println("How many solutions are there?: ");
-					String solutionCount = Driver.getInput(br);
-					int sCount = Integer.parseInt(solutionCount);
-					for (int i = 1; i < sCount + 1; i++) {
-						File file = new File(path + i +".c");
-						codeAnnotator = new CASTCodeAnnotator(file);
-						codeAnnotator.annotateCode();
-						PlanGDTNode tentativePlan = builder.createPlanFromTransUnitNode(codeAnnotator.getHeadNode());
-						
-						//SourceCodeConverter scc = new SourceCodeConverter(file, path);
-						//scc.activate();
-						
-						//TODO: ArrayList for testcase Inputs and test case outputs
-						//TesterAndScorer tas = new TesterAndScorer(scc.getModifiedSource(), tci, tco, path);
-						//tas.activate();
-						
-						double pqGramDistance = CASTGDTBuilderImperfectMatcher.getPQGramDistance(tentativePlan.getASTNode(), correctPlan.getASTNode());
-						
-						System.out.println("PQGram Distance: " + pqGramDistance);
-						
-					}
+				if (recover.equals("Y")) {
+					StudentListRecoveryUtility slru =  new StudentListRecoveryUtility();
+					System.out.println("Input goalID: ");
+					String goalID = Driver.getInput(br);
+					students = slru.recoverStudents(Integer.parseInt(goalID), newGoalKey);
 				}
-				else if (debug.equals("N")) {
-					System.out.println("Please define goal/problem.\n");
-					System.out.println("Input problem name: ");
-					String goalName = Driver.getInput(br);
-					
-					System.out.println("Input problem description: ");
-					String goalDescript = Driver.getInput(br);
-					
-					int newGoalKey = DerbyUtils.addNewGoal(goalName, goalDescript);
-					
-					CASTGDTStudentTracker students = new CASTGDTStudentTracker();
-					CASTGDTBuilder builder = new CASTGDTBuilder(newGoalKey, goalDescript);
-					
-					builder.setDebug(true);
-					System.out.println("Problem defined!\n");
-					
-					valid = false;
-					String recover = null;
-					while (valid != true) {
-						System.out.println("Would you like to recover student list? Y/N: ");
-						recover = Driver.getInput(br);
-						if (recover.equals("Y") || recover.equals("N")) valid = true;
-						else System.out.println("Invalid input!\n");
-					}
-					
-					if (recover.equals("Y")) {
-						StudentListRecoveryUtility slru =  new StudentListRecoveryUtility();
-						System.out.println("Input goalID: ");
-						String goalID = Driver.getInput(br);
-						students = slru.recoverStudents(Integer.parseInt(goalID), newGoalKey);
-					}
-					
-					
-					System.out.println("Input base path (null if default): ");
-					String tempPath = Driver.getInput(br);
-					
-					if (tempPath.equals("null")) path = DEFAULT_PATH;
-					else path = tempPath;
-					
-					System.out.println("Input filename of first solution: ");
-					String firstSolutionFileName = Driver.getInput(br);
-					
-					File file1 = new File(path + firstSolutionFileName);
-					CASTCodeAnnotator codeAnnotator = new CASTCodeAnnotator(file1);
-					codeAnnotator.annotateCode();
-					builder.processFirstCode(codeAnnotator.getHeadNode(), "");
-					System.out.println("First Solution Added!\n");
-					
-					ArrayList<File> tci = new ArrayList<File>();
-					ArrayList<File> tco = new ArrayList<File>();
-					File tc;
-					
-					String testCaseInputFileName = "";
-					while (!testCaseInputFileName.equals("null")) {
-						System.out.println("Input filename of test case input: (input null if no more test case inputs) ");
-						testCaseInputFileName = Driver.getInput(br);
+				
+				
+				System.out.println("Input base path (null if default): ");
+				String tempPath = Driver.getInput(br);
+				
+				if (tempPath.equals("null")) path = DEFAULT_PATH;
+				else path = tempPath;
+				
+				System.out.println("Input filename of first solution: ");
+				String firstSolutionFileName = Driver.getInput(br);
+				
+				File file1 = new File(path + firstSolutionFileName);
+				CASTCodeAnnotator codeAnnotator = new CASTCodeAnnotator(file1);
+				codeAnnotator.annotateCode();
+				builder.processFirstCode(codeAnnotator.getHeadNode(), "");
+				System.out.println("First Solution Added!\n");
+				
+				ArrayList<File> tci = new ArrayList<File>();
+				ArrayList<File> tco = new ArrayList<File>();
+				File tc;
+				
+				String testCaseInputFileName = "";
+				while (!testCaseInputFileName.equals("null")) {
+					System.out.println("Input filename of test case input: (input null if no more test case inputs) ");
+					testCaseInputFileName = Driver.getInput(br);
 
-						if (!testCaseInputFileName.equals("null")) {
-							tc = new File(path + "TestCases\\" + testCaseInputFileName);
-							tci.add(tc);
-						}
-					}
-					
-					String testCaseOutputFileName = "";
-					while (!testCaseOutputFileName.equals("null")) {
-						System.out.println("Input filename of test case expected output: (input null if no more test case inputs) ");
-						testCaseOutputFileName = Driver.getInput(br);
-
-						if (!testCaseOutputFileName.equals("null")) {
-							tc = new File(path + "TestCases\\" + testCaseOutputFileName);
-							tco.add(tc);
-						}
-					}
-					
-					
-					Driver.printGDT(builder, path);
-					
-					String menuInput = "";
-					while (!menuInput.equals(MENU_EXIT)) {
-						menuInput = Driver.getMenuInput(br);
-						
-						if (menuInput.equals(MENU_REG_STUDENT)) {
-							try {
-								Driver.registerNewStudent(br, students, builder.getSuperGoal().getDBID());
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-							
-						}
-						else if (menuInput.equals(MENU_SUBMIT_CODE)) {
-							try {
-							    Driver.submitNewCode(br, students, builder, path, tci, tco);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-						else if (menuInput.equals(MENU_ASK_HELP)) {
-							try {
-								Driver.askForHelp(br, students, builder, path);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-						else if (menuInput.equals(MENU_EXIT)) {
-							System.out.println("\n\nExiting System.");
-						}
-						else if (menuInput.equals(MENU_PRINT_GDT)) {
-							Driver.printGDT(builder, path);
-						}
-						else if (menuInput.equals(MENU_ADD_CASE)) {
-							Driver.addCase(br, builder, path);
-						}
-					}
-				} else {
-					System.out.println("Please define goal/problem.\n");
-					System.out.println("Input problem name: ");
-					String goalName = Driver.getInput(br);
-					
-					String goalDescript = "Due to speed concerns, this has been replaced with this text. Refer to text file for actual description.";
-					
-					int newGoalKey = DerbyUtils.addNewGoal(goalName, goalDescript);
-					
-					CASTGDTStudentTracker students = new CASTGDTStudentTracker();
-					CASTGDTBuilder builder = new CASTGDTBuilder(newGoalKey, goalDescript);
-					
-					builder.setDebug(true);
-					System.out.println("Problem defined!\n");
-					
-					valid = false;
-					String recover = null;
-					while (valid != true) {
-						System.out.println("Would you like to recover student list? Y/N: ");
-						recover = Driver.getInput(br);
-						if (recover.equals("Y") || recover.equals("N")) valid = true;
-						else System.out.println("Invalid input!\n");
-					}
-					
-					if (recover.equals("Y")) {
-						StudentListRecoveryUtility slru =  new StudentListRecoveryUtility();
-						System.out.println("Input goalID: ");
-						String goalID = Driver.getInput(br);
-						students = slru.recoverStudents(Integer.parseInt(goalID), newGoalKey);
-					}
-					
-					path = DEFAULT_PATH;
-					
-					System.out.println("Input filename of first solution: ");
-					String firstSolutionFileName = Driver.getInput(br);
-					
-					File file1 = new File(path + firstSolutionFileName);
-					CASTCodeAnnotator codeAnnotator = new CASTCodeAnnotator(file1);
-					codeAnnotator.annotateCode();
-					builder.processFirstCode(codeAnnotator.getHeadNode(), "");
-					System.out.println("First Solution Added!\n");
-					
-					ArrayList<File> tci = new ArrayList<File>();
-					ArrayList<File> tco = new ArrayList<File>();
-					File tcInput, tcOutput;
-						
-					System.out.println("How many test cases are there?: ");
-					String testcaseCount = Driver.getInput(br);
-					int tcCount = Integer.parseInt(testcaseCount);
-					for (int i = 0; i < tcCount; i++) {
-						tcInput = new File(path + "TestCases\\I" + i + ".txt");
-						tci.add(tcInput);
-						tcOutput = new File(path + "TestCases\\O" + i + ".txt");
-						tco.add(tcOutput);
-					}
-						
-					System.out.println("How many buggy cases are there?: ");
-					String buggyCaseCount = Driver.getInput(br);
-					int bgCount = Integer.parseInt(buggyCaseCount);
-					for (int i = 0; i < bgCount; i++) {
-						Driver.addAutoCase(i, builder, path);
-					}
-					
-					Driver.printGDT(builder, path);
-					
-					String menuInput = "";
-					while (!menuInput.equals(MENU_EXIT)) {
-						menuInput = Driver.getMenuInputAbvr(br);
-						
-						if (menuInput.equals(MENU_REG_STUDENT)) {
-							try {
-								Driver.registerNewStudent(br, students, builder.getSuperGoal().getDBID());
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-							
-						}
-						else if (menuInput.equals(MENU_SUBMIT_CODE)) {
-							try {
-								Driver.submitNewCodeAbvr(br, students, builder, path, tci, tco);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-						else if (menuInput.equals(MENU_ASK_HELP)) {
-							try {
-								Driver.askForHelpAbvr(br, students, builder, path);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-						else if (menuInput.equals(MENU_EXIT)) {
-							System.out.println("\n\nExiting System.");
-						}
-						else if (menuInput.equals(MENU_PRINT_GDT)) {
-							Driver.printGDT(builder, path);
-						}
-						else if (menuInput.equals(SCALE_EXP)) {
-							Driver.scalabilityExperiment(br, students, builder, path, tci, tco);
-						}
+					if (!testCaseInputFileName.equals("null")) {
+						tc = new File(path + "TestCases\\" + testCaseInputFileName);
+						tci.add(tc);
 					}
 				}
 				
+				String testCaseOutputFileName = "";
+				while (!testCaseOutputFileName.equals("null")) {
+					System.out.println("Input filename of test case expected output: (input null if no more test case inputs) ");
+					testCaseOutputFileName = Driver.getInput(br);
+
+					if (!testCaseOutputFileName.equals("null")) {
+						tc = new File(path + "TestCases\\" + testCaseOutputFileName);
+						tco.add(tc);
+					}
+				}
+				
+				
+				Driver.printGDT(builder, path);
+				
+				String menuInput = "";
+				while (!menuInput.equals(MENU_EXIT)) {
+					menuInput = Driver.getMenuInput(br);
+					
+					if (menuInput.equals(MENU_REG_STUDENT)) {
+						try {
+							Driver.registerNewStudent(br, students, builder.getSuperGoal().getDBID());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+					}
+					else if (menuInput.equals(MENU_SUBMIT_CODE)) {
+						try {
+						    Driver.submitNewCode(br, students, builder, path, tci, tco);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					else if (menuInput.equals(MENU_ASK_HELP)) {
+						try {
+							Driver.askForHelp(br, students, builder, path);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					else if (menuInput.equals(MENU_EXIT)) {
+						System.out.println("\n\nExiting System.");
+					}
+					else if (menuInput.equals(MENU_PRINT_GDT)) {
+						Driver.printGDT(builder, path);
+					}
+					else if (menuInput.equals(MENU_ADD_CASE)) {
+						Driver.addCase(br, builder, path);
+					}
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {

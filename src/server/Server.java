@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import database.dao.StudentDAO;
 import database.objects.Activity;
 import database.objects.Deliverable;
 import database.objects.Student;
+import service.CBRCIntegration;
 import service.FileDecoder;
 
 public class Server extends Thread
@@ -35,6 +38,9 @@ public class Server extends Thread
 	{
 	  try
 	  {
+		CBRCIntegration cbr = new CBRCIntegration();
+		Path filePath = Paths.get("C:\\Users\\Aljon Jose\\Documents\\DLSU\\THSST-1\\testing3.c");
+		cbr.runCBRC("yo", filePath);
 		System.out.println("Waiting for client ");
 		Socket server = serverSocket.accept();
 		System.out.println("Just connected to " + server.getRemoteSocketAddress());

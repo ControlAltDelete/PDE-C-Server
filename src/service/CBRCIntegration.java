@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,6 +18,9 @@ import com.cbrc.nodes.TranslationUnitNode;
 import com.cbrc.nodes.gdt.PlanGDTNode;
 import com.cbrc.temp.Driver;
 
+import database.dao.ActivityDAO;
+import database.objects.Activity;
+
 public class CBRCIntegration 
 {
 	public final static String MENU_EXIT = "1";
@@ -29,7 +33,7 @@ public class CBRCIntegration
 	
 	public static final String DEFAULT_PATH = "C:\\SampleCodes\\";
 	
-	public static void main(String[] args) 
+	public void runCBRC(String activityName, Path filePath)
 	{
 		
 		try 
@@ -41,11 +45,9 @@ public class CBRCIntegration
 			{
 				Boolean valid = false;
 				System.out.println("Please define goal/problem.\n");
-				System.out.println("Input problem name: ");
-				String goalName = Driver.getInput(br);
+				String goalName = activityName;
 				
-				System.out.println("Input problem description: ");
-				String goalDescript = Driver.getInput(br);
+				String goalDescript = activityName + " description.";
 				
 				int newGoalKey = DerbyUtils.addNewGoal(goalName, goalDescript);
 				
@@ -55,33 +57,33 @@ public class CBRCIntegration
 				builder.setDebug(true);
 				System.out.println("Problem defined!\n");
 				
-				valid = false;
-				String recover = null;
-				while (valid != true) {
-					System.out.println("Would you like to recover student list? Y/N: ");
-					recover = Driver.getInput(br);
-					if (recover.equals("Y") || recover.equals("N")) valid = true;
-					else System.out.println("Invalid input!\n");
-				}
+//				valid = false;
+//				String recover = null;
+//				while (valid != true) {
+//					System.out.println("Would you like to recover student list? Y/N: ");
+//					recover = Driver.getInput(br);
+//					if (recover.equals("Y") || recover.equals("N")) valid = true;
+//					else System.out.println("Invalid input!\n");
+//				}
+//				
+//				if (recover.equals("Y")) {
+//					StudentListRecoveryUtility slru =  new StudentListRecoveryUtility();
+//					System.out.println("Input goalID: ");
+//					String goalID = Driver.getInput(br);
+//					students = slru.recoverStudents(Integer.parseInt(goalID), newGoalKey);
+//				}
 				
-				if (recover.equals("Y")) {
-					StudentListRecoveryUtility slru =  new StudentListRecoveryUtility();
-					System.out.println("Input goalID: ");
-					String goalID = Driver.getInput(br);
-					students = slru.recoverStudents(Integer.parseInt(goalID), newGoalKey);
-				}
 				
+//				System.out.println("Input base path (null if default): ");
+//				String tempPath = Driver.getInput(br);
+//				
+//				if (tempPath.equals("null")) path = DEFAULT_PATH;
+//				else path = tempPath;
+//				
+//				System.out.println("Input filename of first solution: ");
+//				String firstSolutionFileName = Driver.getInput(br);
 				
-				System.out.println("Input base path (null if default): ");
-				String tempPath = Driver.getInput(br);
-				
-				if (tempPath.equals("null")) path = DEFAULT_PATH;
-				else path = tempPath;
-				
-				System.out.println("Input filename of first solution: ");
-				String firstSolutionFileName = Driver.getInput(br);
-				
-				File file1 = new File(path + firstSolutionFileName);
+				File file1 = new File(filePath.toString());
 				CASTCodeAnnotator codeAnnotator = new CASTCodeAnnotator(file1);
 				codeAnnotator.annotateCode();
 				builder.processFirstCode(codeAnnotator.getHeadNode(), "");

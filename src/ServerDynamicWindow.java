@@ -97,9 +97,9 @@ public class ServerDynamicWindow {
 		frame.getContentPane().add(panelButtons, BorderLayout.WEST);
 		GridBagLayout gbl_panelButtons = new GridBagLayout();
 		gbl_panelButtons.columnWidths = new int[]{89, 0};
-		gbl_panelButtons.rowHeights = new int[]{23, 0, 0, 0, 0, 0};
+		gbl_panelButtons.rowHeights = new int[]{23, 0, 0, 0, 0, 0, 0};
 		gbl_panelButtons.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_panelButtons.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelButtons.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelButtons.setLayout(gbl_panelButtons);
 		
 		JButton uploadActivityBtn = new JButton("Upload Activity");
@@ -150,6 +150,7 @@ public class ServerDynamicWindow {
 			}
 		});
 		GridBagConstraints gbc_submitScoresBtn = new GridBagConstraints();
+		gbc_submitScoresBtn.insets = new Insets(0, 0, 5, 0);
 		gbc_submitScoresBtn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_submitScoresBtn.gridx = 0;
 		gbc_submitScoresBtn.gridy = 4;

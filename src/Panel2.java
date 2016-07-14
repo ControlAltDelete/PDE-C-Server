@@ -38,6 +38,8 @@ public class Panel2 extends JPanel {
         };
  
         final JTable table = new JTable(data, columnNames);
+        table.setAutoCreateRowSorter(true);
+        table.setEnabled(false);
         table.setPreferredScrollableViewportSize(new Dimension(1000, 70));
         table.setFillsViewportHeight(true);
  

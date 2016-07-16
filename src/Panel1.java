@@ -1,5 +1,6 @@
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 
 import java.awt.Dimension;
@@ -49,46 +50,29 @@ public class Panel1 extends JPanel {
  
         //Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(table);
- 
+        
+        JSplitPane splitPane = new JSplitPane();
+        splitPane.setEnabled(false);
+        splitPane.setResizeWeight(1.0);
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
         //Add the scroll pane to this panel.
-        add(scrollPane);
+        splitPane.setTopComponent(scrollPane);
         
-        JPanel panel = new JPanel();
-        scrollPane.setRowHeaderView(panel);
-        GridBagLayout gbl_panel = new GridBagLayout();
-        gbl_panel.columnWidths = new int[]{93, 0};
-        gbl_panel.rowHeights = new int[]{23, 0, 0, 0};
-        gbl_panel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-        gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-        panel.setLayout(gbl_panel);
+        JPanel buttonContainer = new JPanel();
+        splitPane.setBottomComponent(buttonContainer);
         
-        JButton btnNewButton = new JButton("Add");
-        btnNewButton.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) {
-        	}
-        });
-        GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-        gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
-        gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-        gbc_btnNewButton.anchor = GridBagConstraints.NORTH;
-        gbc_btnNewButton.gridx = 0;
-        gbc_btnNewButton.gridy = 0;
-        panel.add(btnNewButton, gbc_btnNewButton);
+        JButton Add = new JButton("Add");
+        buttonContainer.add(Add);
         
-        JButton btnDelete = new JButton("Delete");
-        GridBagConstraints gbc_btnDelete = new GridBagConstraints();
-        gbc_btnDelete.fill = GridBagConstraints.HORIZONTAL;
-        gbc_btnDelete.insets = new Insets(0, 0, 5, 0);
-        gbc_btnDelete.gridx = 0;
-        gbc_btnDelete.gridy = 1;
-        panel.add(btnDelete, gbc_btnDelete);
+        JButton Edit = new JButton("Edit");
+        buttonContainer.add(Edit);
         
-        JButton btnEdit = new JButton("Edit");
-        GridBagConstraints gbc_btnEdit = new GridBagConstraints();
-        gbc_btnEdit.fill = GridBagConstraints.HORIZONTAL;
-        gbc_btnEdit.gridx = 0;
-        gbc_btnEdit.gridy = 2;
-        panel.add(btnEdit, gbc_btnEdit);
+        JButton Delete = new JButton("Delete");
+        buttonContainer.add(Delete);
+        
+        add(splitPane);
+        
 
 
 	}

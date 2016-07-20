@@ -72,9 +72,14 @@ public class ServerDynamicWindow {
 		dynamicMainPanel.setBounds(100, 100, 800, 600);
 		frame.getContentPane().add(dynamicMainPanel, BorderLayout.CENTER);
 		
+		dynamicMainPanel.setLayout(new CardLayout(0, 0));
+		/*Panel uploadFile*/
+		uploadFile uF;
+		uF = new uploadFile();
+		dynamicMainPanel.add(uF);
+		
 		/*Panel1*/
 		Panel1 p1;
-		dynamicMainPanel.setLayout(new CardLayout(0, 0));
 		p1 = new Panel1();
 		dynamicMainPanel.add(p1, "name_420733528968378");
 		
@@ -103,6 +108,14 @@ public class ServerDynamicWindow {
 		panelButtons.setLayout(gbl_panelButtons);
 		
 		JButton uploadActivityBtn = new JButton("Upload Activity");
+		uploadActivityBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				uF.setVisible(true);
+				p1.setVisible(false);
+				p2.setVisible(false);
+				p3.setVisible(false);
+			}
+		});
 		GridBagConstraints gbc_uploadActivityBtn = new GridBagConstraints();
 		gbc_uploadActivityBtn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_uploadActivityBtn.insets = new Insets(0, 0, 5, 0);
@@ -114,6 +127,7 @@ public class ServerDynamicWindow {
 		JButton viewStudentLBtn = new JButton("View Student List");
 		viewStudentLBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				uF.setVisible(false);
 				p1.setVisible(true);
 				p2.setVisible(false);
 				p3.setVisible(false);
@@ -129,6 +143,7 @@ public class ServerDynamicWindow {
 		JButton viewSubmissionBtn = new JButton("View Submissions");
 		viewSubmissionBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				uF.setVisible(false);
 				p2.setVisible(true);
 				p3.setVisible(false);
 				p1.setVisible(false);
@@ -144,6 +159,7 @@ public class ServerDynamicWindow {
 		JButton submitScoresBtn = new JButton("Submit Scores");
 		submitScoresBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				uF.setVisible(false);
 				p3.setVisible(true);
 				p2.setVisible(false);
 				p1.setVisible(false);

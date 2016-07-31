@@ -24,7 +24,7 @@ import java.awt.Insets;
 import java.io.*;
 import java.awt.CardLayout;
 
-public class ServerDynamicWindow {
+public class Main {
 	
 	private JFrame frame;
 	GridBagLayout Layout = new GridBagLayout();
@@ -41,7 +41,7 @@ public class ServerDynamicWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ServerDynamicWindow window = new ServerDynamicWindow();
+					Main window = new Main();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,19 +50,13 @@ public class ServerDynamicWindow {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 
 	
-	public ServerDynamicWindow() {
+	public Main(){
 		initialize();
 		
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1024, 900);

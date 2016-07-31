@@ -36,7 +36,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `Classroom`.`Activity` ;
  
 CREATE TABLE IF NOT EXISTS `Classroom`.`Activity` (
-  `ActivityID` INT NOT NULL,
+  `ActivityID` INT NOT NULL AUTO_INCREMENT,
   `ActivityName` VARCHAR(512) NOT NULL,
   `ActivityFile` BLOB NOT NULL,
   `ActivityTimestamp` TIMESTAMP NOT NULL,
@@ -53,7 +53,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `Classroom`.`Deliverable` ;
  
 CREATE TABLE IF NOT EXISTS `Classroom`.`Deliverable` (
-  `DeliverableID` INT NOT NULL,
+  `DeliverableID` INT NOT NULL AUTO_INCREMENT,
   `StudentID` INT NOT NULL,
   `ActivityID` INT NOT NULL,
   `DeliverableSourceCode` BLOB NOT NULL,

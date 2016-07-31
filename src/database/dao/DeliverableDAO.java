@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class DeliverableDAO extends DAO{
 	
 	public void addDeliverable (Deliverable dmdl) throws SQLException, FileNotFoundException{
-        int deliverableID = dmdl.getDeliverableID();
+        //int deliverableID = dmdl.getDeliverableID();
     	int studentID = dmdl.getStudentID();
     	int activityID = dmdl.getActivityID();
     	File deliverableSourceCode = dmdl.getDeliverableSourceCode();
@@ -28,14 +28,14 @@ public class DeliverableDAO extends DAO{
     	String deliverableSourceCodeFileName = dmdl.getDeliverableSourceCodeFileName();
     	float grade = dmdl.getGrade();
         Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into Deliverable (DeliverableID, StudentID, ActivityID, DeliverableSourceCode, DateSubmitted, DeliverableSourceCodeFileName, Grade) values(?, ?, ?, ?, ?, ?, ?)");
-        preparedStatement.setInt(1, deliverableID);
-        preparedStatement.setInt(2, studentID);
-        preparedStatement.setInt(3, activityID);
-        preparedStatement.setBlob(4, new FileInputStream(deliverableSourceCode));
-        preparedStatement.setTimestamp(5, dateSubmitted);
-        preparedStatement.setString(6, deliverableSourceCodeFileName);
-        preparedStatement.setFloat(7, grade);
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into Deliverable (StudentID, ActivityID, DeliverableSourceCode, DateSubmitted, DeliverableSourceCodeFileName, Grade) values(?, ?, ?, ?, ?, ?)");
+        //preparedStatement.setInt(1, deliverableID);
+        preparedStatement.setInt(1, studentID);
+        preparedStatement.setInt(2, activityID);
+        preparedStatement.setBlob(3, new FileInputStream(deliverableSourceCode));
+        preparedStatement.setTimestamp(4, dateSubmitted);
+        preparedStatement.setString(5, deliverableSourceCodeFileName);
+        preparedStatement.setFloat(6, grade);
         update(preparedStatement);
         close(preparedStatement, connection);
     }

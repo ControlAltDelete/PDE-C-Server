@@ -19,20 +19,20 @@ import java.sql.Date;
 public class ActivityDAO extends DAO{
 	
 	public void addActivity (Activity amdl) throws SQLException, FileNotFoundException{
-        int activityID = amdl.getActivityID();
+        //int activityID = amdl.getActivityID();
         String activityName = amdl.getActivityName();
     	File activityFile = amdl.getActivityFile();
     	Timestamp activityTimeStamp = amdl.getActivityTimeStamp();
     	Date activityDeadline = amdl.getActivityDeadline();
     	String activityFilename = amdl.getActivityFilename();
         Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into Activity (ActivityID, ActivityName, ActivityFile, ActivityTimestamp, ActivityDeadline, ActivityFilename) values(?, ?, ?, ?, ?, ?)");
-        preparedStatement.setInt(1, activityID);
-        preparedStatement.setString(2, activityName);
-        preparedStatement.setBlob(3, new FileInputStream(activityFile));
-        preparedStatement.setTimestamp(4, activityTimeStamp);
-        preparedStatement.setDate(5, activityDeadline);
-        preparedStatement.setString(6, activityFilename);
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into Activity (ActivityName, ActivityFile, ActivityTimestamp, ActivityDeadline, ActivityFilename) values(?, ?, ?, ?, ?)");
+        //preparedStatement.setInt(1, activityID);
+        preparedStatement.setString(1, activityName);
+        preparedStatement.setBlob(2, new FileInputStream(activityFile));
+        preparedStatement.setTimestamp(3, activityTimeStamp);
+        preparedStatement.setDate(4, activityDeadline);
+        preparedStatement.setString(5, activityFilename);
         update(preparedStatement);
         close(preparedStatement, connection);
     }

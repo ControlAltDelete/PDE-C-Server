@@ -89,6 +89,30 @@ public class Server extends Thread
 		    DeliverableDAO ddao = new DeliverableDAO();
 		    ddao.addDeliverable(del);
 		}
+		else if(type.equals("get"))
+		{
+			while(clientSentence.indexOf(",") != -1)
+		    {
+				String temp = clientSentence.substring(0, clientSentence.indexOf(","));
+				info.add(temp);
+				clientSentence = clientSentence.substring(clientSentence.indexOf(",") + 1);
+			}
+			if(info.get(0).equals("Activity"))
+			{
+				ActivityDAO adao = new ActivityDAO();
+				adao.getActivities(); // send back the received data, get all activity list
+			}
+			else if(info.get(0).equals("Deliverable"))
+			{
+				DeliverableDAO ddao = new DeliverableDAO();
+				ddao.getDeliverables(); // send back the received data, get all deliverable list
+			}
+			else if(info.get(0).equals("Student"))
+			{
+				StudentDAO sdao = new StudentDAO();
+				sdao.getStudents(); // send back the received data, get all student list
+			}
+		}
 		else
 		{
 			while(clientSentence.indexOf(",") != -1)

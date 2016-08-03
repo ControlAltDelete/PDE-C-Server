@@ -10,6 +10,7 @@ public class addStudent extends JPanel {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
+	private JTextField textField_4;
 
 	/**
 	 * Create the panel.
@@ -62,12 +63,21 @@ public class addStudent extends JPanel {
 		add(lblOr);
 		
 		JButton btnUploadcsv = new JButton("Upload .CSV");
-		btnUploadcsv.setBounds(326, 153, 101, 23);
+		btnUploadcsv.setBounds(307, 162, 101, 23);
 		add(btnUploadcsv);
 		
 		JLabel lblYouMayUpload = new JLabel("Upload class list from MLS");
-		lblYouMayUpload.setBounds(310, 86, 140, 60);
+		lblYouMayUpload.setBounds(297, 86, 140, 60);
 		add(lblYouMayUpload);
+		
+		JLabel lblSection_1 = new JLabel("Section:");
+		lblSection_1.setBounds(289, 137, 46, 14);
+		add(lblSection_1);
+		
+		textField_4 = new JTextField();
+		textField_4.setBounds(338, 134, 86, 20);
+		add(textField_4);
+		textField_4.setColumns(10);
 
 	}
 }

@@ -38,6 +38,7 @@ public class uploadFile extends JPanel {
     DataOutputStream dout;
     DataInputStream din;
     int i;
+    private JTextField textField_2;
 	/**
 	 * Create the panel.
 	 */
@@ -51,7 +52,7 @@ public class uploadFile extends JPanel {
 		setLayout(null);
 		
 		textField = new JTextField();
-		textField.setBounds(129, 50, 116, 20);
+		textField.setBounds(129, 50, 176, 20);
 		add(textField);
 		textField.setColumns(10);
 		
@@ -67,11 +68,11 @@ public class uploadFile extends JPanel {
 				  chooseFile(); // Returns FilePath. Upload not yet implemented
 				}
 			});
-		btnChooseFile.setBounds(129, 81, 116, 23);
+		btnChooseFile.setBounds(129, 109, 116, 23);
 		add(btnChooseFile);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(129, 23, 116, 20);
+		textField_1.setBounds(129, 23, 176, 20);
 		add(textField_1);
 		textField_1.setColumns(10);
 		
@@ -80,8 +81,17 @@ public class uploadFile extends JPanel {
 		add(lblActivityNo);
 		
 		JButton btnSend = new JButton("Send");
-		btnSend.setBounds(129, 106, 116, 23);
+		btnSend.setBounds(129, 143, 116, 23);
 		add(btnSend);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(129, 78, 176, 20);
+		add(textField_2);
+		textField_2.setColumns(10);
+		
+		JLabel lblPathFile = new JLabel("Path file");
+		lblPathFile.setBounds(39, 78, 65, 14);
+		add(lblPathFile);
 
 	}
 	
@@ -97,7 +107,7 @@ public class uploadFile extends JPanel {
 			String ext = path.toString();
 			if (loader.checkerpdf(ext))
 			{
-				//textField.setText(ext); Please Add a Text Field/label where the path can be placed
+				  textField_2.setText(ext);
 			}
 			else
 			{
@@ -107,5 +117,4 @@ public class uploadFile extends JPanel {
 		}
 		return filePath;
 	}
-	
 }

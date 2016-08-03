@@ -1,9 +1,11 @@
 package server;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
@@ -100,7 +102,31 @@ public class Server extends Thread
 			if(info.get(0).equals("Activity"))
 			{
 				ActivityDAO adao = new ActivityDAO();
-				adao.getActivities(); // send back the received data, get all activity list
+				ArrayList<Activity> acts = adao.getActivities(); // send back the received data, get all activity list
+				ArrayList<String> actLabel = new ArrayList<String>();
+				File activityFile;
+				activityFile = new File("activityEntries.txt");
+				for(int a = 0; a < acts.size(); a++)
+				{
+					actLabel.add(acts.get(a).getActivityName());
+				}
+				// file streamer here
+				try{
+					FileWriter fw;
+					fw = new FileWriter(activityFile);
+					BufferedWriter out;
+					out = new BufferedWriter(fw);
+					for(int s = 0; s < acts.size(); s++)
+					{
+						out.write(acts.get(s) + "\n");
+					}
+					out.flush();
+					out.close();
+				}
+				catch(IOException io){
+					System.out.println("Out of space");
+				}
+				// send mo na sa client
 			}
 			else if(info.get(0).equals("Deliverable"))
 			{
@@ -110,8 +136,32 @@ public class Server extends Thread
 			else if(info.get(0).equals("Student"))
 			{
 				StudentDAO sdao = new StudentDAO();
-				sdao.getStudents(); // send back the received data, get all student list
-			}
+				ArrayList<Student> studs = sdao.getStudents(); // send back the received data, get all student list
+				ArrayList<String> studLabel = new ArrayList<String>();
+				File studentFile;
+				studentFile = new File("studentEntries.txt");
+				for(int s = 0; s < studs.size(); s++)
+				{
+					studLabel.add(studs.get(s).getStudentID() + " - " + studs.get(s).getStudentLastName() + ", " + studs.get(s).getStudentFirstName());
+				}
+				// file streamer here
+				try{
+					FileWriter fw;
+					fw = new FileWriter(studentFile);
+					BufferedWriter out;
+					out = new BufferedWriter(fw);
+					for(int s = 0; s < studs.size(); s++)
+					{
+						out.write(studs.get(s) + "\n");
+					}
+					out.flush();
+					out.close();
+				}
+				catch(IOException io){
+					System.out.println("Out of space");
+				}
+				// send mo na sa client?
+		    }
 		}
 		else
 		{

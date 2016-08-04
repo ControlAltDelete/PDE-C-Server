@@ -87,19 +87,26 @@ public class Main {
 		submitScoresPanel p3;
 		p3 = new submitScoresPanel();
 		dynamicMainPanel.add(p3, "name_420733543961847");
+		
+		/*Add Student Panel*/
+		addStudent aS;
+		aS = new addStudent();
+		dynamicMainPanel.add(aS);
+		
 		p1.setVisible(false);
 		p2.setVisible(false);
 		p3.setVisible(false);
-		
+		uF.setVisible(true);
+		aS.setVisible(false);
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.setBackground(Color.LIGHT_GRAY);
 		frame.getContentPane().add(panelButtons, BorderLayout.WEST);
 		GridBagLayout gbl_panelButtons = new GridBagLayout();
 		gbl_panelButtons.columnWidths = new int[]{89, 0};
-		gbl_panelButtons.rowHeights = new int[]{23, 0, 0, 0, 0, 0, 0};
+		gbl_panelButtons.rowHeights = new int[]{23, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panelButtons.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_panelButtons.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelButtons.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelButtons.setLayout(gbl_panelButtons);
 		
 		JButton uploadActivityBtn = new JButton("Upload Activity");
@@ -109,6 +116,7 @@ public class Main {
 				p1.setVisible(false);
 				p2.setVisible(false);
 				p3.setVisible(false);
+				aS.setVisible(false);
 			}
 		});
 		GridBagConstraints gbc_uploadActivityBtn = new GridBagConstraints();
@@ -126,6 +134,7 @@ public class Main {
 				p1.setVisible(true);
 				p2.setVisible(false);
 				p3.setVisible(false);
+				aS.setVisible(false);
 			}
 		});
 		GridBagConstraints gbc_viewStudentLBtn = new GridBagConstraints();
@@ -142,6 +151,7 @@ public class Main {
 				p2.setVisible(true);
 				p3.setVisible(false);
 				p1.setVisible(false);
+				aS.setVisible(false);
 			}
 		});
 		GridBagConstraints gbc_viewSubmissionBtn = new GridBagConstraints();
@@ -158,6 +168,7 @@ public class Main {
 				p3.setVisible(true);
 				p2.setVisible(false);
 				p1.setVisible(false);
+				aS.setVisible(false);
 			}
 		});
 		GridBagConstraints gbc_submitScoresBtn = new GridBagConstraints();
@@ -166,6 +177,36 @@ public class Main {
 		gbc_submitScoresBtn.gridx = 0;
 		gbc_submitScoresBtn.gridy = 4;
 		panelButtons.add(submitScoresBtn, gbc_submitScoresBtn);
+		
+		JButton btnNewButton = new JButton("Add Students");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				uF.setVisible(false);
+				p2.setVisible(false);
+				p3.setVisible(false);
+				p1.setVisible(false);
+				aS.setVisible(true);
+			}
+		});
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnNewButton.gridx = 0;
+		gbc_btnNewButton.gridy = 5;
+		panelButtons.add(btnNewButton, gbc_btnNewButton);
+		
+		
+		JButton btnNewButton_1 = new JButton("Test Cases");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+	
+			}
+		});
+		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
+		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnNewButton_1.gridx = 0;
+		gbc_btnNewButton_1.gridy = 6;
+		panelButtons.add(btnNewButton_1, gbc_btnNewButton_1);
 		
 	}
 }

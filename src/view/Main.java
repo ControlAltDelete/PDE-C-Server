@@ -96,7 +96,7 @@ public class Main {
 		p1.setVisible(false);
 		p2.setVisible(false);
 		p3.setVisible(false);
-		uF.setVisible(true);
+		uF.setVisible(false);
 		aS.setVisible(false);
 		
 		JPanel panelButtons = new JPanel();

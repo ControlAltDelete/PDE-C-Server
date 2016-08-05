@@ -11,8 +11,14 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+
+import database.dao.StudentDAO;
+import database.objects.Student;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -20,27 +26,49 @@ import java.awt.Insets;
 
 public class Panel1 extends JPanel {
 	private JTextField textField;
+	private Object[][] data;
 
 	/**
 	 * Create the panel.
 	 */
 	public Panel1() {
         
-        String[] columnNames = {
-                                "ID Number",
-                                "First Name",
-                                "Last Name",
-                                "Section",
-                              
-                                };
- 
-        Object[][] data = {
-        {"11220538", "Raymund", "Pua","S12", new Boolean(true)},
-        {"11220538", "Zaymund", "Pua","S12", new Boolean(true)},
-        {"11220538", "Aaymund", "Pua","S12",  new Boolean(true)},
-        {"11220538", "Raymund", "Pua","S12",  new Boolean(true)}
-        };
-        setLayout(new BorderLayout(0, 0));
+        String[] columnNames = 
+        	{
+	            "ID Number",
+	            "First Name",
+	            "Last Name",
+	            "Section"
+            };
+        
+        try
+        {
+            StudentDAO sdao = new StudentDAO();
+            ArrayList<Student> sArray = new ArrayList<Student>();
+        	sArray = sdao.getStudents();
+        	data = new Object[sArray.size()][4];
+        	for(int s = 0; s < sArray.size(); s++)
+        	{
+        		Student stud = sArray.get(s);
+        		ArrayList<Object> contents = new ArrayList<Object>();
+        		contents.add(stud.getStudentID());
+        		contents.add(stud.getStudentFirstName());
+        		contents.add(stud.getStudentLastName());
+        		contents.add(stud.getStudentSection());
+        		data[s] = contents.toArray();
+        	}
+        }
+        catch (SQLException sqle)
+        {
+        	System.out.println("No connection to MySQL.");
+        	data = new Object[1][4];
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        	data = new Object[1][4];
+        }
+    	setLayout(new BorderLayout(0, 0));
  
         final JTable table = new JTable(data, columnNames);
         table.setEnabled(false);

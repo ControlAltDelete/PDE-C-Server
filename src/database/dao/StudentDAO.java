@@ -66,13 +66,13 @@ public class StudentDAO extends DAO{
     }
     
     public ArrayList<Student> getStudents () throws SQLException{
-        ArrayList<Student> students = new ArrayList<Student>();
+         ArrayList<Student> students = new ArrayList<Student>();
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from Student order by StudentID");
         ResultSet resultSet = query(preparedStatement);
         while (resultSet.next()) {
         	Student smdl = new Student();
-            int studentID = resultSet.getInt("IDnumber");
+            int studentID = resultSet.getInt("StudentID");
             String studentPassword = resultSet.getString("StudentPassword");
             String studentFirstName = resultSet.getString("StudentFirstName");
             String studentLastName = resultSet.getString("StudentLastName");

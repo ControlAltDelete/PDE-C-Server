@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 public class Panel2 extends JPanel {
 	private JTable table;
+	private Object[][] data;
 
 	/**
 	 * Create the panel.
@@ -38,51 +39,43 @@ public class Panel2 extends JPanel {
                                 "Grade",
                                 "Date Submitted"
                                 };
- 
-        Object[][] data = {
-        {"1", "11220538", "Pua", "S12", "83", "August"},
-        {"1", "11220538", "Pua", "S12", "83", "August"},
-        {"1", "11220538", "Pua", "S12", "83", "August"},
-        {"1", "11220538", "Pua", "S12", "83", "August"},
-        {"1", "11220538", "Pua", "S12", "83", "August"}
-        };
         
-//        try
-//        {
-//            DeliverableDAO ddao = new DeliverableDAO();
-//            ArrayList<Deliverable> dArray = new ArrayList<Deliverable>();
-//        	dArray = ddao.getDeliverables();
-//        	data = new Object[dArray.size()][5];
-//        	for(int s = 0; s < dArray.size(); s++)
-//        	{
-//        		Deliverable del = dArray.get(s);
-//        		ArrayList<Object> contents = new ArrayList<Object>();
-//        		contents.add(del.getDeliverableID());
-//        		contents.add(del.getStudentID());
-//        		StudentDAO sdao = new StudentDAO();
-//        		Student stud = sdao.getStudent(Integer.parseInt(contents.get(1).toString()));
-//        		contents.add(stud.getStudentLastName() + ", " + stud.getStudentFirstName());
-//        		contents.add(stud.getStudentSection());
-//        		contents.add(del.getDateSubmitted());
-//        		data[s] = contents.toArray();
-//        	}
-//        }
-//        catch (SQLException sqle)
-//        {
-//        	System.out.println("No connection to MySQL.");
-//        	data = new Object[1][5];
-//        }
-//        catch (IOException ioe)
-//        {
-//        	ioe.printStackTrace();
-//        	data = new Object[1][5];
-//        }
-//        catch (Exception e)
-//        {
-//        	e.printStackTrace();
-//        	data = new Object[1][5];
-//        }
-// 
+        try
+        {
+            DeliverableDAO ddao = new DeliverableDAO();
+            ArrayList<Deliverable> dArray = new ArrayList<Deliverable>();
+        	dArray = ddao.getDeliverables();
+        	data = new Object[dArray.size()][5];
+        	for(int s = 0; s < dArray.size(); s++)
+        	{
+        		Deliverable del = dArray.get(s);
+        		ArrayList<Object> contents = new ArrayList<Object>();
+        		contents.add(del.getDeliverableID());
+        		contents.add(del.getStudentID());
+        		StudentDAO sdao = new StudentDAO();
+        		Student stud = sdao.getStudent(Integer.parseInt(contents.get(1).toString()));
+        		contents.add(stud.getStudentLastName() + ", " + stud.getStudentFirstName());
+        		contents.add(stud.getStudentSection());
+        		contents.add(del.getDateSubmitted());
+        		data[s] = contents.toArray();
+        	}
+        }
+        catch (SQLException sqle)
+        {
+        	System.out.println("No connection to MySQL.");
+        	data = new Object[1][5];
+        }
+        catch (IOException ioe)
+        {
+        	ioe.printStackTrace();
+        	data = new Object[1][5];
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        	data = new Object[1][5];
+        }
+ 
         final JTable table = new JTable(data, columnNames);
         table.setAutoCreateRowSorter(true);
         table.setEnabled(false);

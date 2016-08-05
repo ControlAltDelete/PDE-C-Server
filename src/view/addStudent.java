@@ -25,6 +25,7 @@ public class addStudent extends JPanel {
 	private FileLoad loader;
 	private JFileChooser fc;
 	private FileNameExtensionFilter csvFilter;
+	private JTextField textField_5;
 	/**
 	 * Create the panel.
 	 */
@@ -88,7 +89,7 @@ public class addStudent extends JPanel {
 				chooseFile();
 			}
 		});
-		btnUploadcsv.setBounds(307, 162, 117, 23);
+		btnUploadcsv.setBounds(307, 196, 117, 23);
 		add(btnUploadcsv);
 		
 		JLabel lblYouMayUpload = new JLabel("Upload class list from MLS");
@@ -103,6 +104,20 @@ public class addStudent extends JPanel {
 		textField_4.setBounds(338, 134, 86, 20);
 		add(textField_4);
 		textField_4.setColumns(10);
+		
+		textField_5 = new JTextField();
+		textField_5.setBounds(307, 165, 117, 20);
+		add(textField_5);
+		textField_5.setColumns(10);
+		
+		JButton btnNewButton = new JButton("Submit");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+		btnNewButton.setBounds(307, 223, 117, 23);
+		add(btnNewButton);
 
 	}
 	
@@ -116,6 +131,9 @@ public class addStudent extends JPanel {
 			Path path = Paths.get(fc.getSelectedFile().getAbsolutePath());
 			filePath = path;
 			String ext = path.toString();
+			textField_5.setText(ext);
+			
+			/*
 			if (loader.checker(ext))
 			{
 				  textField_2.setText(ext);
@@ -125,6 +143,7 @@ public class addStudent extends JPanel {
 				JOptionPane.showMessageDialog(null, "Not a CSV File.", "Error", JOptionPane.ERROR_MESSAGE);
 				filePath = null;
 			}
+			*/
 		}
 		return filePath;
 	}

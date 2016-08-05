@@ -16,6 +16,7 @@ public class FileLoad
 {
   private Matcher matcher;
   private Pattern pattern;
+private int[] idNums;
   
   public FileLoad()
   {
@@ -82,15 +83,40 @@ public class FileLoad
   public void readCSV(String csv) throws IOException{
 	     CSVReader reader = new CSVReader(new FileReader(csv));
 	     List<String[]> nextLine;
-
 	     int x = 0;
+	     idNums = null;
+	     String[] lName = null;
 	     System.out.println("Initiated readCSV");
 	     nextLine = reader.readAll();
-	     for(x=12; x<nextLine.size(); x++) {
+	     for(x=10; x<nextLine.size(); x++) {
 	    	 String[] elems = nextLine.get(x);
+		     
 	    	 for (int j = 0; j < elems.length; j++)
 	    	 {
+	    		 
+	    		 elems[j] = elems[j].replace("<TR>","");
+	    		 elems[j] = elems[j].replace("</TD><TD>M</TD><TD>", ",");
+	    		 elems[j] = elems[j].replace("</TD><TD>F</TD><TD>", ",");
+	    		 elems[j] = elems[j].replace("</TABLE>", "");
+	    		 elems[j] = elems[j].replace("</TD>", ",");
+	    		 elems[j] = elems[j].replace("<TD>", "");
+	    		 elems[j] = elems[j].replace("'", "");
+	    		 
+	    		 
 	    		 System.out.println(elems[j]);
+	 
+	    	    /*idNums[j] = Integer.parseInt(elems[j].substring(0, elems[j].indexOf(",")));
+	    		 System.out.println(idNums + " " + elems[j].length());
+	    		 lName[j] = elems[j].substring(elems[j].indexOf(",") + 1);
+	    		 System.out.println(lName);  //last name
+	    		 // lacks first name
+	    		 String toGetfName = Integer.toString(idNum[j]);
+	    		 //String fName = elems[j].substring(elems[j].indexOf(lName.length() + toGetfName.length() + 1), elems[j].indexOf("/n"));
+	    		// int fName = elems[j].length();
+	    		 //System.out.println(fName + "hey");
+	    		  
+	    		  */
+	    		 
 	    	 }
 	     }
   }

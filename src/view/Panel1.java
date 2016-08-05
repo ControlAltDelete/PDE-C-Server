@@ -61,6 +61,7 @@ public class Panel1 extends JPanel {
         catch (SQLException sqle)
         {
         	System.out.println("No connection to MySQL.");
+        	data = new Object[0][4];
         }
     	setLayout(new BorderLayout(0, 0));
  

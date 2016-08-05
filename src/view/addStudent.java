@@ -2,8 +2,19 @@ package view;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import controller.fileops.FileLoad;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class addStudent extends JPanel {
 	private JTextField textField;
@@ -11,11 +22,20 @@ public class addStudent extends JPanel {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
-
+	private FileLoad loader;
+	private JFileChooser fc;
+	private FileNameExtensionFilter csvFilter;
 	/**
 	 * Create the panel.
 	 */
 	public addStudent() {
+		
+		loader = new FileLoad();
+		fc = new JFileChooser();
+		csvFilter = new FileNameExtensionFilter(
+					"CSV", "csv");
+		fc.setFileFilter(csvFilter);
+		
 		setLayout(null);
 		
 		JLabel lblName = new JLabel("Last Name:");
@@ -63,11 +83,16 @@ public class addStudent extends JPanel {
 		add(lblOr);
 		
 		JButton btnUploadcsv = new JButton("Upload .CSV");
-		btnUploadcsv.setBounds(307, 162, 101, 23);
+		btnUploadcsv.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				chooseFile();
+			}
+		});
+		btnUploadcsv.setBounds(307, 162, 117, 23);
 		add(btnUploadcsv);
 		
 		JLabel lblYouMayUpload = new JLabel("Upload class list from MLS");
-		lblYouMayUpload.setBounds(297, 86, 140, 60);
+		lblYouMayUpload.setBounds(297, 86, 166, 60);
 		add(lblYouMayUpload);
 		
 		JLabel lblSection_1 = new JLabel("Section:");
@@ -79,5 +104,28 @@ public class addStudent extends JPanel {
 		add(textField_4);
 		textField_4.setColumns(10);
 
+	}
+	
+	public Path chooseFile()
+	{
+		int returnVal = fc.showOpenDialog(this);
+		Path filePath = null;
+	
+		if (returnVal == JFileChooser.APPROVE_OPTION)
+		{
+			Path path = Paths.get(fc.getSelectedFile().getAbsolutePath());
+			filePath = path;
+			String ext = path.toString();
+			if (loader.checker(ext))
+			{
+				  textField_2.setText(ext);
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Not a CSV File.", "Error", JOptionPane.ERROR_MESSAGE);
+				filePath = null;
+			}
+		}
+		return filePath;
 	}
 }

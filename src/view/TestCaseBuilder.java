@@ -28,18 +28,9 @@ public class TestCaseBuilder {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TestCaseBuilder window = new TestCaseBuilder();
-					window.frmTestCaseUploader.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	public void showFrame() {
+		frmTestCaseUploader.setVisible(true);
+		}
 
 	/**
 	 * Create the application.
@@ -58,6 +49,7 @@ public class TestCaseBuilder {
 		frmTestCaseUploader.setBounds(100, 100, 522, 137);
 		frmTestCaseUploader.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmTestCaseUploader.getContentPane().setLayout(null);
+		frmTestCaseUploader.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		tciFileTextField = new JTextField();
 		tciFileTextField.setEditable(false);

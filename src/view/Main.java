@@ -199,7 +199,8 @@ public class Main {
 		JButton btnNewButton_1 = new JButton("Test Cases");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-	
+				TestCaseBuilder b = new TestCaseBuilder();
+				b.showFrame();
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();

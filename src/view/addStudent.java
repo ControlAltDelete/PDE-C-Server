@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 public class addStudent extends JPanel {
@@ -24,6 +25,7 @@ public class addStudent extends JPanel {
 	private JTextField textField_4;
 	private FileLoad loader;
 	private JFileChooser fc;
+	private String ext;
 	private FileNameExtensionFilter csvFilter;
 	private JTextField textField_5;
 	/**
@@ -113,7 +115,12 @@ public class addStudent extends JPanel {
 		JButton btnNewButton = new JButton("Submit");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				try {
+					loader.readCSV(ext);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		btnNewButton.setBounds(307, 223, 117, 23);
@@ -130,7 +137,7 @@ public class addStudent extends JPanel {
 		{
 			Path path = Paths.get(fc.getSelectedFile().getAbsolutePath());
 			filePath = path;
-			String ext = path.toString();
+			ext = path.toString();
 			textField_5.setText(ext);
 			
 			/*

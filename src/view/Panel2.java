@@ -77,6 +77,11 @@ public class Panel2 extends JPanel {
         	ioe.printStackTrace();
         	data = new Object[1][5];
         }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        	data = new Object[1][5];
+        }
  
         final JTable table = new JTable(data, columnNames);
         table.setAutoCreateRowSorter(true);

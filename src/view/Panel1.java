@@ -63,9 +63,10 @@ public class Panel1 extends JPanel {
         	System.out.println("No connection to MySQL.");
         	data = new Object[1][4];
         }
-        catch ()
+        catch (Exception e)
         {
-        	
+        	e.printStackTrace();
+        	data = new Object[1][4];
         }
     	setLayout(new BorderLayout(0, 0));
  

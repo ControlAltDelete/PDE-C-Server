@@ -41,10 +41,10 @@ public class Panel1 extends JPanel {
 	            "Section"
             };
         
-        StudentDAO sdao = new StudentDAO();
-        ArrayList<Student> sArray = new ArrayList<Student>();
         try
         {
+            StudentDAO sdao = new StudentDAO();
+            ArrayList<Student> sArray = new ArrayList<Student>();
         	sArray = sdao.getStudents();
         	data = new Object[sArray.size()][4];
         	for(int s = 0; s < sArray.size(); s++)
@@ -63,9 +63,10 @@ public class Panel1 extends JPanel {
         	System.out.println("No connection to MySQL.");
         	data = new Object[1][4];
         }
-        catch ()
+        catch (Exception e)
         {
-        	
+        	e.printStackTrace();
+        	data = new Object[1][4];
         }
     	setLayout(new BorderLayout(0, 0));
  

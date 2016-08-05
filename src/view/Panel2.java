@@ -47,10 +47,10 @@ public class Panel2 extends JPanel {
         {"1", "11220538", "Pua", "S12", "83", "August"}
         };
         
-        DeliverableDAO ddao = new DeliverableDAO();
-        ArrayList<Deliverable> dArray = new ArrayList<Deliverable>();
         try
         {
+            DeliverableDAO ddao = new DeliverableDAO();
+            ArrayList<Deliverable> dArray = new ArrayList<Deliverable>();
         	dArray = ddao.getDeliverables();
         	data = new Object[dArray.size()][5];
         	for(int s = 0; s < dArray.size(); s++)
@@ -75,6 +75,11 @@ public class Panel2 extends JPanel {
         catch (IOException ioe)
         {
         	ioe.printStackTrace();
+        	data = new Object[1][5];
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
         	data = new Object[1][5];
         }
  

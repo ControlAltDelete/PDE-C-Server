@@ -86,7 +86,7 @@ public class FileLoad
 	     int x = 0;
 	     System.out.println("Initiated readCSV");
 	     nextLine = reader.readAll();
-	     for(x=0; x<nextLine.size(); x++) {
+	     for(x=12; x<nextLine.size(); x++) {
 	    	 String[] elems = nextLine.get(x);
 	    	 for (int j = 0; j < elems.length; j++)
 	    	 {

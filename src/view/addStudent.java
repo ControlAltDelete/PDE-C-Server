@@ -28,6 +28,7 @@ public class addStudent extends JPanel {
 	private String ext;
 	private FileNameExtensionFilter csvFilter;
 	private JTextField textField_5;
+	private String[] idNumbers = null;
 	/**
 	 * Create the panel.
 	 */
@@ -112,11 +113,14 @@ public class addStudent extends JPanel {
 		add(textField_5);
 		textField_5.setColumns(10);
 		
+
+		
 		JButton btnNewButton = new JButton("Submit");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					loader.readCSV(ext);
+				
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -14,6 +14,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -35,6 +37,8 @@ import javax.swing.DefaultComboBoxModel;
 public class uploadFile extends JPanel {
 	private JTextField txtActName;
 	private JTextField txtActNum;
+    private JTextField txtFilePath;
+    private JComboBox cmbDay, cmbYear, cmbMonth, cmbHour, cmbMinute;
 	private FileLoad loader;
 	private FileNameExtensionFilter pdfFilter;
     JFileChooser fc;
@@ -45,7 +49,6 @@ public class uploadFile extends JPanel {
     DataOutputStream dout;
     DataInputStream din;
     int i;
-    private JTextField txtFilePath;
 	/**
 	 * Create the panel.
 	 */
@@ -90,27 +93,40 @@ public class uploadFile extends JPanel {
 		lblActivityDeadline.setBounds(39, 88, 125, 14);
 		add(lblActivityDeadline);
 		
-		JComboBox cmbYear = new JComboBox();
-		cmbYear.setModel(new DefaultComboBoxModel(new String[] {"Year", "2016", "2017"}));
-		cmbYear.setBounds(354, 85, 80, 20);
-		add(cmbYear);
+		cmbDay = new JComboBox();
+		cmbYear = new JComboBox();
+		cmbMonth = new JComboBox();
 		
-		JComboBox cmbMonth = new JComboBox();
-		cmbMonth.setModel(new DefaultComboBoxModel(new String[] {"Month", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}));
-		cmbMonth.setBounds(174, 85, 80, 20);
-		add(cmbMonth);
-		
-		JComboBox cmbDay = new JComboBox();
-		cmbDay.setModel(new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		cmbDay.setModel(new DefaultComboBoxModel(new String[] {"Day"}));
 		cmbDay.setBounds(264, 85, 80, 20);
 		add(cmbDay);
 		
-		JComboBox cmbHour = new JComboBox();
+		cmbYear.setModel(new DefaultComboBoxModel(new String[] {"Year", "2016", "2017", "2000", "2400", "1900"}));
+		cmbYear.setBounds(354, 85, 80, 20);
+		cmbYear.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				cmbDay.setModel(monthDayYearChecker(cmbMonth.getSelectedItem().toString(), cmbYear.getSelectedItem().toString()));
+			}
+		});
+		add(cmbYear);
+		
+		cmbMonth.setModel(new DefaultComboBoxModel(new String[] {"Month", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}));
+		cmbMonth.setBounds(174, 85, 80, 20);
+		cmbMonth.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				cmbDay.setModel(monthDayYearChecker(cmbMonth.getSelectedItem().toString(), cmbYear.getSelectedItem().toString()));
+			}
+		});
+		add(cmbMonth);
+		
+		cmbHour = new JComboBox();
 		cmbHour.setModel(new DefaultComboBoxModel(new String[] {"hour", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18"}));
 		cmbHour.setBounds(174, 116, 80, 20);
 		add(cmbHour);
 		
-		JComboBox cmbMinute = new JComboBox();
+		cmbMinute = new JComboBox();
 		cmbMinute.setModel(new DefaultComboBoxModel(new String[] {"min", "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"}));
 		cmbMinute.setBounds(264, 116, 80, 20);
 		add(cmbMinute);
@@ -121,7 +137,14 @@ public class uploadFile extends JPanel {
 				public void actionPerformed(ActionEvent e) 
 				{
 				  Path p = chooseFile(); // Returns FilePath. Upload not yet implemented
-				  txtFilePath.setText(p.toString());
+				  if(!p.equals(null))
+				  {
+					  
+				  }
+				  else
+				  {
+					  txtFilePath.setText(p.toString());
+				  }
 				}
 			});
 		btnChooseFile.setBounds(174, 178, 116, 23);
@@ -130,24 +153,31 @@ public class uploadFile extends JPanel {
 		JButton btnSend = new JButton("Send");
 		btnSend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ActivityDAO adao = new ActivityDAO();
-				Activity a = new Activity();
-				a.setActivityName(txtActName.getText());
-				a.setActivityID(Integer.parseInt(txtActNum.getText()));
-				a.setActivityTimeStamp(new Timestamp(System.currentTimeMillis()));
-				a.setActivityFile(new File(txtFilePath.getName()));
-				a.setActivityFilename(a.getActivityFile().getName());
-				try
+				if(!fieldChecker(txtActNum, txtActName, txtFilePath, cmbDay, cmbMonth, cmbYear, cmbHour, cmbMinute))
 				{
-					adao.addActivity(a);
+					System.out.println("Bawal");
 				}
-				catch (FileNotFoundException fnfe)
+				else
 				{
-					System.out.println("File not found. It may have been deleted during the process.");
-				}
-				catch (SQLException e) 
-				{
-					System.out.println("No SQL Connection");
+					ActivityDAO adao = new ActivityDAO();
+					Activity a = new Activity();
+					a.setActivityName(txtActName.getText());
+					a.setActivityID(Integer.parseInt(txtActNum.getText()));
+					a.setActivityTimeStamp(new Timestamp(System.currentTimeMillis()));
+					a.setActivityFile(new File(txtFilePath.getName()));
+					a.setActivityFilename(a.getActivityFile().getName());
+					try
+					{
+						adao.addActivity(a);
+					}
+					catch (FileNotFoundException fnfe)
+					{
+						System.out.println("File not found. It may have been deleted during the process.");
+					}
+					catch (SQLException e) 
+					{
+						System.out.println("No SQL Connection");
+					}
 				}
 			}
 		});
@@ -179,13 +209,13 @@ public class uploadFile extends JPanel {
 		return filePath;
 	}
 	
-	public DefaultComboBoxModel<String> monthDayYearChecker(String month, String year)
+	private DefaultComboBoxModel<String> monthDayYearChecker(String month, String year)
 	{
 		DefaultComboBoxModel<String> res = new DefaultComboBoxModel<String>();
 		boolean leap = false;
 		if((month.equals("Month") && year.equals("Year")) || month.equals("Month") || year.equals("Year"))
 		{
-			// do nothing
+			res = new DefaultComboBoxModel(new String[] {"Day"});
 		}
 		else
 		{
@@ -223,5 +253,18 @@ public class uploadFile extends JPanel {
 			}
 		}
 		return res;
+	}
+	
+	private boolean fieldChecker(JTextField actnum, JTextField actname, JTextField path, JComboBox d, JComboBox m, JComboBox y, JComboBox hr, JComboBox min)
+	{
+		try
+		{
+			Integer.parseInt(actnum.getText());
+		}
+		catch (NumberFormatException nfe)
+		{
+			return false;
+		}
+		return !actnum.getText().isEmpty() && !actname.getText().isEmpty() && !path.getText().isEmpty() && d.getSelectedIndex() != 0 && m.getSelectedIndex() != 0 && hr.getSelectedIndex() != 0 && min.getSelectedIndex() != 0 ? true : false;
 	}
 }

@@ -133,4 +133,18 @@ public class ActivityDAO extends DAO{
         return activities;
     }
     
+    public ArrayList<String> getActivityNames() throws SQLException
+    {
+      ArrayList<String> names = new ArrayList<String>();
+      Connection connection = getConnection();
+      PreparedStatement preparedStatement = connection.prepareStatement("select * from Activity order by ActivityID");
+      ResultSet result = query(preparedStatement);
+      
+      while (result.next())
+      {
+    	names.add(result.getString("ActivityName"));
+      }
+      
+      return names;
+    }
 }

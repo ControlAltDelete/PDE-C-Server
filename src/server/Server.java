@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Path;
@@ -24,6 +25,7 @@ import database.objects.Deliverable;
 import database.objects.Student;
 import service.CBRCIntegration;
 import service.FileDecoder;
+import service.FileManipulation;
 
 public class Server extends Thread
 {
@@ -41,12 +43,13 @@ public class Server extends Thread
 	  try
 	  {
 		CBRCIntegration cbr = new CBRCIntegration();
-		Path filePath = Paths.get("C:\\Users\\Aljon Jose\\Documents\\DLSU\\THSST-1\\testing3.c");
-		cbr.runCBRC("yo", filePath);
+		//Path filePath = Paths.get("C:\\Users\\Aljon Jose\\Documents\\DLSU\\THSST-1\\testing3.c");
+		//cbr.runCBRC("yo", filePath);
 		System.out.println("Waiting for client ");
 		Socket server = serverSocket.accept();
 		System.out.println("Just connected to " + server.getRemoteSocketAddress());
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(server.getInputStream()));
+		DataOutputStream writer = new DataOutputStream(server.getOutputStream());
 	      
 	    String clientSentence = inFromClient.readLine();
 	    System.out.println("From client: "+clientSentence+"\n");
@@ -101,32 +104,44 @@ public class Server extends Thread
 			}
 			if(info.get(0).equals("Activity"))
 			{
+			  	FileManipulation fm = new FileManipulation();
 				ActivityDAO adao = new ActivityDAO();
-				ArrayList<Activity> acts = adao.getActivities(); // send back the received data, get all activity list
-				ArrayList<String> actLabel = new ArrayList<String>();
+				//ArrayList<Activity> acts = adao.getActivities(); // send back the received data, get all activity list
+				//ArrayList<String> actLabel = new ArrayList<String>();
+				
+				ArrayList<String> activityNames = adao.getActivityNames();
 				File activityFile;
-				activityFile = new File("activityEntries.txt");
-				for(int a = 0; a < acts.size(); a++)
-				{
-					actLabel.add(acts.get(a).getActivityName());
-				}
+				activityFile = new File("resource/activityFile/activityEntries.txt");
+	
 				// file streamer here
 				try{
 					FileWriter fw;
 					fw = new FileWriter(activityFile);
 					BufferedWriter out;
 					out = new BufferedWriter(fw);
-					for(int s = 0; s < acts.size(); s++)
+					for(int s = 0; s < activityNames.size(); s++)
 					{
-						out.write(acts.get(s) + "\n");
+						out.write(activityNames.get(s) + "\n");
 					}
-					out.flush();
+					//out.flush();
 					out.close();
 				}
 				catch(IOException io){
 					System.out.println("Out of space");
 				}
 				// send mo na sa client
+				
+				try
+				{
+					
+				  writer.writeBytes(fm.convertToBinary(activityFile));
+				 
+				}
+				
+				catch (Exception ex)
+				{
+				  ex.printStackTrace();
+				}
 			}
 			else if(info.get(0).equals("Deliverable"))
 			{

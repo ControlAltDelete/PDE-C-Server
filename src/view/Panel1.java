@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
@@ -60,7 +61,7 @@ public class Panel1 extends JPanel {
         }
         catch (SQLException sqle)
         {
-        	System.out.println("No connection to MySQL.");
+			JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);
         	data = new Object[1][4];
         }
         catch (Exception e)

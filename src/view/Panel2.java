@@ -16,6 +16,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -62,7 +64,7 @@ public class Panel2 extends JPanel {
         }
         catch (SQLException sqle)
         {
-        	System.out.println("No connection to MySQL.");
+			JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);
         	data = new Object[1][5];
         }
         catch (IOException ioe)

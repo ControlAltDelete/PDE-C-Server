@@ -91,7 +91,7 @@ public class addStudent extends JPanel {
 						txtStudentSection.getText().replaceAll("\\s", "").isEmpty();
 				if(emptyChecker)
 				{
-					System.out.println("Please fill in the required fields to add a new student.");
+					JOptionPane.showMessageDialog(null, "Please fill in the required fields to add a new student.", "Notice", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else
 				{
@@ -104,15 +104,15 @@ public class addStudent extends JPanel {
 						StudentDAO sdao = new StudentDAO();
 						Student s = new Student(idnum, "", fname, lname, section);
 						sdao.addStudent(s);
-						System.out.println("Successfully Added Student.");
+						JOptionPane.showMessageDialog(null, "Successfully Added Student.", "Success", JOptionPane.INFORMATION_MESSAGE);
 					}
 					catch (NumberFormatException nfe)
 					{
-						System.out.println("Invalid input! Must be number for id number!");
+						JOptionPane.showMessageDialog(null, "Invalid input! Must be number for id number!", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					catch (SQLException sqle)
 					{
-						System.out.println("No connection!");
+						JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -160,15 +160,15 @@ public class addStudent extends JPanel {
 				String sec = txtCSVSection.getText().replaceAll("\\s", "");
 				if(sec.isEmpty() && txtCSVPath.getText().isEmpty())
 				{
-					System.out.println("Fill in the required details to complete this operation.");
+					JOptionPane.showMessageDialog(null, "Fill in the required details to complete this operation.", "Notice", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else if(sec.isEmpty())
 				{
-					System.out.println("No Section Added.");
+					JOptionPane.showMessageDialog(null, "No Section Added.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else if(txtCSVPath.getText().isEmpty())
 				{
-					System.out.println("No CSV to upload.");
+					JOptionPane.showMessageDialog(null, "No CSV to upload.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else
 				{

@@ -155,7 +155,7 @@ public class uploadFile extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				if(!fieldChecker(txtActNum, txtActName, txtFilePath, cmbDay, cmbMonth, cmbYear, cmbHour, cmbMinute))
 				{
-					System.out.println("Bawal");
+					JOptionPane.showMessageDialog(null, "Please fill in the required fields to add a new activity.", "Notice", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else
 				{
@@ -172,11 +172,11 @@ public class uploadFile extends JPanel {
 					}
 					catch (FileNotFoundException fnfe)
 					{
-						System.out.println("File not found. It may have been deleted during the process.");
+						JOptionPane.showMessageDialog(null, "File not found. It may have been deleted during the process.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					catch (SQLException e) 
 					{
-						System.out.println("No SQL Connection");
+						JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}

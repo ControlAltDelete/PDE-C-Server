@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -104,14 +105,14 @@ public class submitScoresPanel extends JPanel {
 		}
 		catch (SQLException sqle)
 		{
-			activityList.addItem("No SQL Connection");
+			JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);
 			txtScore.setEnabled(false);
 			activityList.setEnabled(false);
 			btnSubmit.setEnabled(false);
 		}
 		catch (IOException sqle)
 		{
-			System.out.println("File not found");
+			JOptionPane.showMessageDialog(null, "File Not Found!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		add(activityList);
@@ -130,7 +131,7 @@ public class submitScoresPanel extends JPanel {
 				}
 				catch (SQLException sqle)
 				{
-					System.out.println("No SQL Connection");
+					JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

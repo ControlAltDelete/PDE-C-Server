@@ -7,9 +7,13 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.fileops.FileLoad;
+import database.dao.StudentDAO;
+import database.objects.Student;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -18,16 +22,16 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 public class addStudent extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField txtStudentLastName;
+	private JTextField txtStudentIDNumber;
+	private JTextField txtStudentSection;
+	private JTextField txtStudentFirstName;
+	private JTextField txtCSVSection;
 	private FileLoad loader;
 	private JFileChooser fc;
 	private String ext;
 	private FileNameExtensionFilter csvFilter;
-	private JTextField textField_5;
+	private JTextField txtCSVPath;
 	private String[] idNumbers = null;
 	/**
 	 * Create the panel.
@@ -58,27 +62,61 @@ public class addStudent extends JPanel {
 		lblSection.setBounds(38, 162, 46, 14);
 		add(lblSection);
 		
-		textField = new JTextField();
-		textField.setBounds(111, 78, 94, 20);
-		add(textField);
-		textField.setColumns(10);
+		txtStudentLastName = new JTextField();
+		txtStudentLastName.setBounds(111, 78, 94, 20);
+		add(txtStudentLastName);
+		txtStudentLastName.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(111, 134, 94, 20);
-		add(textField_1);
-		textField_1.setColumns(10);
+		txtStudentIDNumber = new JTextField();
+		txtStudentIDNumber.setBounds(111, 134, 94, 20);
+		add(txtStudentIDNumber);
+		txtStudentIDNumber.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(111, 159, 94, 20);
-		add(textField_2);
+		txtStudentSection = new JTextField();
+		txtStudentSection.setColumns(10);
+		txtStudentSection.setBounds(111, 159, 94, 20);
+		add(txtStudentSection);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(111, 106, 94, 20);
-		add(textField_3);
+		txtStudentFirstName = new JTextField();
+		txtStudentFirstName.setColumns(10);
+		txtStudentFirstName.setBounds(111, 106, 94, 20);
+		add(txtStudentFirstName);
 		
 		JButton btnAddStudent = new JButton("Add Student");
+		btnAddStudent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				boolean emptyChecker = txtStudentIDNumber.getText().replaceAll("\\s", "").isEmpty() || 
+						txtStudentFirstName.getText().replaceAll("\\s", "").isEmpty() ||
+						txtStudentLastName.getText().replaceAll("\\s", "").isEmpty() ||
+						txtStudentSection.getText().replaceAll("\\s", "").isEmpty();
+				if(emptyChecker)
+				{
+					System.out.println("Please fill in the required fields to add a new student.");
+				}
+				else
+				{
+					try
+					{
+						int idnum = Integer.parseInt(txtStudentIDNumber.getText().replaceAll("\\s", ""));
+						String fname = txtStudentFirstName.getText();
+						String lname = txtStudentLastName.getText();
+						String section = txtStudentSection.getText().replaceAll("\\s", "");
+						StudentDAO sdao = new StudentDAO();
+						Student s = new Student(idnum, "", fname, lname, section);
+						sdao.addStudent(s);
+						System.out.println("Successfully Added Student.");
+					}
+					catch (NumberFormatException nfe)
+					{
+						System.out.println("Invalid input! Must be number for id number!");
+					}
+					catch (SQLException sqle)
+					{
+						System.out.println("No connection!");
+					}
+				}
+			}
+		});
 		btnAddStudent.setBounds(111, 196, 94, 23);
 		add(btnAddStudent);
 		
@@ -86,49 +124,78 @@ public class addStudent extends JPanel {
 		lblOr.setBounds(241, 109, 46, 14);
 		add(lblOr);
 		
-		JButton btnUploadcsv = new JButton("Upload .CSV");
-		btnUploadcsv.addActionListener(new ActionListener() {
+		JButton btnBrowseCSV = new JButton("Browse Class List");
+		btnBrowseCSV.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				chooseFile();
 			}
 		});
-		btnUploadcsv.setBounds(307, 196, 117, 23);
-		add(btnUploadcsv);
+		btnBrowseCSV.setBounds(289, 218, 135, 23);
+		add(btnBrowseCSV);
 		
 		JLabel lblYouMayUpload = new JLabel("Upload class list from MLS");
-		lblYouMayUpload.setBounds(297, 86, 166, 60);
+		lblYouMayUpload.setBounds(289, 106, 171, 20);
 		add(lblYouMayUpload);
 		
 		JLabel lblSection_1 = new JLabel("Section:");
 		lblSection_1.setBounds(289, 137, 46, 14);
 		add(lblSection_1);
 		
-		textField_4 = new JTextField();
-		textField_4.setBounds(338, 134, 86, 20);
-		add(textField_4);
-		textField_4.setColumns(10);
+		txtCSVSection = new JTextField();
+		txtCSVSection.setBounds(338, 134, 86, 20);
+		add(txtCSVSection);
+		txtCSVSection.setColumns(10);
 		
-		textField_5 = new JTextField();
-		textField_5.setBounds(307, 165, 117, 20);
-		add(textField_5);
-		textField_5.setColumns(10);
+		txtCSVPath = new JTextField();
+		txtCSVPath.setEditable(false);
+		txtCSVPath.setBounds(289, 187, 135, 20);
+		add(txtCSVPath);
+		txtCSVPath.setColumns(10);
 		
 
 		
 		JButton btnNewButton = new JButton("Submit");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					loader.readCSV(ext);
-				
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				String sec = txtCSVSection.getText().replaceAll("\\s", "");
+				if(sec.isEmpty() && txtCSVPath.getText().isEmpty())
+				{
+					System.out.println("Fill in the required details to complete this operation.");
 				}
+				else if(sec.isEmpty())
+				{
+					System.out.println("No Section Added.");
+				}
+				else if(txtCSVPath.getText().isEmpty())
+				{
+					System.out.println("No CSV to upload.");
+				}
+				else
+				{
+					try 
+					{
+						ArrayList<Student> studs = loader.readCSV(ext, sec);
+						StudentDAO sdao = new StudentDAO();
+						for(int s = 0; s < studs.size(); s++)
+							sdao.addStudent(studs.get(s));
+					}
+					catch (IOException ioe) 
+					{
+						ioe.printStackTrace();
+					} 
+					catch (SQLException sqle)
+					{
+						sqle.printStackTrace();
+					}
+				}				
 			}
 		});
-		btnNewButton.setBounds(307, 223, 117, 23);
+		btnNewButton.setBounds(289, 245, 135, 23);
 		add(btnNewButton);
+		
+		JLabel lblClassListFile = new JLabel("Class List File:");
+		lblClassListFile.setBounds(289, 162, 135, 14);
+		add(lblClassListFile);
 
 	}
 	
@@ -142,7 +209,7 @@ public class addStudent extends JPanel {
 			Path path = Paths.get(fc.getSelectedFile().getAbsolutePath());
 			filePath = path;
 			ext = path.toString();
-			textField_5.setText(ext);
+			txtCSVPath.setText(ext);
 			
 			/*
 			if (loader.checker(ext))

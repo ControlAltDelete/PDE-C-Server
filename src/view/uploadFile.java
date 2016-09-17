@@ -26,6 +26,7 @@ import java.io.FileReader;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.regex.Matcher;
@@ -139,11 +140,11 @@ public class uploadFile extends JPanel {
 				  Path p = chooseFile(); // Returns FilePath. Upload not yet implemented
 				  if(!p.equals(null))
 				  {
-					  
+					txtFilePath.setText(p.toString());
 				  }
 				  else
 				  {
-					  txtFilePath.setText(p.toString());
+					  
 				  }
 				}
 			});
@@ -164,7 +165,8 @@ public class uploadFile extends JPanel {
 					a.setActivityName(txtActName.getText());
 					a.setActivityID(Integer.parseInt(txtActNum.getText()));
 					a.setActivityTimeStamp(new Timestamp(System.currentTimeMillis()));
-					a.setActivityFile(new File(txtFilePath.getName()));
+					a.setActivityDeadline(new Date(Integer.parseInt(cmbYear.getSelectedItem().toString()), cmbMonth.getSelectedIndex(), Integer.parseInt(cmbDay.getSelectedItem().toString())));
+					a.setActivityFile(new File(txtFilePath.getText()));
 					a.setActivityFilename(a.getActivityFile().getName());
 					try
 					{
@@ -176,7 +178,7 @@ public class uploadFile extends JPanel {
 					}
 					catch (SQLException e) 
 					{
-						JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);
+					  JOptionPane.showMessageDialog(null, "Something went wrong.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -200,12 +202,16 @@ public class uploadFile extends JPanel {
 			{
 				  txtFilePath.setText(ext);
 			}
+			
+			
+			
 			else
 			{
 				JOptionPane.showMessageDialog(null, "Not a PDF File.", "Error", JOptionPane.ERROR_MESSAGE);
 				filePath = null;
 			}
 		}
+		System.out.println(filePath);
 		return filePath;
 	}
 	

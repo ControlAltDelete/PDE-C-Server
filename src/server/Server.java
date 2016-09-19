@@ -14,6 +14,7 @@ import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ import service.FileManipulation;
 public class Server extends Thread
 {
   private ServerSocket serverSocket;
+  private DataOutputStream writer;
   
   public Server(int port) throws IOException
   {
@@ -49,13 +51,17 @@ public class Server extends Thread
 		Socket server = serverSocket.accept();
 		System.out.println("Just connected to " + server.getRemoteSocketAddress());
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(server.getInputStream()));
-		DataOutputStream writer = new DataOutputStream(server.getOutputStream());
+		writer = new DataOutputStream(server.getOutputStream());
 	      
+		this.sendActivity();
+		
 	    String clientSentence = inFromClient.readLine();
 	    System.out.println("From client: "+clientSentence+"\n");
 	    ArrayList<String> info = new ArrayList<String>();
 	    String type = clientSentence.substring(0, clientSentence.indexOf(","));
 	    clientSentence = clientSentence.substring(clientSentence.indexOf(",") + 1);
+	    
+	    
 		
 		if(type.equals("activity"))
 		{
@@ -96,13 +102,14 @@ public class Server extends Thread
 		}
 		else if(type.equals("get"))
 		{
-			while(clientSentence.indexOf(",") != -1)
-		    {
-				String temp = clientSentence.substring(0, clientSentence.indexOf(","));
-				info.add(temp);
-				clientSentence = clientSentence.substring(clientSentence.indexOf(",") + 1);
-			}
-			if(info.get(0).equals("Activity"))
+//			while(clientSentence.indexOf(",") != -1)
+//		    {
+//				String temp = clientSentence.substring(0, clientSentence.indexOf(","));
+//				info.add(temp);
+//				clientSentence = clientSentence.substring(clientSentence.indexOf(",") + 1);
+//			}
+			
+			if(clientSentence.equals("Activity"))
 			{
 			  	FileManipulation fm = new FileManipulation();
 				ActivityDAO adao = new ActivityDAO();
@@ -117,23 +124,23 @@ public class Server extends Thread
 				try{
 					FileWriter fw;
 					fw = new FileWriter(activityFile);
-					BufferedWriter out;
-					out = new BufferedWriter(fw);
+					BufferedWriter out = new BufferedWriter(fw);
 					for(int s = 0; s < activityNames.size(); s++)
 					{
 						out.write(activityNames.get(s) + "\n");
 					}
-					//out.flush();
+					
+					out.flush();
 					out.close();
 				}
 				catch(IOException io){
-					System.out.println("Out of space");
+					io.printStackTrace();
 				}
 				// send mo na sa client
 				
 				try
 				{
-					
+				  writer.flush();
 				  writer.writeBytes(fm.convertToBinary(activityFile));
 				 
 				}
@@ -205,6 +212,50 @@ public class Server extends Thread
 	}
   }
   
+  
+  private void sendActivity() throws SQLException
+  {
+	FileManipulation fm = new FileManipulation();
+		ActivityDAO adao = new ActivityDAO();
+		//ArrayList<Activity> acts = adao.getActivities(); // send back the received data, get all activity list
+		//ArrayList<String> actLabel = new ArrayList<String>();
+		
+		ArrayList<String> activityNames = adao.getActivityNames();
+		File activityFile;
+		activityFile = new File("resource/activityFile/activityEntries.txt");
+
+		// file streamer here
+		try{
+			FileWriter fw;
+			fw = new FileWriter(activityFile);
+			BufferedWriter out = new BufferedWriter(fw);
+			for(int s = 0; s < activityNames.size(); s++)
+			{
+				out.write(activityNames.get(s) + "\n");
+			}
+			
+			out.flush();
+			out.close();
+		}
+		catch(IOException io){
+			io.printStackTrace();
+		}
+		// send mo na sa client
+		
+		try
+		{
+		 
+		  writer.writeUTF(fm.convertToBinary(activityFile));
+		  writer.flush();
+		  System.out.println("yeah");
+		}
+		
+		catch (Exception ex)
+		{
+		  ex.printStackTrace();
+		}
+	
+  }
   
   
   public static void main(String[] args)

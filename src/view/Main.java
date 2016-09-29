@@ -24,6 +24,10 @@ import java.awt.Insets;
 import java.io.*;
 import java.awt.CardLayout;
 
+import javax.security.auth.login.CredentialExpiredException;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+
 public class Main {
 	
 	private JFrame frame;
@@ -59,8 +63,9 @@ public class Main {
 
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1024, 900);
+		frame.setBounds(100, 100, 850, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanel dynamicMainPanel = new JPanel();
@@ -69,74 +74,69 @@ public class Main {
 		
 		dynamicMainPanel.setLayout(new CardLayout(0, 0));
 		/*Panel uploadFile*/
-		uploadFile uF;
-		uF = new uploadFile();
-		dynamicMainPanel.add(uF);
+		uploadFile uploadFilePanel;
+		uploadFilePanel = new uploadFile();
+		uploadFilePanel.setAlignmentX(uploadFilePanel.CENTER_ALIGNMENT);
+		uploadFilePanel.setBackground(Color.WHITE);
+		dynamicMainPanel.add(uploadFilePanel);
+		
 		
 		/*Panel1*/
-		Panel1 p1;
-		p1 = new Panel1();
-		dynamicMainPanel.add(p1, "name_420733528968378");
+		Panel1 studentListPanel;
+		studentListPanel = new Panel1();
+		dynamicMainPanel.add(studentListPanel, "name_420733528968378");
 		
 		/*Panel2*/
-		Panel2 p2;
-		p2 = new Panel2();
-		dynamicMainPanel.add(p2, "name_420733536558155");
+		Panel2 submissionsPanel;
+		submissionsPanel = new Panel2();
+		dynamicMainPanel.add(submissionsPanel, "name_420733536558155");
 		
 		/*Panel3*/
-		submitScoresPanel p3;
-		p3 = new submitScoresPanel();
-		dynamicMainPanel.add(p3, "name_420733543961847");
+		submitScoresPanel submitScoresPanel;
+		submitScoresPanel = new submitScoresPanel();
+		dynamicMainPanel.add(submitScoresPanel, "name_420733543961847");
 		
 		/*Add Student Panel*/
-		addStudent aS;
-		aS = new addStudent();
-		dynamicMainPanel.add(aS);
+		addStudent addStudentPanel;
+		addStudentPanel = new addStudent();
+		dynamicMainPanel.add(addStudentPanel);
 		
-		p1.setVisible(false);
-		p2.setVisible(false);
-		p3.setVisible(false);
-		uF.setVisible(true);
-		aS.setVisible(false);
+		studentListPanel.setVisible(false);
+		submissionsPanel.setVisible(false);
+		submitScoresPanel.setVisible(false);
+		uploadFilePanel.setVisible(true);
+		addStudentPanel.setVisible(false);
+		
+		Color backgroundLeftMenu = Color.decode("0xa0a0a0");
 		
 		JPanel panelButtons = new JPanel();
-		panelButtons.setBackground(Color.LIGHT_GRAY);
+		panelButtons.setBackground(backgroundLeftMenu);
 		frame.getContentPane().add(panelButtons, BorderLayout.WEST);
 		GridBagLayout gbl_panelButtons = new GridBagLayout();
 		gbl_panelButtons.columnWidths = new int[]{89, 0};
 		gbl_panelButtons.rowHeights = new int[]{23, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panelButtons.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panelButtons.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panelButtons.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelButtons.setLayout(gbl_panelButtons);
 		
-		JButton uploadActivityBtn = new JButton("Upload Activity");
-		uploadActivityBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				uF.setVisible(true);
-				p1.setVisible(false);
-				p2.setVisible(false);
-				p3.setVisible(false);
-				aS.setVisible(false);
-			}
-		});
+		JButton uploadActivityBtn = new JButton("");
+		uploadActivityBtn.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
+		uploadActivityBtn.setContentAreaFilled(false);
+		uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT.jpg"));
+
 		GridBagConstraints gbc_uploadActivityBtn = new GridBagConstraints();
-		gbc_uploadActivityBtn.fill = GridBagConstraints.HORIZONTAL;
+		gbc_uploadActivityBtn.anchor = GridBagConstraints.WEST;
+		gbc_uploadActivityBtn.fill = GridBagConstraints.VERTICAL;
 		gbc_uploadActivityBtn.insets = new Insets(0, 0, 5, 0);
-		gbc_uploadActivityBtn.anchor = GridBagConstraints.NORTH;
 		gbc_uploadActivityBtn.gridx = 0;
 		gbc_uploadActivityBtn.gridy = 1;
 		panelButtons.add(uploadActivityBtn, gbc_uploadActivityBtn);
 		
-		JButton viewStudentLBtn = new JButton("View Student List");
-		viewStudentLBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				uF.setVisible(false);
-				p1.setVisible(true);
-				p2.setVisible(false);
-				p3.setVisible(false);
-				aS.setVisible(false);
-			}
-		});
+		JButton viewStudentLBtn = new JButton();
+		viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList.png"));
+		viewStudentLBtn.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
+		viewStudentLBtn.setContentAreaFilled(false);
+
 		GridBagConstraints gbc_viewStudentLBtn = new GridBagConstraints();
 		gbc_viewStudentLBtn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_viewStudentLBtn.insets = new Insets(0, 0, 5, 0);
@@ -144,16 +144,11 @@ public class Main {
 		gbc_viewStudentLBtn.gridy = 2;
 		panelButtons.add(viewStudentLBtn, gbc_viewStudentLBtn);
 		
-		JButton viewSubmissionBtn = new JButton("View Submissions");
-		viewSubmissionBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				uF.setVisible(false);
-				p2.setVisible(true);
-				p3.setVisible(false);
-				p1.setVisible(false);
-				aS.setVisible(false);
-			}
-		});
+		JButton viewSubmissionBtn = new JButton();
+		viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub.png"));
+		viewSubmissionBtn.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
+		viewSubmissionBtn.setContentAreaFilled(false);
+
 		GridBagConstraints gbc_viewSubmissionBtn = new GridBagConstraints();
 		gbc_viewSubmissionBtn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_viewSubmissionBtn.insets = new Insets(0, 0, 5, 0);
@@ -161,16 +156,11 @@ public class Main {
 		gbc_viewSubmissionBtn.gridy = 3;
 		panelButtons.add(viewSubmissionBtn, gbc_viewSubmissionBtn);
 		
-		JButton submitScoresBtn = new JButton("Submit Scores");
-		submitScoresBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				uF.setVisible(false);
-				p3.setVisible(true);
-				p2.setVisible(false);
-				p1.setVisible(false);
-				aS.setVisible(false);
-			}
-		});
+		JButton submitScoresBtn = new JButton();
+		submitScoresBtn.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
+		submitScoresBtn.setContentAreaFilled(false);
+		submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore.png"));
+
 		GridBagConstraints gbc_submitScoresBtn = new GridBagConstraints();
 		gbc_submitScoresBtn.insets = new Insets(0, 0, 5, 0);
 		gbc_submitScoresBtn.fill = GridBagConstraints.HORIZONTAL;
@@ -178,36 +168,123 @@ public class Main {
 		gbc_submitScoresBtn.gridy = 4;
 		panelButtons.add(submitScoresBtn, gbc_submitScoresBtn);
 		
-		JButton btnNewButton = new JButton("Add Students");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				uF.setVisible(false);
-				p2.setVisible(false);
-				p3.setVisible(false);
-				p1.setVisible(false);
-				aS.setVisible(true);
+		JButton addStudentButton = new JButton();
+		addStudentButton.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
+		addStudentButton.setContentAreaFilled(false);
+		addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add.png"));
+
+		GridBagConstraints gbc_addStudentButton = new GridBagConstraints();
+		gbc_addStudentButton.insets = new Insets(0, 0, 5, 0);
+		gbc_addStudentButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_addStudentButton.gridx = 0;
+		gbc_addStudentButton.gridy = 5;
+		panelButtons.add(addStudentButton, gbc_addStudentButton);
+		
+		JButton testCasesButton = new JButton("");
+		testCasesButton.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
+		testCasesButton.setContentAreaFilled(false);
+		testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test.png"));
+		
+		
+		/*ACTIONS*/
+		viewStudentLBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT.jpg"));
+				viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList_OC.png"));
+				submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore.png"));
+				viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub.png"));
+				addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add.png"));
+				testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test.png"));
+				uploadFilePanel.setVisible(false);
+				studentListPanel.setVisible(true);
+				submissionsPanel.setVisible(false);
+				submitScoresPanel.setVisible(false);
+				addStudentPanel.setVisible(false);
 			}
 		});
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton.gridx = 0;
-		gbc_btnNewButton.gridy = 5;
-		panelButtons.add(btnNewButton, gbc_btnNewButton);
 		
-		
-		JButton btnNewButton_1 = new JButton("Test Cases");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		viewSubmissionBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT.jpg"));
+				viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList.png"));
+				submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore.png"));
+				viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub_OC.png"));
+				addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add.png"));
+				testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test.png"));
+				uploadFilePanel.setVisible(false);
+				submissionsPanel.setVisible(true);
+				submitScoresPanel.setVisible(false);
+				studentListPanel.setVisible(false);
+				addStudentPanel.setVisible(false);
+			}
+		});
+		
+		submitScoresBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT.jpg"));
+				viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList.png"));
+				submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore_OC.png"));
+				viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub.png"));
+				addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add.png"));
+				testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test.png"));
+				uploadFilePanel.setVisible(false);
+				submitScoresPanel.setVisible(true);
+				submissionsPanel.setVisible(false);
+				studentListPanel.setVisible(false);
+				addStudentPanel.setVisible(false);
+			}
+		});
+		
+		addStudentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT.jpg"));
+				viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList.png"));
+				submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore.png"));
+				viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub.png"));
+				addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add_OC.png"));
+				testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test.png"));
+				uploadFilePanel.setVisible(false);
+				submissionsPanel.setVisible(false);
+				submitScoresPanel.setVisible(false);
+				studentListPanel.setVisible(false);
+				addStudentPanel.setVisible(true);
+			}
+		});
+		
+		testCasesButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT.jpg"));
+				viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList.png"));
+				submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore.png"));
+				viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub.png"));
+				addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add.png"));
+				testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test_OC.png"));
 				TestCaseBuilder b = new TestCaseBuilder();
 				b.showFrame();
 			}
 		});
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_1.gridx = 0;
-		gbc_btnNewButton_1.gridy = 6;
-		panelButtons.add(btnNewButton_1, gbc_btnNewButton_1);
+		
+		uploadActivityBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT_OC.png"));
+				viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList.png"));
+				submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore.png"));
+				viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub.png"));
+				addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add.png"));
+				testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test.png"));
+				uploadFilePanel.setVisible(true);
+				studentListPanel.setVisible(false);
+				submissionsPanel.setVisible(false);
+				submitScoresPanel.setVisible(false);
+				addStudentPanel.setVisible(false);
+			}
+		});
+		
+		GridBagConstraints gbc_testCasesButton = new GridBagConstraints();
+		gbc_testCasesButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_testCasesButton.gridx = 0;
+		gbc_testCasesButton.gridy = 6;
+		panelButtons.add(testCasesButton, gbc_testCasesButton);
 		
 	}
 }

@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.SwingConstants;
 
 import database.dao.StudentDAO;
@@ -100,18 +101,19 @@ public class Panel1 extends JPanel {
         splitPane.setBottomComponent(buttonContainer);
         
         JButton Add = new JButton("Add");
+        Add.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+				addStudentFr b = new addStudentFr();
+				b.showFrame();
+        	}
+        });
         buttonContainer.add(Add);
-        
-        JButton Edit = new JButton("Edit");
-        buttonContainer.add(Edit);
         
         JButton Delete = new JButton("Delete");
         buttonContainer.add(Delete);
         
         add(splitPane);
         
-
-
 	}
 
 }

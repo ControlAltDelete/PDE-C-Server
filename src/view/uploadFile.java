@@ -23,11 +23,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
+import java.awt.GridLayout;
+import java.awt.Color;
 
 public class uploadFile extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField activityNo;
+	private JTextField pathFile;
 	private FileLoad loader;
 	private FileNameExtensionFilter pdfFilter;
     JFileChooser fc;
@@ -38,7 +43,7 @@ public class uploadFile extends JPanel {
     DataOutputStream dout;
     DataInputStream din;
     int i;
-    private JTextField textField_2;
+    private JTextField activityName;
 	/**
 	 * Create the panel.
 	 */
@@ -51,14 +56,36 @@ public class uploadFile extends JPanel {
 
 		setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(129, 50, 176, 20);
-		add(textField);
-		textField.setColumns(10);
+		JPanel centerPanel = new JPanel();
+		centerPanel.setBackground(Color.WHITE);
+		centerPanel.setBounds(195, 122, 287, 200);
+		add(centerPanel);
+		centerPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JLabel lblNewLabel = new JLabel("Activity Name");
-		lblNewLabel.setBounds(39, 53, 80, 14);
-		add(lblNewLabel);
+		lblNewLabel.setBackground(Color.WHITE);
+		centerPanel.add(lblNewLabel);
+		
+		activityNo = new JTextField();
+		centerPanel.add(activityNo);
+		activityNo.setColumns(10);
+		
+		JLabel lblActivityNo = new JLabel("Activity No.");
+		centerPanel.add(lblActivityNo);
+		
+		pathFile = new JTextField();
+		centerPanel.add(pathFile);
+		pathFile.setColumns(10);
+		
+		JLabel lblPathFile = new JLabel("Path file");
+		centerPanel.add(lblPathFile);
+		
+		activityName = new JTextField();
+		centerPanel.add(activityName);
+		activityName.setColumns(10);
+		
+		JButton btnSend = new JButton("Send");
+		centerPanel.add(btnSend);
 		
 		JButton btnChooseFile = new JButton("Choose File");
 		btnChooseFile.addActionListener(new ActionListener() 
@@ -68,30 +95,8 @@ public class uploadFile extends JPanel {
 				  chooseFile(); // Returns FilePath. Upload not yet implemented
 				}
 			});
-		btnChooseFile.setBounds(129, 109, 116, 23);
-		add(btnChooseFile);
-		
-		textField_1 = new JTextField();
-		textField_1.setBounds(129, 23, 176, 20);
-		add(textField_1);
-		textField_1.setColumns(10);
-		
-		JLabel lblActivityNo = new JLabel("Activity No.");
-		lblActivityNo.setBounds(39, 28, 80, 14);
-		add(lblActivityNo);
-		
-		JButton btnSend = new JButton("Send");
-		btnSend.setBounds(129, 143, 116, 23);
-		add(btnSend);
-		
-		textField_2 = new JTextField();
-		textField_2.setBounds(129, 78, 176, 20);
-		add(textField_2);
-		textField_2.setColumns(10);
-		
-		JLabel lblPathFile = new JLabel("Path file");
-		lblPathFile.setBounds(39, 78, 65, 14);
-		add(lblPathFile);
+		centerPanel.add(btnChooseFile);
+	
 
 	}
 	
@@ -107,7 +112,7 @@ public class uploadFile extends JPanel {
 			String ext = path.toString();
 			if (loader.checkerpdf(ext))
 			{
-				  textField_2.setText(ext);
+				  activityName.setText(ext);
 			}
 			else
 			{

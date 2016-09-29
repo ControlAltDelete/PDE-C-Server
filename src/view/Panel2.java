@@ -40,6 +40,14 @@ public class Panel2 extends JPanel {
                                 };
  
         Object[][] data = {
+        		{"ACTIVITY NO.",
+                    "ID NUMBER",
+                    "LAST NAME",
+                    "SECTION",
+                    "GRADE",
+                    "DATE SUBMITTED"
+                    },
+        		
         {"1", "11220538", "Pua", "S12", "83", "August"},
         {"1", "11220538", "Pua", "S12", "83", "August"},
         {"1", "11220538", "Pua", "S12", "83", "August"},
@@ -85,14 +93,19 @@ public class Panel2 extends JPanel {
 // 
         final JTable table = new JTable(data, columnNames);
         table.setAutoCreateRowSorter(true);
-        table.setEnabled(false);
+        //table.setEnabled(false);
+        table.setTableHeader(null); 
+        table.setRowSelectionAllowed(true);
+        table.setShowGrid(false);
         table.setPreferredScrollableViewportSize(new Dimension(1000, 70));
         table.setFillsViewportHeight(true);
+      //  table.rowAtPoint(getMousePosition());
+        
+        
  
  
         //Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(table);
- 
         //Add the scroll pane to this panel.
         add(scrollPane);
 

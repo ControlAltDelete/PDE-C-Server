@@ -26,7 +26,8 @@ public class FileManipulation {
 			 * Converting Image byte array into Base64 String 
 			 */
 			String imageDataString = encodeImage(imageData);
-                        
+					
+                        imageInFile.close();
                         return imageDataString;
 			
             } catch (FileNotFoundException e) {

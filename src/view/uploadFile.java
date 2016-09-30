@@ -6,6 +6,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import controller.fileops.FileLoad;
 import database.dao.ActivityDAO;
 import database.objects.Activity;
+import service.FileManipulation;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -42,6 +43,7 @@ public class uploadFile extends JPanel {
     private JComboBox cmbDay, cmbYear, cmbMonth, cmbHour, cmbMinute;
 	private FileLoad loader;
 	private FileNameExtensionFilter pdfFilter;
+	private Path filePathChosen = null;
     JFileChooser fc;
     JButton b, b1;
     JTextField tf;
@@ -54,6 +56,7 @@ public class uploadFile extends JPanel {
 	 * Create the panel.
 	 */
 	public uploadFile() {
+	  
 		loader = new FileLoad();
 		fc = new JFileChooser();
 		pdfFilter = new FileNameExtensionFilter(
@@ -141,6 +144,7 @@ public class uploadFile extends JPanel {
 				  if(!p.equals(null))
 				  {
 					txtFilePath.setText(p.toString());
+					filePathChosen = p;
 				  }
 				  else
 				  {
@@ -160,14 +164,16 @@ public class uploadFile extends JPanel {
 				}
 				else
 				{
+				  	FileManipulation fm = new FileManipulation();
 					ActivityDAO adao = new ActivityDAO();
 					Activity a = new Activity();
+					File chosen = new File(filePathChosen.toUri());
 					a.setActivityName(txtActName.getText());
 					a.setActivityID(Integer.parseInt(txtActNum.getText()));
 					a.setActivityTimeStamp(new Timestamp(System.currentTimeMillis()));
 					a.setActivityDeadline(new Date(Integer.parseInt(cmbYear.getSelectedItem().toString()), cmbMonth.getSelectedIndex(), Integer.parseInt(cmbDay.getSelectedItem().toString())));
-					a.setActivityFile(new File(txtFilePath.getText()));
-					a.setActivityFilename(a.getActivityFile().getName());
+					a.setActivityFile(fm.convertToBinary(chosen));
+					a.setActivityFilename(chosen.getName());
 					try
 					{
 						adao.addActivity(a);
@@ -178,6 +184,7 @@ public class uploadFile extends JPanel {
 					}
 					catch (SQLException e) 
 					{
+					  e.printStackTrace();
 					  JOptionPane.showMessageDialog(null, "Something went wrong.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}

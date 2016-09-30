@@ -52,17 +52,13 @@ public class Server extends Thread
 		System.out.println("Just connected to " + server.getRemoteSocketAddress());
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(server.getInputStream()));
 		writer = new DataOutputStream(server.getOutputStream());
-	      
-		this.sendActivity();
-		
+	 
 	    String clientSentence = inFromClient.readLine();
 	    System.out.println("From client: "+clientSentence+"\n");
 	    ArrayList<String> info = new ArrayList<String>();
 	    String type = clientSentence.substring(0, clientSentence.indexOf(","));
 	    clientSentence = clientSentence.substring(clientSentence.indexOf(",") + 1);
 	    
-	    
-		
 		if(type.equals("activity"))
 		{
 			while(clientSentence.indexOf(",") != -1)
@@ -76,11 +72,26 @@ public class Server extends Thread
 		    clientSentence = "";
 		    FileDecoder fd = new FileDecoder();
 		    fd.convertToFile(info.get(2), info.get(5));
-		    Activity act = new Activity(Integer.parseInt(info.get(0)), info.get(1), new File(System.getProperty("user.dir")+"/src/"+info.get(5)), 
-		    		new Timestamp(System.currentTimeMillis()), new Date(System.currentTimeMillis()), info.get(5));
-		    ActivityDAO adao = new ActivityDAO();
-		    adao.addActivity(act);
+//		    Activity act = new Activity(Integer.parseInt(info.get(0)), info.get(1), new File(System.getProperty("user.dir")+"/src/"+info.get(5)), 
+//		    		new Timestamp(System.currentTimeMillis()), new Date(System.currentTimeMillis()), info.get(5));
+//		    ActivityDAO adao = new ActivityDAO();
+//		    adao.addActivity(act);
 		}
+		
+		else if(type.equals("get"))
+		{
+		  if (clientSentence.equals("Activity"))
+		  {
+			System.out.println("A");
+			this.sendActivity();
+		  }
+		  
+		  else if (clientSentence.equals("ActivityFiles"))
+		  {
+			
+		  }
+		}
+		
 		else if(type.equals("deliverable"))
 		{
 			while(clientSentence.indexOf(",") != -1)
@@ -100,91 +111,7 @@ public class Server extends Thread
 		    DeliverableDAO ddao = new DeliverableDAO();
 		    ddao.addDeliverable(del);
 		}
-		else if(type.equals("get"))
-		{
-//			while(clientSentence.indexOf(",") != -1)
-//		    {
-//				String temp = clientSentence.substring(0, clientSentence.indexOf(","));
-//				info.add(temp);
-//				clientSentence = clientSentence.substring(clientSentence.indexOf(",") + 1);
-//			}
-			
-			if(clientSentence.equals("Activity"))
-			{
-			  	FileManipulation fm = new FileManipulation();
-				ActivityDAO adao = new ActivityDAO();
-				//ArrayList<Activity> acts = adao.getActivities(); // send back the received data, get all activity list
-				//ArrayList<String> actLabel = new ArrayList<String>();
-				
-				ArrayList<String> activityNames = adao.getActivityNames();
-				File activityFile;
-				activityFile = new File("resource/activityFile/activityEntries.txt");
-	
-				// file streamer here
-				try{
-					FileWriter fw;
-					fw = new FileWriter(activityFile);
-					BufferedWriter out = new BufferedWriter(fw);
-					for(int s = 0; s < activityNames.size(); s++)
-					{
-						out.write(activityNames.get(s) + "\n");
-					}
-					
-					out.flush();
-					out.close();
-				}
-				catch(IOException io){
-					io.printStackTrace();
-				}
-				// send mo na sa client
-				
-				try
-				{
-				  writer.flush();
-				  writer.writeBytes(fm.convertToBinary(activityFile));
-				 
-				}
-				
-				catch (Exception ex)
-				{
-				  ex.printStackTrace();
-				}
-			}
-			else if(info.get(0).equals("Deliverable"))
-			{
-				DeliverableDAO ddao = new DeliverableDAO();
-				ddao.getDeliverables(); // send back the received data, get all deliverable list
-			}
-			else if(info.get(0).equals("Student"))
-			{
-				StudentDAO sdao = new StudentDAO();
-				ArrayList<Student> studs = sdao.getStudents(); // send back the received data, get all student list
-				ArrayList<String> studLabel = new ArrayList<String>();
-				File studentFile;
-				studentFile = new File("studentEntries.txt");
-				for(int s = 0; s < studs.size(); s++)
-				{
-					studLabel.add(studs.get(s).getStudentID() + " - " + studs.get(s).getStudentLastName() + ", " + studs.get(s).getStudentFirstName());
-				}
-				// file streamer here
-				try{
-					FileWriter fw;
-					fw = new FileWriter(studentFile);
-					BufferedWriter out;
-					out = new BufferedWriter(fw);
-					for(int s = 0; s < studs.size(); s++)
-					{
-						out.write(studs.get(s) + "\n");
-					}
-					out.flush();
-					out.close();
-				}
-				catch(IOException io){
-					System.out.println("Out of space");
-				}
-				// send mo na sa client?
-		    }
-		}
+
 		else
 		{
 			while(clientSentence.indexOf(",") != -1)
@@ -215,46 +142,56 @@ public class Server extends Thread
   
   private void sendActivity() throws SQLException
   {
-	FileManipulation fm = new FileManipulation();
-		ActivityDAO adao = new ActivityDAO();
-		//ArrayList<Activity> acts = adao.getActivities(); // send back the received data, get all activity list
-		//ArrayList<String> actLabel = new ArrayList<String>();
+    FileManipulation fm = new FileManipulation();
+	ActivityDAO adao = new ActivityDAO();
 		
-		ArrayList<String> activityNames = adao.getActivityNames();
-		File activityFile;
-		activityFile = new File("resource/activityFile/activityEntries.txt");
+	ArrayList<String> activityNames = adao.getActivityNames();
+	File activityFile;
+	activityFile = new File("resource/activityFile/activityEntries.txt");
 
 		// file streamer here
-		try{
-			FileWriter fw;
-			fw = new FileWriter(activityFile);
-			BufferedWriter out = new BufferedWriter(fw);
-			for(int s = 0; s < activityNames.size(); s++)
-			{
-				out.write(activityNames.get(s) + "\n");
-			}
+	try
+	{
+	  FileWriter fw;
+	  fw = new FileWriter(activityFile);
+	  BufferedWriter out = new BufferedWriter(fw);
+	  
+	  for(int s = 0; s < activityNames.size(); s++)
+	  {
+		out.write(activityNames.get(s) + "\n");
+	  }
 			
-			out.flush();
-			out.close();
-		}
-		catch(IOException io){
-			io.printStackTrace();
-		}
-		// send mo na sa client
-		
-		try
-		{
-		 
-		  writer.writeUTF(fm.convertToBinary(activityFile));
-		  writer.flush();
-		  System.out.println("yeah");
-		}
-		
-		catch (Exception ex)
-		{
-		  ex.printStackTrace();
-		}
+	  out.flush();
+   	  out.close();
+	}
 	
+	catch(IOException io)
+	{
+	  io.printStackTrace();
+	}
+		
+	try
+	{
+		 
+	  writer.writeUTF(fm.convertToBinary(activityFile));
+	  writer.flush();
+	  System.out.println("yeah");
+	}
+		
+	catch (Exception ex)
+	{
+	  ex.printStackTrace();
+	}
+  }
+  
+  private void downloadActivity(String actName) throws SQLException, IOException
+  {
+	ActivityDAO adao = new ActivityDAO();
+	Activity act =  new Activity();
+	
+	act = adao.getActivity(5);
+	FileDecoder fd = new FileDecoder();
+	fd.convertToFile(act.getActivityFile(), act.getActivityFilename());
   }
   
   

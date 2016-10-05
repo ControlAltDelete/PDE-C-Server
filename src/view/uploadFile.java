@@ -126,12 +126,17 @@ public class uploadFile extends JPanel {
 		add(cmbMonth);
 		
 		cmbHour = new JComboBox();
-		cmbHour.setModel(new DefaultComboBoxModel(new String[] {"hour", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18"}));
+		cmbHour.setModel(new DefaultComboBoxModel(new String[] {"hour", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17",
+			"18"}));
 		cmbHour.setBounds(174, 116, 80, 20);
 		add(cmbHour);
 		
 		cmbMinute = new JComboBox();
-		cmbMinute.setModel(new DefaultComboBoxModel(new String[] {"min", "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"}));
+		cmbMinute.setModel(new DefaultComboBoxModel(new String[] {"min", "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
+			"10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
+			"30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49",
+			"50", "51",
+			"52", "53", "54", "55", "56", "57", "58", "59"}));
 		cmbMinute.setBounds(264, 116, 80, 20);
 		add(cmbMinute);
 		
@@ -205,7 +210,7 @@ public class uploadFile extends JPanel {
 			Path path = Paths.get(fc.getSelectedFile().getAbsolutePath());
 			filePath = path;
 			String ext = path.toString();
-			if (loader.checkerpdf(ext))
+			if (loader.checkerpdf(ext.toLowerCase()))
 			{
 				  txtFilePath.setText(ext);
 			}
@@ -238,37 +243,49 @@ public class uploadFile extends JPanel {
 			{
 				if(month.equals("Jan") || month.equals("Mar") || month.equals("May") || month.equals("Jul") || month.equals("Aug") || month.equals("Oct") || month.equals("Dec"))
 				{
-					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"});
+					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", 
+						"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28",
+						"29", "30", "31"});
 				}
 				else if(month.equals("Apr") || month.equals("Jun") || month.equals("Sep") || month.equals("Nov"))
 				{
-					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"});
+					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+						"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", 
+						"29", "30"});
 				}
 				else if(month.equals("Feb"))
 				{
-					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29"});
+					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", 
+						"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", 
+						"29"});
 				}
 			}
 			else
 			{
 				if(month.equals("Jan") || month.equals("Mar") || month.equals("May") || month.equals("Jul") || month.equals("Aug") || month.equals("Oct") || month.equals("Dec"))
 				{
-					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"});
+					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+						"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28",
+						"29", "30", "31"});
 				}
 				else if(month.equals("Apr") || month.equals("Jun") || month.equals("Sep") || month.equals("Nov"))
 				{
-					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"});
+					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+						"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", 
+						"29", "30"});
 				}
 				else if(month.equals("Feb"))
 				{
-					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28"});
+					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+						"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28"});
 				}
 			}
 		}
 		return res;
 	}
 	
-	private boolean fieldChecker(JTextField actnum, JTextField actname, JTextField path, JComboBox d, JComboBox m, JComboBox y, JComboBox hr, JComboBox min)
+	private boolean fieldChecker(JTextField actnum, JTextField actname, JTextField path, JComboBox d, JComboBox m, JComboBox y,
+		JComboBox hr, JComboBox min)
 	{
 		try
 		{
@@ -278,6 +295,7 @@ public class uploadFile extends JPanel {
 		{
 			return false;
 		}
-		return !actnum.getText().isEmpty() && !actname.getText().isEmpty() && !path.getText().isEmpty() && d.getSelectedIndex() != 0 && m.getSelectedIndex() != 0 && hr.getSelectedIndex() != 0 && min.getSelectedIndex() != 0 ? true : false;
+		return !actnum.getText().isEmpty() && !actname.getText().isEmpty() && !path.getText().isEmpty() && d.getSelectedIndex() !=
+			0 && m.getSelectedIndex() != 0 && hr.getSelectedIndex() != 0 && min.getSelectedIndex() != 0 ? true : false;
 	}
 }

@@ -86,9 +86,11 @@ public class Server extends Thread
 			this.sendActivity();
 		  }
 		  
-		  else if (clientSentence.equals("ActivityFiles"))
+		  else if (clientSentence.contains("ActivityFiles"))
 		  {
+			int idNum = Integer.parseInt((clientSentence.substring(clientSentence.lastIndexOf(",") + 1).trim()));
 			
+			this.downloadActivity(idNum);
 		  }
 		}
 		
@@ -139,7 +141,6 @@ public class Server extends Thread
 	}
   }
   
-  
   private void sendActivity() throws SQLException
   {
     FileManipulation fm = new FileManipulation();
@@ -175,7 +176,6 @@ public class Server extends Thread
 		 
 	  writer.writeUTF(fm.convertToBinary(activityFile));
 	  writer.flush();
-	  System.out.println("yeah");
 	}
 		
 	catch (Exception ex)
@@ -184,14 +184,24 @@ public class Server extends Thread
 	}
   }
   
-  private void downloadActivity(String actName) throws SQLException, IOException
+  private void downloadActivity(int activityId) throws SQLException, IOException
   {
 	ActivityDAO adao = new ActivityDAO();
 	Activity act =  new Activity();
 	
-	act = adao.getActivity(5);
-	FileDecoder fd = new FileDecoder();
-	fd.convertToFile(act.getActivityFile(), act.getActivityFilename());
+	act = adao.getActivity(activityId);
+	
+	try
+	{
+	  writer.writeBytes(act.getActivityFile());
+	  writer.flush();
+	}
+	
+	catch (Exception ex)
+	{
+	  ex.printStackTrace();
+	}
+	
   }
   
   

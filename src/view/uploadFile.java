@@ -210,18 +210,20 @@ public class uploadFile extends JPanel {
 			Path path = Paths.get(fc.getSelectedFile().getAbsolutePath());
 			filePath = path;
 			String ext = path.toString();
-			if (loader.checkerpdf(ext.toLowerCase()))
-			{
-				  txtFilePath.setText(ext);
-			}
+//			if (loader.checkerpdf(ext.toLowerCase()))
+//			{
+//				  txtFilePath.setText(ext);
+//			}
+//			
+//			
+//			
+//			else
+//			{
+//				JOptionPane.showMessageDialog(null, "Not a PDF File.", "Error", JOptionPane.ERROR_MESSAGE);
+//				filePath = null;
+//			}
 			
-			
-			
-			else
-			{
-				JOptionPane.showMessageDialog(null, "Not a PDF File.", "Error", JOptionPane.ERROR_MESSAGE);
-				filePath = null;
-			}
+			txtFilePath.setText(ext);
 		}
 		System.out.println(filePath);
 		return filePath;

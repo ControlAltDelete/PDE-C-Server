@@ -76,7 +76,7 @@ private int[] idNums;
   
   public boolean checkerpdf(String fileName)
   {
-	String codePattern = "([^\\s]+(\\.(?i)(pdf))$)";
+	String codePattern = "(^.*\\.(pdf|PDF)$)";
 	pattern = Pattern.compile(codePattern);
 	matcher = pattern.matcher(fileName);
 	

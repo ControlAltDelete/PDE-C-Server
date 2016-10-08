@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -42,41 +43,33 @@ public class Panel1 extends JPanel {
 	            "Section"
             };
         
-//        try
-//        {
-//            StudentDAO sdao = new StudentDAO();
-//            ArrayList<Student> sArray = new ArrayList<Student>();
-//        	sArray = sdao.getStudents();
-//        	data = new Object[sArray.size()][4];
-//        	for(int s = 0; s < sArray.size(); s++)
-//        	{
-//        		Student stud = sArray.get(s);
-//        		ArrayList<Object> contents = new ArrayList<Object>();
-//        		contents.add(stud.getStudentID());
-//        		contents.add(stud.getStudentFirstName());
-//        		contents.add(stud.getStudentLastName());
-//        		contents.add(stud.getStudentSection());
-//        		data[s] = contents.toArray();
-//        	}
-//        }
-//        catch (SQLException sqle)
-//        {
-//        	System.out.println("No connection to MySQL.");
-//        	data = new Object[1][4];
-//        }
-//        catch (Exception e)
-//        {
-//        	e.printStackTrace();
-//        	data = new Object[1][4];
-//        }
-        
-        Object[][] data = {
-                {"11220538", "Raymund", "Pua","S12", new Boolean(true)},
-                {"11220538", "Zaymund", "Pua","S12", new Boolean(true)},
-                {"11220538", "Aaymund", "Pua","S12",  new Boolean(true)},
-                {"11220538", "Raymund", "Pua","S12",  new Boolean(true)}
-                };
-
+        try
+        {
+            StudentDAO sdao = new StudentDAO();
+            ArrayList<Student> sArray = new ArrayList<Student>();
+        	sArray = sdao.getStudents();
+        	data = new Object[sArray.size()][4];
+        	for(int s = 0; s < sArray.size(); s++)
+        	{
+        		Student stud = sArray.get(s);
+        		ArrayList<Object> contents = new ArrayList<Object>();
+        		contents.add(stud.getStudentID());
+        		contents.add(stud.getStudentFirstName());
+        		contents.add(stud.getStudentLastName());
+        		contents.add(stud.getStudentSection());
+        		data[s] = contents.toArray();
+        	}
+        }
+        catch (SQLException sqle)
+        {
+			JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);
+        	data = new Object[1][4];
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        	data = new Object[1][4];
+        }
     	setLayout(new BorderLayout(0, 0));
  
         final JTable table = new JTable(data, columnNames);

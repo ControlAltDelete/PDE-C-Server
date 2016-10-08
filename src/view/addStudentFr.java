@@ -114,7 +114,7 @@ public class addStudentFr extends JFrame {
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					loader.readCSV(ext);
+					loader.readCSVfr(ext);
 				
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

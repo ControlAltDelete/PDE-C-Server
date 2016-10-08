@@ -9,7 +9,7 @@ public class Activity
 
 	private int activityID;
 	private String activityName;
-	private File activityFile;
+	private String activityFile;
 	private Timestamp activityTimeStamp;
 	private Date activitDeadline;
 	private String activityFilename;
@@ -19,7 +19,7 @@ public class Activity
 		
 	}
 
-	public Activity(int activityID, String activityName, File activityFile, Timestamp activityTimeStamp,
+	public Activity(int activityID, String activityName, String activityFile, Timestamp activityTimeStamp,
 			Date activitDeadline, String activityFilename) 
 	{
 		this.activityID = activityID;
@@ -50,12 +50,12 @@ public class Activity
 		this.activityName = activityName;
 	}
 	
-	public File getActivityFile()
+	public String getActivityFile()
 	{
 		return activityFile;
 	}
 	
-	public void setActivityFile(File activityFile) 
+	public void setActivityFile(String activityFile) 
 	{
 		this.activityFile = activityFile;
 	}

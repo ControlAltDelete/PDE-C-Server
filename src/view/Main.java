@@ -122,7 +122,7 @@ public class Main {
 		JButton uploadActivityBtn = new JButton("");
 		uploadActivityBtn.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
 		uploadActivityBtn.setContentAreaFilled(false);
-		uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT.jpg"));
+		uploadActivityBtn.setIcon(new ImageIcon("resource/assets/uploadACT.jpg"));
 
 		GridBagConstraints gbc_uploadActivityBtn = new GridBagConstraints();
 		gbc_uploadActivityBtn.anchor = GridBagConstraints.WEST;
@@ -133,7 +133,7 @@ public class Main {
 		panelButtons.add(uploadActivityBtn, gbc_uploadActivityBtn);
 		
 		JButton viewStudentLBtn = new JButton();
-		viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList.png"));
+		viewStudentLBtn.setIcon(new ImageIcon("resource/assets/studentList.png"));
 		viewStudentLBtn.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
 		viewStudentLBtn.setContentAreaFilled(false);
 
@@ -145,7 +145,7 @@ public class Main {
 		panelButtons.add(viewStudentLBtn, gbc_viewStudentLBtn);
 		
 		JButton viewSubmissionBtn = new JButton();
-		viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub.png"));
+		viewSubmissionBtn.setIcon(new ImageIcon("resource/assets/sub.png"));
 		viewSubmissionBtn.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
 		viewSubmissionBtn.setContentAreaFilled(false);
 
@@ -159,7 +159,7 @@ public class Main {
 		JButton submitScoresBtn = new JButton();
 		submitScoresBtn.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
 		submitScoresBtn.setContentAreaFilled(false);
-		submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore.png"));
+		submitScoresBtn.setIcon(new ImageIcon("resource/assets/sScore.png"));
 
 		GridBagConstraints gbc_submitScoresBtn = new GridBagConstraints();
 		gbc_submitScoresBtn.insets = new Insets(0, 0, 5, 0);
@@ -171,7 +171,7 @@ public class Main {
 		JButton addStudentButton = new JButton();
 		addStudentButton.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
 		addStudentButton.setContentAreaFilled(false);
-		addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add.png"));
+		addStudentButton.setIcon(new ImageIcon("resource/assets/add.png"));
 
 		GridBagConstraints gbc_addStudentButton = new GridBagConstraints();
 		gbc_addStudentButton.insets = new Insets(0, 0, 5, 0);
@@ -183,18 +183,18 @@ public class Main {
 		JButton testCasesButton = new JButton("");
 		testCasesButton.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
 		testCasesButton.setContentAreaFilled(false);
-		testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test.png"));
+		testCasesButton.setIcon(new ImageIcon("resource/assets/test.png"));
 		
 		
 		/*ACTIONS*/
 		viewStudentLBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT.jpg"));
-				viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList_OC.png"));
-				submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore.png"));
-				viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub.png"));
-				addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add.png"));
-				testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test.png"));
+				uploadActivityBtn.setIcon(new ImageIcon("resource/assets/uploadACT.jpg"));
+				viewStudentLBtn.setIcon(new ImageIcon("resource/assets/studentList_OC.png"));
+				submitScoresBtn.setIcon(new ImageIcon("resource/assets/sScore.png"));
+				viewSubmissionBtn.setIcon(new ImageIcon("resource/assets/sub.png"));
+				addStudentButton.setIcon(new ImageIcon("resource/assets/add.png"));
+				testCasesButton.setIcon(new ImageIcon("resource/assets/test.png"));
 				uploadFilePanel.setVisible(false);
 				studentListPanel.setVisible(true);
 				submissionsPanel.setVisible(false);
@@ -205,12 +205,12 @@ public class Main {
 		
 		viewSubmissionBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT.jpg"));
-				viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList.png"));
-				submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore.png"));
-				viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub_OC.png"));
-				addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add.png"));
-				testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test.png"));
+				uploadActivityBtn.setIcon(new ImageIcon("resource/assets/uploadACT.jpg"));
+				viewStudentLBtn.setIcon(new ImageIcon("resource/assets/studentList.png"));
+				submitScoresBtn.setIcon(new ImageIcon("resource/assets/sScore.png"));
+				viewSubmissionBtn.setIcon(new ImageIcon("resource/assets/sub_OC.png"));
+				addStudentButton.setIcon(new ImageIcon("resource/assets/add.png"));
+				testCasesButton.setIcon(new ImageIcon("resource/assets/test.png"));
 				uploadFilePanel.setVisible(false);
 				submissionsPanel.setVisible(true);
 				submitScoresPanel.setVisible(false);
@@ -221,12 +221,12 @@ public class Main {
 		
 		submitScoresBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT.jpg"));
-				viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList.png"));
-				submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore_OC.png"));
-				viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub.png"));
-				addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add.png"));
-				testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test.png"));
+				uploadActivityBtn.setIcon(new ImageIcon("resource/assets/uploadACT.jpg"));
+				viewStudentLBtn.setIcon(new ImageIcon("resource/assets/studentList.png"));
+				submitScoresBtn.setIcon(new ImageIcon("resource/assets/sScore_OC.png"));
+				viewSubmissionBtn.setIcon(new ImageIcon("resource/assets/sub.png"));
+				addStudentButton.setIcon(new ImageIcon("resource/assets/add.png"));
+				testCasesButton.setIcon(new ImageIcon("resource/assets/test.png"));
 				uploadFilePanel.setVisible(false);
 				submitScoresPanel.setVisible(true);
 				submissionsPanel.setVisible(false);
@@ -237,12 +237,12 @@ public class Main {
 		
 		addStudentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT.jpg"));
-				viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList.png"));
-				submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore.png"));
-				viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub.png"));
-				addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add_OC.png"));
-				testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test.png"));
+				uploadActivityBtn.setIcon(new ImageIcon("resource/assets/uploadACT.jpg"));
+				viewStudentLBtn.setIcon(new ImageIcon("resource/assets/studentList.png"));
+				submitScoresBtn.setIcon(new ImageIcon("resource/assets/sScore.png"));
+				viewSubmissionBtn.setIcon(new ImageIcon("resource/assets/sub.png"));
+				addStudentButton.setIcon(new ImageIcon("resource/assets/add_OC.png"));
+				testCasesButton.setIcon(new ImageIcon("resource/assets/test.png"));
 				uploadFilePanel.setVisible(false);
 				submissionsPanel.setVisible(false);
 				submitScoresPanel.setVisible(false);
@@ -253,12 +253,12 @@ public class Main {
 		
 		testCasesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT.jpg"));
-				viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList.png"));
-				submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore.png"));
-				viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub.png"));
-				addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add.png"));
-				testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test_OC.png"));
+				uploadActivityBtn.setIcon(new ImageIcon("resource/assets/uploadACT.jpg"));
+				viewStudentLBtn.setIcon(new ImageIcon("resource/assets/studentList.png"));
+				submitScoresBtn.setIcon(new ImageIcon("resource/assets/sScore.png"));
+				viewSubmissionBtn.setIcon(new ImageIcon("resource/assets/sub.png"));
+				addStudentButton.setIcon(new ImageIcon("resource/assets/add.png"));
+				testCasesButton.setIcon(new ImageIcon("resource/assets/test_OC.png"));
 				TestCaseBuilder b = new TestCaseBuilder();
 				b.showFrame();
 			}
@@ -266,12 +266,12 @@ public class Main {
 		
 		uploadActivityBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				uploadActivityBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\uploadACT_OC.png"));
-				viewStudentLBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\studentList.png"));
-				submitScoresBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sScore.png"));
-				viewSubmissionBtn.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\sub.png"));
-				addStudentButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\add.png"));
-				testCasesButton.setIcon(new ImageIcon("C:\\Users\\Raymund Pua\\Desktop\\assets\\test.png"));
+				uploadActivityBtn.setIcon(new ImageIcon("resource/assets/uploadACT_OC.png"));
+				viewStudentLBtn.setIcon(new ImageIcon("resource/assets/studentList.png"));
+				submitScoresBtn.setIcon(new ImageIcon("resource/assets/sScore.png"));
+				viewSubmissionBtn.setIcon(new ImageIcon("resource/assets/sub.png"));
+				addStudentButton.setIcon(new ImageIcon("resource/assets/add.png"));
+				testCasesButton.setIcon(new ImageIcon("resource/assets/test.png"));
 				uploadFilePanel.setVisible(true);
 				studentListPanel.setVisible(false);
 				submissionsPanel.setVisible(false);

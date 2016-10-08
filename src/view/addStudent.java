@@ -157,16 +157,7 @@ public class addStudent extends JPanel {
 		JButton btnNewButton = new JButton("Submit");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String sec = txtCSVSection.getText().replaceAll("\\s", "");
-				if(sec.isEmpty() && txtCSVPath.getText().isEmpty())
-				{
-					JOptionPane.showMessageDialog(null, "Fill in the required details to complete this operation.", "Notice", JOptionPane.INFORMATION_MESSAGE);
-				}
-				else if(sec.isEmpty())
-				{
-					JOptionPane.showMessageDialog(null, "No Section Added.", "Error", JOptionPane.ERROR_MESSAGE);
-				}
-				else if(txtCSVPath.getText().isEmpty())
+				if(txtCSVPath.getText().isEmpty())
 				{
 					JOptionPane.showMessageDialog(null, "No CSV to upload.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
@@ -174,7 +165,7 @@ public class addStudent extends JPanel {
 				{
 					try 
 					{
-						ArrayList<Student> studs = loader.readCSV(ext, sec);
+						ArrayList<Student> studs = loader.readCSV(ext);
 						StudentDAO sdao = new StudentDAO();
 						for(int s = 0; s < studs.size(); s++)
 							sdao.addStudent(studs.get(s));

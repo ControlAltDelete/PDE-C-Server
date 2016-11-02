@@ -21,6 +21,8 @@ import javax.swing.JTable;
 import javax.swing.BoxLayout;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
+import java.awt.Color;
+import javax.swing.JScrollPane;
 
 public class CBRCMenu extends JFrame {
 
@@ -70,6 +72,7 @@ public class CBRCMenu extends JFrame {
 		contentPane.add(btnStartNewProblem, gbc_btnStartNewProblem);
 		
 		JPanel pnlDetails = new JPanel();
+		pnlDetails.setBackground(Color.WHITE);
 		GridBagConstraints gbc_pnlDetails = new GridBagConstraints();
 		gbc_pnlDetails.fill = GridBagConstraints.BOTH;
 		gbc_pnlDetails.gridheight = 5;
@@ -79,8 +82,8 @@ public class CBRCMenu extends JFrame {
 		GridBagLayout gbl_pnlDetails = new GridBagLayout();
 		gbl_pnlDetails.columnWidths = new int[]{0, 0, 0, 389, 0};
 		gbl_pnlDetails.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_pnlDetails.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_pnlDetails.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_pnlDetails.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_pnlDetails.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		pnlDetails.setLayout(gbl_pnlDetails);
 		
 		JLabel lblProblemName = new JLabel("Problem Name:");
@@ -152,6 +155,7 @@ public class CBRCMenu extends JFrame {
 				"Test Case #", "Sample Input", "Expected Output"
 			}
 		));
+		/*
 		GridBagConstraints gbc_table = new GridBagConstraints();
 		gbc_table.insets = new Insets(0, 0, 5, 0);
 		gbc_table.gridwidth = 3;
@@ -159,6 +163,17 @@ public class CBRCMenu extends JFrame {
 		gbc_table.gridx = 1;
 		gbc_table.gridy = 8;
 		pnlDetails.add(table, gbc_table);
+		*/
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.gridheight = 2;
+		gbc_scrollPane.gridwidth = 3;
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 1;
+		gbc_scrollPane.gridy = 8;
+		pnlDetails.add(scrollPane, gbc_scrollPane);
 		
 		JButton btnAddNewTest = new JButton("Add New Test Case");
 		GridBagConstraints gbc_btnAddNewTest = new GridBagConstraints();

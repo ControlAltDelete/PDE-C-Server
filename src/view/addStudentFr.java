@@ -7,17 +7,23 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.fileops.FileLoad;
+import database.dao.StudentDAO;
+import database.objects.Student;
+
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 
@@ -39,8 +45,8 @@ public class addStudentFr extends JFrame {
 	private JTextField textField_7;
 	private JTextField textField_8;
 	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;;
+	private JTextField txtCSVPath;
+	private JTextField txtCSVSection;;
 
 	/**
 	 * Launch the application.
@@ -66,7 +72,7 @@ public class addStudentFr extends JFrame {
 		frame = new JFrame();
 		
 		frame.getContentPane().setLayout(null);
-		frame.setBounds(100, 100, 800, 600);
+		frame.setBounds(100, 100, 570, 300);
 		
 		textField_6 = new JTextField();
 		textField_6.setColumns(10);
@@ -109,46 +115,83 @@ public class addStudentFr extends JFrame {
 		frame.getContentPane().add(button);
 		
 		JButton button_1 = new JButton("Submit");
-		button_1.setBounds(426, 176, 117, 23);
+		button_1.setBounds(344, 176, 135, 23);
 		frame.getContentPane().add(button_1);
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					loader.readCSVfr(ext);
-				
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				String sec = txtCSVSection.getText().replaceAll("\\s", "");
+				if(sec.isEmpty() && txtCSVPath.getText().isEmpty())
+				{
+					JOptionPane.showMessageDialog(null, "Fill in the required details to complete this operation.", "Notice", JOptionPane.INFORMATION_MESSAGE);
 				}
+				else if(sec.isEmpty())
+				{
+					JOptionPane.showMessageDialog(null, "No Section Added.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else if(txtCSVPath.getText().isEmpty())
+				{
+					JOptionPane.showMessageDialog(null, "No CSV to upload.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					try 
+					{
+						ArrayList<Student> studs = loader.readCSVfr(ext, sec);   //RAYMUND VERSION
+						StudentDAO sdao = new StudentDAO();
+						for(int s = 0; s < studs.size(); s++)
+							sdao.addStudent(studs.get(s));
+					}
+					catch (IOException ioe) 
+					{
+						ioe.printStackTrace();
+					} 
+					catch (SQLException sqle)
+					{
+						sqle.printStackTrace();
+					}
+				}				
 			}
 		});
 		
-		JButton button_2 = new JButton("Upload .CSV");
-		button_2.setBounds(426, 149, 117, 23);
-		frame.getContentPane().add(button_2);
+		JLabel lblOr = new JLabel("OR");
+		lblOr.setBounds(281, 113, 46, 14);
+		frame.getContentPane().add(lblOr);
+		
+		JButton button_2 = new JButton("Browse Class List");
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				chooseFile();
 			}
 		});
+		button_2.setBounds(344, 147, 135, 23);
+		frame.getContentPane().add(button_2);
 		
-		textField_10 = new JTextField();
-		textField_10.setColumns(10);
-		textField_10.setBounds(426, 118, 117, 20);
-		frame.getContentPane().add(textField_10);
+		txtCSVPath = new JTextField();
+		txtCSVPath.setEditable(false);
+		txtCSVPath.setColumns(10);
+		txtCSVPath.setBounds(344, 116, 135, 20);
+		frame.getContentPane().add(txtCSVPath);
 		
-		JLabel label_4 = new JLabel("Upload class list from MLS");
-		label_4.setBounds(416, 39, 166, 60);
+		JLabel label_4 = new JLabel("Class List File:");
+		label_4.setBounds(344, 91, 135, 14);
 		frame.getContentPane().add(label_4);
 		
 		JLabel label_5 = new JLabel("Section:");
-		label_5.setBounds(408, 90, 46, 14);
+		label_5.setBounds(344, 66, 46, 14);
 		frame.getContentPane().add(label_5);
 		
-		textField_11 = new JTextField();
-		textField_11.setColumns(10);
-		textField_11.setBounds(457, 87, 86, 20);
-		frame.getContentPane().add(textField_11);
+		txtCSVSection = new JTextField();
+		txtCSVSection.setColumns(10);
+		txtCSVSection.setBounds(393, 63, 86, 20);
+		frame.getContentPane().add(txtCSVSection);
+		
+		JLabel lblUploadClassList = new JLabel("UPLOAD CLASS LIST FROM MLS");
+		lblUploadClassList.setBounds(329, 21, 171, 20);
+		frame.getContentPane().add(lblUploadClassList);
+		
+		JLabel lblAddAStudent = new JLabel("ADD A STUDENT MANUALLY");
+		lblAddAStudent.setBounds(62, 21, 171, 20);
+		frame.getContentPane().add(lblAddAStudent);
 
 	}
 	
@@ -162,7 +205,7 @@ public class addStudentFr extends JFrame {
 			Path path = Paths.get(fc.getSelectedFile().getAbsolutePath());
 			filePath = path;
 			ext = path.toString();
-			textField_5.setText(ext);
+			txtCSVPath.setText(ext);
 			
 			/*
 			if (loader.checker(ext))

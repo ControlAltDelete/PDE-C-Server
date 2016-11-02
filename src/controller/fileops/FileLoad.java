@@ -99,26 +99,30 @@ private int[] idNums;
 	    	 String[] elems = nextLine.get(x);
 	    	 for (int j = 0; j < elems.length; j+=2)
 	    	 {
-	    		 Student s = new Student();
-	    		 idnumList.add(Integer.parseInt(elems[0].substring(9, 17)));  //IDNUMBER
-	    		 s.setStudentID(Integer.parseInt(elems[0].substring(9, 17)));
-	    		 lNameList.add(elems[0].substring(26));  //LAST NAME
-	    		 s.setStudentLastName(elems[0].substring(26));
-	    		 fNameList.add(elems[1].substring(1, elems[1].indexOf("  ")));  //FIRST NAME
-	    		 s.setStudentFirstName(elems[1].substring(1, elems[1].indexOf("  ")));
-	    		 s.setStudentSection(section);
-	    		 result.add(s);
+	    		 if(!elems[0].contains("</TABLE>"))
+	    		 {
+	    			 Student s = new Student();
+		    		 idnumList.add(Integer.parseInt(elems[0].substring(9, 17)));  //IDNUMBER
+		    		 s.setStudentID(Integer.parseInt(elems[0].substring(9, 17)));
+		    		 lNameList.add(elems[0].substring(26));  //LAST NAME
+		    		 s.setStudentLastName(elems[0].substring(26));
+		    		 fNameList.add(elems[1].substring(1, elems[1].indexOf("  ")));  //FIRST NAME
+		    		 s.setStudentFirstName(elems[1].substring(1, elems[1].indexOf("  ")));
+		    		 s.setStudentSection(section);
+		    		 result.add(s); 
+	    		 }
 	    	 }
 	     }
 	     return result;
   }
   
-  public void readCSVfr(String csv) throws IOException{
+  public ArrayList<Student> readCSVfr(String csv, String section) throws IOException{
 	     CSVReader reader = new CSVReader(new FileReader(csv));
 	     List<String[]> nextLine;
 	     int x = 0;
 	     System.out.println("Initiated readCSV");
 	     nextLine = reader.readAll();
+	     ArrayList<Student> result = new ArrayList<Student>();
 		 ArrayList<Integer> idnumList = new ArrayList<Integer>();
 		 ArrayList<String> lNameList = new ArrayList<String>();
 		 ArrayList<String> fNameList = new ArrayList<String>();
@@ -126,17 +130,30 @@ private int[] idNums;
 	    	 String[] elems = nextLine.get(x);
 	    	 for (int j = 0; j < elems.length; j+=2)
 	    	 {
-	    		 idnumList.add(Integer.parseInt(elems[0].substring(9, 17)));  //IDNUMBER
-	    		 System.out.println(Integer.parseInt(elems[0].substring(9, 17)));
-	    		 lNameList.add(elems[0].substring(26));  //LAST NAME
-	    		 System.out.println(elems[0].substring(26));
-	    		 fNameList.add(elems[1].substring(1, elems[1].indexOf("  ")));  //FIRST NAME
-	    		 System.out.println(elems[1].substring(1, elems[1].indexOf("  ")));
+	    		 if(!elems[0].contains("</TABLE>"))
+	    		 {
+		    		 idnumList.add(Integer.parseInt(elems[0].substring(9, 17)));  //IDNUMBER
+		    		 System.out.println(Integer.parseInt(elems[0].substring(9, 17)));
+		    		 lNameList.add(elems[0].substring(26));  //LAST NAME
+		    		 System.out.println(elems[0].substring(26));
+		    		 fNameList.add(elems[1].substring(1, elems[1].indexOf("  ")));  //FIRST NAME
+		    		 System.out.println(elems[1].substring(1, elems[1].indexOf("  ")));
+	    		 }
 	    	 }
 	    	 
+	    	 for (int j = 0; j < idnumList.size(); j++)
+	    	 {
+		    	 Student s = new Student();
+		    	 s.setStudentID(idnumList.get(j));
+		    	 s.setStudentFirstName(fNameList.get(j));
+		    	 s.setStudentLastName(lNameList.get(j));
+		    	 s.setStudentSection(section);
+		    	 result.add(s);
+	    	 }
 	    
-	    	 
 	     }
+	     
+	     return result;
 
 }
   

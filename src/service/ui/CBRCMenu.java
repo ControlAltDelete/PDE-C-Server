@@ -20,6 +20,7 @@ import java.awt.FlowLayout;
 import javax.swing.JTable;
 import javax.swing.BoxLayout;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JLabel;
 
 public class CBRCMenu extends JFrame {
 
@@ -75,25 +76,97 @@ public class CBRCMenu extends JFrame {
 		gbc_pnlDetails.gridx = 1;
 		gbc_pnlDetails.gridy = 0;
 		contentPane.add(pnlDetails, gbc_pnlDetails);
+		GridBagLayout gbl_pnlDetails = new GridBagLayout();
+		gbl_pnlDetails.columnWidths = new int[]{0, 0, 0, 389, 0};
+		gbl_pnlDetails.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_pnlDetails.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_pnlDetails.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		pnlDetails.setLayout(gbl_pnlDetails);
+		
+		JLabel lblProblemName = new JLabel("Problem Name:");
+		GridBagConstraints gbc_lblProblemName = new GridBagConstraints();
+		gbc_lblProblemName.anchor = GridBagConstraints.WEST;
+		gbc_lblProblemName.insets = new Insets(0, 0, 5, 5);
+		gbc_lblProblemName.gridx = 1;
+		gbc_lblProblemName.gridy = 1;
+		pnlDetails.add(lblProblemName, gbc_lblProblemName);
+		
+		JLabel lblPname = new JLabel("pName");
+		GridBagConstraints gbc_lblPname = new GridBagConstraints();
+		gbc_lblPname.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblPname.insets = new Insets(0, 0, 5, 0);
+		gbc_lblPname.gridx = 3;
+		gbc_lblPname.gridy = 1;
+		pnlDetails.add(lblPname, gbc_lblPname);
+		
+		JLabel lblProblemDescription = new JLabel("Problem Description:");
+		GridBagConstraints gbc_lblProblemDescription = new GridBagConstraints();
+		gbc_lblProblemDescription.insets = new Insets(0, 0, 5, 5);
+		gbc_lblProblemDescription.anchor = GridBagConstraints.WEST;
+		gbc_lblProblemDescription.gridx = 1;
+		gbc_lblProblemDescription.gridy = 3;
+		pnlDetails.add(lblProblemDescription, gbc_lblProblemDescription);
+		
+		JLabel lblPdesc = new JLabel("pDesc");
+		GridBagConstraints gbc_lblPdesc = new GridBagConstraints();
+		gbc_lblPdesc.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblPdesc.insets = new Insets(0, 0, 5, 0);
+		gbc_lblPdesc.gridx = 3;
+		gbc_lblPdesc.gridy = 3;
+		pnlDetails.add(lblPdesc, gbc_lblPdesc);
+		
+		JLabel lblPathOfFirst = new JLabel("Path of First Solution:");
+		GridBagConstraints gbc_lblPathOfFirst = new GridBagConstraints();
+		gbc_lblPathOfFirst.anchor = GridBagConstraints.WEST;
+		gbc_lblPathOfFirst.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPathOfFirst.gridx = 1;
+		gbc_lblPathOfFirst.gridy = 5;
+		pnlDetails.add(lblPathOfFirst, gbc_lblPathOfFirst);
+		
+		JLabel lblFirstsolnc = new JLabel("firstSoln.c");
+		GridBagConstraints gbc_lblFirstsolnc = new GridBagConstraints();
+		gbc_lblFirstsolnc.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblFirstsolnc.insets = new Insets(0, 0, 5, 0);
+		gbc_lblFirstsolnc.gridx = 3;
+		gbc_lblFirstsolnc.gridy = 5;
+		pnlDetails.add(lblFirstsolnc, gbc_lblFirstsolnc);
+		
+		JLabel lblTestCases = new JLabel("Test Cases:");
+		GridBagConstraints gbc_lblTestCases = new GridBagConstraints();
+		gbc_lblTestCases.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTestCases.anchor = GridBagConstraints.WEST;
+		gbc_lblTestCases.gridx = 1;
+		gbc_lblTestCases.gridy = 7;
+		pnlDetails.add(lblTestCases, gbc_lblTestCases);
 		
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
 			},
 			new String[] {
-				"Problem Title", "Problem Description", "Test Cases Input", "Test Cases Output", "First Solution File"
+				"Test Case #", "Sample Input", "Expected Output"
 			}
 		));
-		table.getColumnModel().getColumn(0).setPreferredWidth(200);
-		table.getColumnModel().getColumn(0).setMinWidth(150);
-		table.getColumnModel().getColumn(1).setPreferredWidth(320);
-		table.getColumnModel().getColumn(1).setMinWidth(240);
-		table.getColumnModel().getColumn(2).setPreferredWidth(158);
-		table.getColumnModel().getColumn(3).setPreferredWidth(154);
-		table.getColumnModel().getColumn(4).setPreferredWidth(103);
-		pnlDetails.setLayout(new BorderLayout(0, 0));
-		pnlDetails.add(table);
+		GridBagConstraints gbc_table = new GridBagConstraints();
+		gbc_table.insets = new Insets(0, 0, 5, 0);
+		gbc_table.gridwidth = 3;
+		gbc_table.fill = GridBagConstraints.BOTH;
+		gbc_table.gridx = 1;
+		gbc_table.gridy = 8;
+		pnlDetails.add(table, gbc_table);
+		
+		JButton btnAddNewTest = new JButton("Add New Test Case");
+		GridBagConstraints gbc_btnAddNewTest = new GridBagConstraints();
+		gbc_btnAddNewTest.anchor = GridBagConstraints.EAST;
+		gbc_btnAddNewTest.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAddNewTest.gridx = 3;
+		gbc_btnAddNewTest.gridy = 10;
+		pnlDetails.add(btnAddNewTest, gbc_btnAddNewTest);
 		
 		JSeparator separator = new JSeparator();
 		GridBagConstraints gbc_separator = new GridBagConstraints();

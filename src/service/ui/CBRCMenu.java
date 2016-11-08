@@ -9,6 +9,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import com.jgoodies.forms.layout.FormLayout;
+import com.cbrc.ast.utils.StudentListRecoveryUtility;
+import com.cbrc.db.utils.DerbyUtils;
+import com.cbrc.gdt.builder.CASTGDTStudentTracker;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
@@ -25,10 +28,13 @@ import javax.swing.JTable;
 import javax.swing.BoxLayout;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
@@ -41,7 +47,9 @@ public class CBRCMenu extends JFrame {
 	private JLabel lblPdesc;
 	private JLabel lblFirstsolnc;
 	private DefaultTableModel testcases;
+	private CASTGDTStudentTracker students;
 	private CBRCProblem prob;
+	private int newGoalKey = 0;
 	private static CBRCMenu menu = null;
 	
 	/**
@@ -131,6 +139,18 @@ public class CBRCMenu extends JFrame {
 
 	private void initialize()
 	{
+		// CBR-C
+		newGoalKey = 0;
+		students = new CASTGDTStudentTracker();
+		try
+		{
+			newGoalKey = DerbyUtils.addNewGoal(prob.getProblemName(), prob.getProblemDesc());
+		}
+		catch(SQLException sqle)
+		{
+			
+		}
+		// END CBR-C
 		setTitle("CBR-C");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 960, 456);
@@ -281,6 +301,11 @@ public class CBRCMenu extends JFrame {
 		contentPane.add(separator, gbc_separator);
 		
 		JButton btnStartSession = new JButton("Start Session");
+		btnStartSession.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnAddNewTest.setEnabled(false);
+			}
+		});
 		GridBagConstraints gbc_btnStartSession = new GridBagConstraints();
 		gbc_btnStartSession.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnStartSession.insets = new Insets(0, 0, 5, 5);
@@ -289,6 +314,39 @@ public class CBRCMenu extends JFrame {
 		contentPane.add(btnStartSession, gbc_btnStartSession);
 		
 		JButton btnRegStudent = new JButton("Register Student ID");
+		btnRegStudent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String sid = (String)JOptionPane.showInputDialog(null, "Input Student ID", "");
+				if(sid == null) { /* do nothing */ }
+				else if(sid.trim().isEmpty())
+				{
+					JOptionPane.showMessageDialog(null, "Nothing entered.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					String sName = (String)JOptionPane.showInputDialog(null, "Input Student Name", "");
+					if(sName == null) { /* do nothing */ }
+					else if(sName.trim().isEmpty())
+					{
+						JOptionPane.showMessageDialog(null, "Nothing entered.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						Integer studID = 0;
+						try
+						{
+							studID = Integer.parseInt(sid);
+						}
+						catch (NumberFormatException nfe)
+						{
+					        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+						// Driver.registerNewStudent(br, students, builder.getSuperGoal().getDBID(), sid, sName);
+						JOptionPane.showMessageDialog(null, "Student Information submitted to Database.", "Success", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+			}
+		});
 		GridBagConstraints gbc_btnRegStudent = new GridBagConstraints();
 		gbc_btnRegStudent.anchor = GridBagConstraints.NORTH;
 		gbc_btnRegStudent.fill = GridBagConstraints.HORIZONTAL;
@@ -298,6 +356,35 @@ public class CBRCMenu extends JFrame {
 		contentPane.add(btnRegStudent, gbc_btnRegStudent);
 		
 		JButton btnRecStudent = new JButton("Recover Student List");
+		btnRecStudent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String gid = (String)JOptionPane.showInputDialog(null, "Input Goal ID", "");
+				if(gid == null) { /* do nothing */ }
+				else if(gid.trim().isEmpty())
+				{
+					JOptionPane.showMessageDialog(null, "Nothing entered.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					Integer goalID = 0;
+					try
+					{
+						goalID = Integer.parseInt(gid);
+						StudentListRecoveryUtility slru =  new StudentListRecoveryUtility();
+						students = slru.recoverStudents(goalID, newGoalKey);
+						JOptionPane.showMessageDialog(null, "Successfully Recovered Students", "Success", JOptionPane.INFORMATION_MESSAGE);
+					}
+					catch (NumberFormatException nfe)
+					{
+				        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					catch (SQLException sqle)
+					{
+						sqle.printStackTrace();
+					}
+				}
+			}
+		});
 		GridBagConstraints gbc_btnRecStudent = new GridBagConstraints();
 		gbc_btnRecStudent.anchor = GridBagConstraints.NORTH;
 		gbc_btnRecStudent.fill = GridBagConstraints.HORIZONTAL;
@@ -307,7 +394,11 @@ public class CBRCMenu extends JFrame {
 		contentPane.add(btnRecStudent, gbc_btnRecStudent);
 		
 		JButton btnPrintGDT = new JButton("Print GDT");
-		btnPrintGDT.setEnabled(false);
+		btnPrintGDT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
 		GridBagConstraints gbc_btnPrintGDT = new GridBagConstraints();
 		gbc_btnPrintGDT.anchor = GridBagConstraints.NORTH;
 		gbc_btnPrintGDT.fill = GridBagConstraints.HORIZONTAL;

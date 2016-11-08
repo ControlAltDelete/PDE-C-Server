@@ -89,10 +89,6 @@ public class CBRCInitalProblem extends JFrame {
 		txtProblemDesc.setBounds(144, 59, 240, 20);
 		contentPane.add(txtProblemDesc);
 		
-		JCheckBox chckbxRecoverStudentList = new JCheckBox("Recover Student List");
-		chckbxRecoverStudentList.setBounds(6, 83, 200, 23);
-		contentPane.add(chckbxRecoverStudentList);
-		
 		JLabel lblFirstSolutionFile = new JLabel("First Solution File:");
 		lblFirstSolutionFile.setBounds(6, 113, 128, 14);
 		contentPane.add(lblFirstSolutionFile);

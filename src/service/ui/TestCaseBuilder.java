@@ -1,4 +1,4 @@
-package view;
+package service.ui;
 
 import java.awt.EventQueue;
 
@@ -8,8 +8,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import controller.cbrc.CBRCEvent;
+import service.cbrc.model.CBRCProblem;
 import service.cbrc.model.TestCase;
-import service.ui.CBRCMenu;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -105,36 +105,10 @@ public class TestCaseBuilder {
 			public void actionPerformed(ActionEvent e) {
 				CBRCMenu c = CBRCMenu.getInstance();
 				TestCase tc = new TestCase(Paths.get(tciFileTextField.getText()), Paths.get(tcoFileTextField.getText()));
-				String tciContent = "";
-				try
-				{
-					Scanner sc = new Scanner(tc.getTci().toFile());
-					StringBuilder sb = new StringBuilder();
-					while(sc.hasNextLine())
-						sb.append(sc.nextLine());
-					tciContent = sb.toString();
-				}
-				catch(FileNotFoundException fnfe)
-				{
-					fnfe.printStackTrace();
-				}
-				
-				String tcoContent = "";
-				try
-				{
-					Scanner sc = new Scanner(tc.getTco().toFile());
-					StringBuilder sb = new StringBuilder();
-					while(sc.hasNextLine())
-						sb.append(sc.nextLine());
-					tcoContent = sb.toString();
-				}
-				catch(FileNotFoundException fnfe)
-				{
-					fnfe.printStackTrace();
-				}
-				DefaultTableModel dtm = c.getTestcases();
-				dtm.addRow(new Object[]{c.getTestcases().getRowCount(), tciContent, tcoContent});
-				c.setTestcases(dtm);
+				CBRCProblem prob = c.getProb();
+				prob.getTc().add(tc);
+				c.setProb(prob);
+				frmTestCaseUploader.setVisible(false);
 			}
 		});
 		btnUpload.setBounds(420, 76, 88, 23);

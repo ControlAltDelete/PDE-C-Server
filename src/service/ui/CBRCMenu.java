@@ -15,7 +15,6 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import service.cbrc.model.CBRCProblem;
 import service.cbrc.model.TestCase;
-import view.TestCaseBuilder;
 
 import javax.swing.JSeparator;
 import java.awt.GridBagLayout;
@@ -78,9 +77,11 @@ public class CBRCMenu extends JFrame {
 		lblPdesc.setText(prob.getProblemDesc());
 		lblFirstsolnc.setText(prob.getFirstSolution().toString());
 		ArrayList<TestCase> tc = prob.getTc();
-		for(int i = 0; i < tc.size(); i++)
+		String tciContent = "";
+		String tcoContent = "";
+		int i;
+		for(i = 0; i < tc.size(); i++)
 		{
-			String tciContent = "";
 			try
 			{
 				Scanner sc = new Scanner(tc.get(i).getTci().toFile());
@@ -88,13 +89,13 @@ public class CBRCMenu extends JFrame {
 				while(sc.hasNextLine())
 					sb.append(sc.nextLine());
 				tciContent = sb.toString();
+				sc.close();
 			}
 			catch(FileNotFoundException fnfe)
 			{
 				fnfe.printStackTrace();
 			}
 			
-			String tcoContent = "";
 			try
 			{
 				Scanner sc = new Scanner(tc.get(i).getTco().toFile());
@@ -102,13 +103,14 @@ public class CBRCMenu extends JFrame {
 				while(sc.hasNextLine())
 					sb.append(sc.nextLine());
 				tcoContent = sb.toString();
+				sc.close();
 			}
 			catch(FileNotFoundException fnfe)
 			{
 				fnfe.printStackTrace();
 			}
-			testcases.addRow(new Object[]{Integer.toString(i + 1), tciContent, tcoContent});
 		}
+		testcases.addRow(new Object[]{Integer.toString(i), tciContent, tcoContent});
 		table.setModel(testcases);
 	}
 
@@ -137,9 +139,9 @@ public class CBRCMenu extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{162, 771, 0};
-		gbl_contentPane.rowHeights = new int[]{23, 2, 23, 23, 312, 0};
+		gbl_contentPane.rowHeights = new int[]{23, 2, 0, 23, 23, 312, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JButton btnStartNewProblem = new JButton("Start New Problem");
@@ -160,7 +162,7 @@ public class CBRCMenu extends JFrame {
 		pnlDetails.setBackground(Color.WHITE);
 		GridBagConstraints gbc_pnlDetails = new GridBagConstraints();
 		gbc_pnlDetails.fill = GridBagConstraints.BOTH;
-		gbc_pnlDetails.gridheight = 5;
+		gbc_pnlDetails.gridheight = 6;
 		gbc_pnlDetails.gridx = 1;
 		gbc_pnlDetails.gridy = 0;
 		contentPane.add(pnlDetails, gbc_pnlDetails);
@@ -278,13 +280,21 @@ public class CBRCMenu extends JFrame {
 		gbc_separator.gridy = 1;
 		contentPane.add(separator, gbc_separator);
 		
+		JButton btnStartSession = new JButton("Start Session");
+		GridBagConstraints gbc_btnStartSession = new GridBagConstraints();
+		gbc_btnStartSession.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnStartSession.insets = new Insets(0, 0, 5, 5);
+		gbc_btnStartSession.gridx = 0;
+		gbc_btnStartSession.gridy = 2;
+		contentPane.add(btnStartSession, gbc_btnStartSession);
+		
 		JButton btnRegStudent = new JButton("Register Student ID");
 		GridBagConstraints gbc_btnRegStudent = new GridBagConstraints();
 		gbc_btnRegStudent.anchor = GridBagConstraints.NORTH;
 		gbc_btnRegStudent.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnRegStudent.insets = new Insets(0, 0, 5, 5);
 		gbc_btnRegStudent.gridx = 0;
-		gbc_btnRegStudent.gridy = 2;
+		gbc_btnRegStudent.gridy = 3;
 		contentPane.add(btnRegStudent, gbc_btnRegStudent);
 		
 		JButton btnRecStudent = new JButton("Recover Student List");
@@ -293,16 +303,17 @@ public class CBRCMenu extends JFrame {
 		gbc_btnRecStudent.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnRecStudent.insets = new Insets(0, 0, 5, 5);
 		gbc_btnRecStudent.gridx = 0;
-		gbc_btnRecStudent.gridy = 3;
+		gbc_btnRecStudent.gridy = 4;
 		contentPane.add(btnRecStudent, gbc_btnRecStudent);
 		
 		JButton btnPrintGDT = new JButton("Print GDT");
+		btnPrintGDT.setEnabled(false);
 		GridBagConstraints gbc_btnPrintGDT = new GridBagConstraints();
 		gbc_btnPrintGDT.anchor = GridBagConstraints.NORTH;
 		gbc_btnPrintGDT.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnPrintGDT.insets = new Insets(0, 0, 0, 5);
 		gbc_btnPrintGDT.gridx = 0;
-		gbc_btnPrintGDT.gridy = 4;
+		gbc_btnPrintGDT.gridy = 5;
 		contentPane.add(btnPrintGDT, gbc_btnPrintGDT);
 		
 		setVisible(true);

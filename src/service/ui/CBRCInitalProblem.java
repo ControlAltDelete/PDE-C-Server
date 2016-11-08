@@ -1,6 +1,5 @@
 package service.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 
@@ -15,7 +14,6 @@ import service.cbrc.model.TestCase;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
@@ -23,7 +21,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -290,6 +287,7 @@ public class CBRCInitalProblem extends JFrame {
 		});
 		btnSubmit.setBounds(295, 7, 89, 23);
 		contentPane.add(btnSubmit);
+		chckbxDebugMode.setVisible(false);
 		if(!isVisible())
 			setVisible(true);
 	}

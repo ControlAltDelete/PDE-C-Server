@@ -14,6 +14,8 @@ import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
 import service.cbrc.model.CBRCProblem;
+import service.cbrc.model.TestCase;
+import view.TestCaseBuilder;
 
 import javax.swing.JSeparator;
 import java.awt.GridBagLayout;
@@ -27,6 +29,9 @@ import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.awt.event.ActionEvent;
 
 public class CBRCMenu extends JFrame {
@@ -36,6 +41,7 @@ public class CBRCMenu extends JFrame {
 	private JLabel lblPname;
 	private JLabel lblPdesc;
 	private JLabel lblFirstsolnc;
+	private DefaultTableModel testcases;
 	private CBRCProblem prob;
 	private static CBRCMenu menu = null;
 	
@@ -56,7 +62,6 @@ public class CBRCMenu extends JFrame {
 		return menu;
 	}
 	
-	
 	/**
 	 * @return the prob
 	 */
@@ -72,6 +77,54 @@ public class CBRCMenu extends JFrame {
 		lblPname.setText(prob.getProblemName());
 		lblPdesc.setText(prob.getProblemDesc());
 		lblFirstsolnc.setText(prob.getFirstSolution().toString());
+		ArrayList<TestCase> tc = prob.getTc();
+		for(int i = 0; i < tc.size(); i++)
+		{
+			String tciContent = "";
+			try
+			{
+				Scanner sc = new Scanner(tc.get(i).getTci().toFile());
+				StringBuilder sb = new StringBuilder();
+				while(sc.hasNextLine())
+					sb.append(sc.nextLine());
+				tciContent = sb.toString();
+			}
+			catch(FileNotFoundException fnfe)
+			{
+				fnfe.printStackTrace();
+			}
+			
+			String tcoContent = "";
+			try
+			{
+				Scanner sc = new Scanner(tc.get(i).getTco().toFile());
+				StringBuilder sb = new StringBuilder();
+				while(sc.hasNextLine())
+					sb.append(sc.nextLine());
+				tcoContent = sb.toString();
+			}
+			catch(FileNotFoundException fnfe)
+			{
+				fnfe.printStackTrace();
+			}
+			testcases.addRow(new Object[]{Integer.toString(i + 1), tciContent, tcoContent});
+		}
+		table.setModel(testcases);
+	}
+
+	/**
+	 * @return the testcases
+	 */
+	public DefaultTableModel getTestcases() {
+		return testcases;
+	}
+
+	/**
+	 * @param testcases the testcases to set
+	 */
+	public void setTestcases(DefaultTableModel testcases) {
+		this.testcases = testcases;
+		table.setModel(testcases);
 	}
 
 	private void initialize()
@@ -174,18 +227,14 @@ public class CBRCMenu extends JFrame {
 		gbc_lblTestCases.gridy = 7;
 		pnlDetails.add(lblTestCases, gbc_lblTestCases);
 		
+		testcases = new DefaultTableModel(new Object[][] {},
+		new String[] {
+			"Test Case #", "Sample Input", "Expected Output"
+		});
+		
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-			},
-			new String[] {
-				"Test Case #", "Sample Input", "Expected Output"
-			}
+			
 		));
 		/*
 		GridBagConstraints gbc_table = new GridBagConstraints();
@@ -208,6 +257,11 @@ public class CBRCMenu extends JFrame {
 		pnlDetails.add(scrollPane, gbc_scrollPane);
 		
 		JButton btnAddNewTest = new JButton("Add New Test Case");
+		btnAddNewTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new TestCaseBuilder().showFrame();
+			}
+		});
 		GridBagConstraints gbc_btnAddNewTest = new GridBagConstraints();
 		gbc_btnAddNewTest.anchor = GridBagConstraints.EAST;
 		gbc_btnAddNewTest.insets = new Insets(0, 0, 5, 0);

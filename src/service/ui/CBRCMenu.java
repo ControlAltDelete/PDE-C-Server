@@ -12,6 +12,9 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
+
+import service.cbrc.model.CBRCProblem;
+
 import javax.swing.JSeparator;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -23,34 +26,58 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class CBRCMenu extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CBRCMenu frame = new CBRCMenu();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	private JLabel lblPname;
+	private JLabel lblPdesc;
+	private JLabel lblFirstsolnc;
+	private CBRCProblem prob;
+	private static CBRCMenu menu = null;
+	
 	/**
 	 * Create the frame.
 	 */
-	public CBRCMenu() {
+	private CBRCMenu() 
+	{
+		initialize();
+	}
+	
+	public static CBRCMenu getInstance()
+	{
+		if(menu == null)
+		{
+			menu = new CBRCMenu();
+		}
+		return menu;
+	}
+	
+	
+	/**
+	 * @return the prob
+	 */
+	public CBRCProblem getProb() {
+		return prob;
+	}
+
+	/**
+	 * @param prob the prob to set
+	 */
+	public void setProb(CBRCProblem prob) {
+		this.prob = prob;
+		lblPname.setText(prob.getProblemName());
+		lblPdesc.setText(prob.getProblemDesc());
+		lblFirstsolnc.setText(prob.getFirstSolution().toString());
+	}
+
+	private void initialize()
+	{
 		setTitle("CBR-C");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 960, 456);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -63,6 +90,11 @@ public class CBRCMenu extends JFrame {
 		contentPane.setLayout(gbl_contentPane);
 		
 		JButton btnStartNewProblem = new JButton("Start New Problem");
+		btnStartNewProblem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new CBRCInitalProblem();
+			}
+		});
 		GridBagConstraints gbc_btnStartNewProblem = new GridBagConstraints();
 		gbc_btnStartNewProblem.anchor = GridBagConstraints.NORTH;
 		gbc_btnStartNewProblem.fill = GridBagConstraints.HORIZONTAL;
@@ -94,7 +126,7 @@ public class CBRCMenu extends JFrame {
 		gbc_lblProblemName.gridy = 1;
 		pnlDetails.add(lblProblemName, gbc_lblProblemName);
 		
-		JLabel lblPname = new JLabel("pName");
+		lblPname = new JLabel("");
 		GridBagConstraints gbc_lblPname = new GridBagConstraints();
 		gbc_lblPname.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblPname.insets = new Insets(0, 0, 5, 0);
@@ -110,7 +142,7 @@ public class CBRCMenu extends JFrame {
 		gbc_lblProblemDescription.gridy = 3;
 		pnlDetails.add(lblProblemDescription, gbc_lblProblemDescription);
 		
-		JLabel lblPdesc = new JLabel("pDesc");
+		lblPdesc = new JLabel("");
 		GridBagConstraints gbc_lblPdesc = new GridBagConstraints();
 		gbc_lblPdesc.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblPdesc.insets = new Insets(0, 0, 5, 0);
@@ -126,7 +158,7 @@ public class CBRCMenu extends JFrame {
 		gbc_lblPathOfFirst.gridy = 5;
 		pnlDetails.add(lblPathOfFirst, gbc_lblPathOfFirst);
 		
-		JLabel lblFirstsolnc = new JLabel("firstSoln.c");
+		lblFirstsolnc = new JLabel("");
 		GridBagConstraints gbc_lblFirstsolnc = new GridBagConstraints();
 		gbc_lblFirstsolnc.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblFirstsolnc.insets = new Insets(0, 0, 5, 0);
@@ -192,32 +224,34 @@ public class CBRCMenu extends JFrame {
 		gbc_separator.gridy = 1;
 		contentPane.add(separator, gbc_separator);
 		
-		JButton button = new JButton("Register Student ID");
-		GridBagConstraints gbc_button = new GridBagConstraints();
-		gbc_button.anchor = GridBagConstraints.NORTH;
-		gbc_button.fill = GridBagConstraints.HORIZONTAL;
-		gbc_button.insets = new Insets(0, 0, 5, 5);
-		gbc_button.gridx = 0;
-		gbc_button.gridy = 2;
-		contentPane.add(button, gbc_button);
+		JButton btnRegStudent = new JButton("Register Student ID");
+		GridBagConstraints gbc_btnRegStudent = new GridBagConstraints();
+		gbc_btnRegStudent.anchor = GridBagConstraints.NORTH;
+		gbc_btnRegStudent.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnRegStudent.insets = new Insets(0, 0, 5, 5);
+		gbc_btnRegStudent.gridx = 0;
+		gbc_btnRegStudent.gridy = 2;
+		contentPane.add(btnRegStudent, gbc_btnRegStudent);
 		
-		JButton button_1 = new JButton("Recover Student List");
-		GridBagConstraints gbc_button_1 = new GridBagConstraints();
-		gbc_button_1.anchor = GridBagConstraints.NORTH;
-		gbc_button_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_button_1.insets = new Insets(0, 0, 5, 5);
-		gbc_button_1.gridx = 0;
-		gbc_button_1.gridy = 3;
-		contentPane.add(button_1, gbc_button_1);
+		JButton btnRecStudent = new JButton("Recover Student List");
+		GridBagConstraints gbc_btnRecStudent = new GridBagConstraints();
+		gbc_btnRecStudent.anchor = GridBagConstraints.NORTH;
+		gbc_btnRecStudent.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnRecStudent.insets = new Insets(0, 0, 5, 5);
+		gbc_btnRecStudent.gridx = 0;
+		gbc_btnRecStudent.gridy = 3;
+		contentPane.add(btnRecStudent, gbc_btnRecStudent);
 		
-		JButton button_2 = new JButton("Print GDT");
-		GridBagConstraints gbc_button_2 = new GridBagConstraints();
-		gbc_button_2.anchor = GridBagConstraints.NORTH;
-		gbc_button_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_button_2.insets = new Insets(0, 0, 0, 5);
-		gbc_button_2.gridx = 0;
-		gbc_button_2.gridy = 4;
-		contentPane.add(button_2, gbc_button_2);
+		JButton btnPrintGDT = new JButton("Print GDT");
+		GridBagConstraints gbc_btnPrintGDT = new GridBagConstraints();
+		gbc_btnPrintGDT.anchor = GridBagConstraints.NORTH;
+		gbc_btnPrintGDT.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnPrintGDT.insets = new Insets(0, 0, 0, 5);
+		gbc_btnPrintGDT.gridx = 0;
+		gbc_btnPrintGDT.gridy = 4;
+		contentPane.add(btnPrintGDT, gbc_btnPrintGDT);
+		
+		setVisible(true);
 	}
 
 }

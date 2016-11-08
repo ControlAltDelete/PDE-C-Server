@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import java.awt.GridLayout;
 import javax.swing.JTextField;
 
-import objects.TestCase;
+import service.cbrc.model.TestCase;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -106,7 +106,7 @@ public class TestCaseBuilder {
 		JButton btnUpload = new JButton("Upload");
 		btnUpload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TestCase tc = new TestCase(new File(tciFileTextField.getText()), new File(tcoFileTextField.getText()));
+				TestCase tc = new TestCase(Paths.get(tciFileTextField.getText()), Paths.get(tcoFileTextField.getText()));
 			}
 		});
 		btnUpload.setBounds(420, 76, 88, 23);

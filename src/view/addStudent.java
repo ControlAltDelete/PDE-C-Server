@@ -112,7 +112,7 @@ public class addStudent extends JPanel {
 					}
 					catch (SQLException sqle)
 					{
-						JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);
+						// JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}

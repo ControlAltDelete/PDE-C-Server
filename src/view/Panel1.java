@@ -61,7 +61,7 @@ public class Panel1 extends JPanel {
         }
         catch (SQLException sqle)
         {
-			JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);
+			// JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);
         	data = new Object[1][4];
         }
         catch (Exception e)

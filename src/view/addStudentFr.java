@@ -157,14 +157,14 @@ public class addStudentFr extends JFrame {
 		lblOr.setBounds(281, 113, 46, 14);
 		frame.getContentPane().add(lblOr);
 		
-		JButton button_2 = new JButton("Browse Class List");
-		button_2.addActionListener(new ActionListener() {
+		JButton btnBrowse = new JButton("Browse");
+		btnBrowse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				chooseFile();
 			}
 		});
-		button_2.setBounds(344, 147, 135, 23);
-		frame.getContentPane().add(button_2);
+		btnBrowse.setBounds(344, 147, 135, 23);
+		frame.getContentPane().add(btnBrowse);
 		
 		txtCSVPath = new JTextField();
 		txtCSVPath.setEditable(false);
@@ -185,8 +185,8 @@ public class addStudentFr extends JFrame {
 		txtCSVSection.setBounds(393, 63, 86, 20);
 		frame.getContentPane().add(txtCSVSection);
 		
-		JLabel lblUploadClassList = new JLabel("UPLOAD CLASS LIST FROM MLS");
-		lblUploadClassList.setBounds(329, 21, 171, 20);
+		JLabel lblUploadClassList = new JLabel("UPLOAD CLASS LIST");
+		lblUploadClassList.setBounds(348, 21, 171, 20);
 		frame.getContentPane().add(lblUploadClassList);
 		
 		JLabel lblAddAStudent = new JLabel("ADD A STUDENT MANUALLY");

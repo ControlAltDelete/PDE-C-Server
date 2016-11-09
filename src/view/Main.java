@@ -160,6 +160,7 @@ public class Main {
 		submitScoresBtn.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
 		submitScoresBtn.setContentAreaFilled(false);
 		submitScoresBtn.setIcon(new ImageIcon("resource/assets/sScore.png"));
+		submitScoresBtn.setVisible(false);
 
 		GridBagConstraints gbc_submitScoresBtn = new GridBagConstraints();
 		gbc_submitScoresBtn.insets = new Insets(0, 0, 5, 0);
@@ -172,6 +173,7 @@ public class Main {
 		addStudentButton.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
 		addStudentButton.setContentAreaFilled(false);
 		addStudentButton.setIcon(new ImageIcon("resource/assets/add.png"));
+		addStudentButton.setVisible(false);
 
 		GridBagConstraints gbc_addStudentButton = new GridBagConstraints();
 		gbc_addStudentButton.insets = new Insets(0, 0, 5, 0);
@@ -184,6 +186,7 @@ public class Main {
 		testCasesButton.setBorder(BorderFactory.createEmptyBorder());  //for design purposes
 		testCasesButton.setContentAreaFilled(false);
 		testCasesButton.setIcon(new ImageIcon("resource/assets/test.png"));
+		testCasesButton.setVisible(false);
 		
 		
 		/*ACTIONS*/

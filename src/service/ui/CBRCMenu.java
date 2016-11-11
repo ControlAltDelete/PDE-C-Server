@@ -46,6 +46,7 @@ public class CBRCMenu extends JFrame {
 	private JLabel lblPname;
 	private JLabel lblPdesc;
 	private JLabel lblFirstsolnc;
+	private JButton btnAddNewTest;
 	private DefaultTableModel testcases;
 	private CASTGDTStudentTracker students;
 	private CBRCProblem prob;
@@ -136,6 +137,13 @@ public class CBRCMenu extends JFrame {
 		this.testcases = testcases;
 		table.setModel(testcases);
 	}
+	
+	public void resetMe(){
+		// cbr-c initialisation methods
+		
+		// ui controls
+		btnAddNewTest.setEnabled(true);
+	}
 
 	private void initialize()
 	{
@@ -154,7 +162,7 @@ public class CBRCMenu extends JFrame {
 		*/
 		// END CBR-C
 		setTitle("CBR-C");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 960, 456);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -280,7 +288,7 @@ public class CBRCMenu extends JFrame {
 		gbc_scrollPane.gridy = 8;
 		pnlDetails.add(scrollPane, gbc_scrollPane);
 		
-		JButton btnAddNewTest = new JButton("Add New Test Case");
+		btnAddNewTest = new JButton("Add New Test Case");
 		btnAddNewTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new TestCaseBuilder().showFrame();

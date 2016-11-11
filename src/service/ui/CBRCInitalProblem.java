@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
@@ -53,6 +54,14 @@ public class CBRCInitalProblem extends JFrame {
 	 * Create the frame.
 	 */
 	public CBRCInitalProblem() {
+		try
+		{
+		  UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception e)
+		{
+			
+		}
 		CBRCEvent ev = new CBRCEvent();
 		Color clrError = new Color(255, 0, 0);
 		Color clrOk = new Color(255, 255, 255);
@@ -283,6 +292,7 @@ public class CBRCInitalProblem extends JFrame {
 					});
 					c.setTestcases(testcases);
 					c.setProb(prob);
+					c.resetMe();
 					setVisible(false);
 				}
 			}

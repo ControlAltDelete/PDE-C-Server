@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import controller.cbrc.CBRCEvent;
 import service.cbrc.model.CBRCProblem;
@@ -276,6 +277,11 @@ public class CBRCInitalProblem extends JFrame {
 					}
 					CBRCProblem prob = new CBRCProblem(txtProblemName.getText(), txtProblemDesc.getText(), Paths.get(txtFirstSolutionFile.getText()), tc);
 					CBRCMenu c = CBRCMenu.getInstance();
+					DefaultTableModel testcases = new DefaultTableModel(new Object[][] {},
+					new String[] {
+						"Test Case #", "Sample Input", "Expected Output"
+					});
+					c.setTestcases(testcases);
 					c.setProb(prob);
 					setVisible(false);
 				}

@@ -140,6 +140,7 @@ public class CBRCMenu extends JFrame {
 	private void initialize()
 	{
 		// CBR-C
+		/*
 		newGoalKey = 0;
 		students = new CASTGDTStudentTracker();
 		try
@@ -150,6 +151,7 @@ public class CBRCMenu extends JFrame {
 		{
 			
 		}
+		*/
 		// END CBR-C
 		setTitle("CBR-C");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -341,7 +343,7 @@ public class CBRCMenu extends JFrame {
 						{
 					        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
 						}
-						// Driver.registerNewStudent(br, students, builder.getSuperGoal().getDBID(), sid, sName);
+//						Driver.registerNewStudent(br, students, builder.getSuperGoal().getDBID(), sid, sName);
 						JOptionPane.showMessageDialog(null, "Student Information submitted to Database.", "Success", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
@@ -370,18 +372,18 @@ public class CBRCMenu extends JFrame {
 					try
 					{
 						goalID = Integer.parseInt(gid);
-						StudentListRecoveryUtility slru =  new StudentListRecoveryUtility();
-						students = slru.recoverStudents(goalID, newGoalKey);
+//						StudentListRecoveryUtility slru =  new StudentListRecoveryUtility();
+//						students = slru.recoverStudents(goalID, newGoalKey);
 						JOptionPane.showMessageDialog(null, "Successfully Recovered Students", "Success", JOptionPane.INFORMATION_MESSAGE);
 					}
 					catch (NumberFormatException nfe)
 					{
 				        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
 					}
-					catch (SQLException sqle)
-					{
-						sqle.printStackTrace();
-					}
+//					catch (SQLException sqle)
+//					{
+//						sqle.printStackTrace();
+//					}
 				}
 			}
 		});

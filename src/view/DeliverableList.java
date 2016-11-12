@@ -22,15 +22,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class Panel2 extends JPanel {
+public class DeliverableList extends JPanel {
 	private JTable table;
 
 	/**
 	 * Create the panel.
 	 */
-	public Panel2() {
+	public DeliverableList() {
         super(new GridLayout(1,0));
-        
         String[] columnNames = {"Activity No.",
                                 "ID Number",
                                 "Last Name",

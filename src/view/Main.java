@@ -82,13 +82,13 @@ public class Main {
 		
 		
 		/*Panel1*/
-		Panel1 studentListPanel;
-		studentListPanel = new Panel1();
+		StudentList studentListPanel;
+		studentListPanel = new StudentList();
 		dynamicMainPanel.add(studentListPanel, "name_420733528968378");
 		
 		/*Panel2*/
-		Panel2 submissionsPanel;
-		submissionsPanel = new Panel2();
+		DeliverableList submissionsPanel;
+		submissionsPanel = new DeliverableList();
 		dynamicMainPanel.add(submissionsPanel, "name_420733536558155");
 		
 		/*Panel3*/

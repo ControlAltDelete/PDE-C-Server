@@ -26,14 +26,14 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-public class Panel1 extends JPanel {
+public class StudentList extends JPanel {
 	private JTextField textField;
 	private Object[][] data;
 
 	/**
 	 * Create the panel.
 	 */
-	public Panel1() {
+	public StudentList() {
         
         String[] columnNames = 
         	{

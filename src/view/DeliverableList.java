@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import database.dao.DeliverableDAO;
 import database.dao.StudentDAO;
@@ -54,6 +55,7 @@ public class DeliverableList extends JPanel {
         {"1", "11220538", "Pua", "S12", "83", "August"}
         };
         
+        
 //        try
 //        {
 //            DeliverableDAO ddao = new DeliverableDAO();
@@ -90,7 +92,8 @@ public class DeliverableList extends JPanel {
 //        	data = new Object[1][5];
 //        }
 // 
-        final JTable table = new JTable(data, columnNames);
+        DefaultTableModel deliverables = new DefaultTableModel(data, columnNames);
+        JTable table = new JTable(deliverables);
         table.setAutoCreateRowSorter(true);
         //table.setEnabled(false);
         table.setTableHeader(null); 

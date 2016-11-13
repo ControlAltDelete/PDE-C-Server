@@ -263,24 +263,4 @@ public class DeliverableDAO extends DAO{
         return activityDeadline.after(deliverableSubmitted);
     }
     
-    public boolean isLate(int studentID, int activityID)throws SQLException, IOException
-    {
-    	Timestamp deliverableSubmitted = new Timestamp(System.currentTimeMillis()); // default
-    	Date activityDeadline = new Date(System.currentTimeMillis()); // default
-        Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("select `activity`.ActivityDeadline, `deliverable`.DateSubmitted from Activity, Deliverable where `activity`.ActivityID = ? AND `deliverable`.StudentID = ? AND `deliverable`.ActivityID = ?");
-        preparedStatement.setInt(1, activityID);
-        preparedStatement.setInt(2, studentID);
-        preparedStatement.setInt(3, activityID);
-        ResultSet resultSet = query(preparedStatement);
-        while (resultSet.next()) {
-        	deliverableSubmitted = resultSet.getTimestamp(1);
-        	activityDeadline = resultSet.getDate(2);
-        }
-        close(preparedStatement, connection);
-        // deliverable submitted = 11/13/2016
-        // activity deadline = 11/12/2016
-    	return deliverableSubmitted.after(activityDeadline);
-    }
-
 }

@@ -34,10 +34,21 @@ import javax.swing.ListSelectionModel;
 
 public class DeliverableList extends JPanel {
 	public static DeliverableList deliverableInstance = null;
+	private DefaultTableModel deliverableModel;
 	private JTable tblDeliverable;
 	private JScrollPane scrollPane; 
 	private DeliverableDAO ddao = new DeliverableDAO();
-
+	final private String[] columnNames =
+	{
+		"Activity No.",
+		"ID Number",
+		"Last Name",
+		"First Name",
+		"Section",
+		"Grade",
+		"Date Submitted"
+	};
+	
 	/**
 	 * Create the panel.
 	 */
@@ -54,14 +65,6 @@ public class DeliverableList extends JPanel {
 	private void initialize()
 	{
         setLayout(new GridLayout(1,0));
-        String[] columnNames = {"Activity No.",
-                                "ID Number",
-                                "Last Name",
-                                "First Name",
-                                "Section",
-                                "Grade",
-                                "Date Submitted"
-                                };
  
         Object[][] data = {
         		{"ACTIVITY NO.",
@@ -118,7 +121,7 @@ public class DeliverableList extends JPanel {
         	data = new Object[1][7];
         }
  
-        DefaultTableModel deliverables = new DefaultTableModel(data, columnNames){
+        deliverableModel = new DefaultTableModel(data, columnNames){
         	
         	@Override
         	public boolean isCellEditable(int row, int column){return false;}
@@ -132,7 +135,7 @@ public class DeliverableList extends JPanel {
         splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
         
         JPanel buttonContainer = new JPanel();
-        tblDeliverable = new JTable(deliverables);
+        tblDeliverable = new JTable(deliverableModel);
         tblDeliverable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblDeliverable.setAutoCreateRowSorter(true); 
         tblDeliverable.setRowSelectionAllowed(true);
@@ -162,7 +165,22 @@ public class DeliverableList extends JPanel {
         JButton btnRefresh = new JButton("Refresh");
         btnRefresh.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		// Update Data
+        		try
+        		{
+        			refreshData();
+        	        tblDeliverable.getColumn(columnNames[0]).setMinWidth(32);
+        	        tblDeliverable.getColumn(columnNames[0]).setPreferredWidth(32);
+        	        tblDeliverable.getColumn(columnNames[1]).setMinWidth(24);
+        	        tblDeliverable.getColumn(columnNames[1]).setPreferredWidth(24);
+        	        tblDeliverable.getColumn(columnNames[4]).setMinWidth(16);
+        	        tblDeliverable.getColumn(columnNames[4]).setPreferredWidth(16);	
+        	        tblDeliverable.getColumn(columnNames[5]).setMinWidth(16);
+        	        tblDeliverable.getColumn(columnNames[5]).setPreferredWidth(16);
+        		}
+        		catch(Exception ex)
+        		{
+        			ex.printStackTrace();
+        		}
         	}
         });
         buttonContainer.add(btnRefresh);
@@ -254,6 +272,48 @@ public class DeliverableList extends JPanel {
         	}
         });
         buttonContainer.add(btnPlaceGrade);
+	}
+	
+	public void refreshData() throws SQLException, IOException
+	{
+//		StudentDAO sdao = new StudentDAO();
+//        ArrayList<Student> sArray = new ArrayList<Student>();
+//    	sArray = sdao.getStudents();
+//    	data = new Object[sArray.size()][4];
+//    	for(int s = 0; s < sArray.size(); s++)
+//    	{
+//    		Student stud = sArray.get(s);
+//    		ArrayList<Object> contents = new ArrayList<Object>();
+//    		contents.add(stud.getStudentID());
+//    		contents.add(stud.getStudentFirstName());
+//    		contents.add(stud.getStudentLastName());
+//    		contents.add(stud.getStudentSection());
+//    		data[s] = contents.toArray();
+//    	}
+//
+		ArrayList<Deliverable> dArray = new ArrayList<Deliverable>();
+    	dArray = ddao.getDeliverables();
+    	Object[][] data = new Object[dArray.size()][7];
+    	for(int s = 0; s < dArray.size(); s++)
+    	{
+    		Deliverable del = dArray.get(s);
+    		ArrayList<Object> contents = new ArrayList<Object>();
+    		contents.add(del.getActivityID());
+    		contents.add(del.getStudentID());
+    		StudentDAO sdao = new StudentDAO();
+    		Student stud = sdao.getStudent(Integer.parseInt(contents.get(1).toString()));
+    		contents.add(stud.getStudentLastName());
+    		contents.add(stud.getStudentFirstName());
+    		contents.add(stud.getStudentSection());
+    		contents.add(del.getGrade());
+    		contents.add(del.getDateSubmitted());
+    		data[s] = contents.toArray();
+    	}
+        deliverableModel = new DefaultTableModel(data, columnNames){
+        	@Override
+        	public boolean isCellEditable(int row, int column){return false;}
+        };
+        tblDeliverable.setModel(deliverableModel);
 	}
 	
 	public DeliverableList()

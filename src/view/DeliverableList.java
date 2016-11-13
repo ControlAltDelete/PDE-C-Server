@@ -38,6 +38,8 @@ public class DeliverableList extends JPanel {
 	private JTable tblDeliverable;
 	private JScrollPane scrollPane; 
 	private DeliverableDAO ddao = new DeliverableDAO();
+	final private static int FILTER_ALL = 0, FILTER_STUDENT = 1, FILTER_ACTIVITY = 2;
+	private static int selectedActivity = 0, selectedStudent = 0, selectedMode = FILTER_ALL;
 	final private String[] columnNames =
 	{
 		"Activity No.",
@@ -172,20 +174,23 @@ public class DeliverableList extends JPanel {
 						try
 						{
 							studID = Integer.parseInt(sid);
+		        			manipulateDeliverables(ddao.getDeliverablesByStudent(studID));
+		        	        tblDeliverable.getColumn(columnNames[0]).setMinWidth(32);
+		        	        tblDeliverable.getColumn(columnNames[0]).setPreferredWidth(32);
+		        	        tblDeliverable.getColumn(columnNames[1]).setMinWidth(24);
+		        	        tblDeliverable.getColumn(columnNames[1]).setPreferredWidth(24);
+		        	        tblDeliverable.getColumn(columnNames[4]).setMinWidth(16);
+		        	        tblDeliverable.getColumn(columnNames[4]).setPreferredWidth(16);	
+		        	        tblDeliverable.getColumn(columnNames[5]).setMinWidth(16);
+		        	        tblDeliverable.getColumn(columnNames[5]).setPreferredWidth(16);
+		        	        selectedActivity = 0;
+		        	        selectedStudent = studID;
+		        	        selectedMode = FILTER_STUDENT;
 						}
 						catch (NumberFormatException nfe)
 						{
 					        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
 						}
-	        			manipulateDeliverables(ddao.getDeliverablesByStudent(studID));
-	        	        tblDeliverable.getColumn(columnNames[0]).setMinWidth(32);
-	        	        tblDeliverable.getColumn(columnNames[0]).setPreferredWidth(32);
-	        	        tblDeliverable.getColumn(columnNames[1]).setMinWidth(24);
-	        	        tblDeliverable.getColumn(columnNames[1]).setPreferredWidth(24);
-	        	        tblDeliverable.getColumn(columnNames[4]).setMinWidth(16);
-	        	        tblDeliverable.getColumn(columnNames[4]).setPreferredWidth(16);	
-	        	        tblDeliverable.getColumn(columnNames[5]).setMinWidth(16);
-	        	        tblDeliverable.getColumn(columnNames[5]).setPreferredWidth(16);
     				}
         		}
         		catch(Exception ex)
@@ -209,6 +214,9 @@ public class DeliverableList extends JPanel {
         	        tblDeliverable.getColumn(columnNames[4]).setPreferredWidth(16);	
         	        tblDeliverable.getColumn(columnNames[5]).setMinWidth(16);
         	        tblDeliverable.getColumn(columnNames[5]).setPreferredWidth(16);
+        	        selectedActivity = 0;
+        	        selectedStudent = 0;
+        	        selectedMode = FILTER_ALL;
         		}
         		catch(Exception ex)
         		{
@@ -239,20 +247,23 @@ public class DeliverableList extends JPanel {
 						try
 						{
 							actID = adao.getActivity(actName).getActivityID();
+		        			manipulateDeliverables(ddao.getDeliverablesByActivity(actID));
+		        	        tblDeliverable.getColumn(columnNames[0]).setMinWidth(32);
+		        	        tblDeliverable.getColumn(columnNames[0]).setPreferredWidth(32);
+		        	        tblDeliverable.getColumn(columnNames[1]).setMinWidth(24);
+		        	        tblDeliverable.getColumn(columnNames[1]).setPreferredWidth(24);
+		        	        tblDeliverable.getColumn(columnNames[4]).setMinWidth(16);
+		        	        tblDeliverable.getColumn(columnNames[4]).setPreferredWidth(16);	
+		        	        tblDeliverable.getColumn(columnNames[5]).setMinWidth(16);
+		        	        tblDeliverable.getColumn(columnNames[5]).setPreferredWidth(16);
+		        	        selectedActivity = actID;
+	        	        	selectedStudent = 0;
+		        	        selectedMode = FILTER_ACTIVITY;
 						}
 						catch (NumberFormatException nfe)
 						{
 					        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
 						}
-	        			manipulateDeliverables(ddao.getDeliverablesByActivity(actID));
-	        	        tblDeliverable.getColumn(columnNames[0]).setMinWidth(32);
-	        	        tblDeliverable.getColumn(columnNames[0]).setPreferredWidth(32);
-	        	        tblDeliverable.getColumn(columnNames[1]).setMinWidth(24);
-	        	        tblDeliverable.getColumn(columnNames[1]).setPreferredWidth(24);
-	        	        tblDeliverable.getColumn(columnNames[4]).setMinWidth(16);
-	        	        tblDeliverable.getColumn(columnNames[4]).setPreferredWidth(16);	
-	        	        tblDeliverable.getColumn(columnNames[5]).setMinWidth(16);
-	        	        tblDeliverable.getColumn(columnNames[5]).setPreferredWidth(16);
     				}
         		}
         		catch(Exception ex)
@@ -315,6 +326,13 @@ public class DeliverableList extends JPanel {
 									JOptionPane.showMessageDialog(null, "Successfully placed a grade.", "Success", JOptionPane.INFORMATION_MESSAGE);
 								else
 									JOptionPane.showMessageDialog(null, "Successfully edited a grade.", "Success", JOptionPane.INFORMATION_MESSAGE);
+								switch(selectedMode)
+								{
+									case FILTER_STUDENT: manipulateDeliverables(ddao.getDeliverablesByStudent(selectedStudent));
+									case FILTER_ACTIVITY: manipulateDeliverables(ddao.getDeliverablesByActivity(selectedActivity));
+									case FILTER_ALL:
+									default: refreshData(); break;
+								}
     						}
     						else
     							JOptionPane.showMessageDialog(null, "Grade input should be from 0 - 100.", "Error", JOptionPane.ERROR_MESSAGE);

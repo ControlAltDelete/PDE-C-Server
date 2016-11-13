@@ -100,7 +100,6 @@ public class StudentList extends JPanel {
         JSplitPane splitPane = new JSplitPane();
         splitPane.setEnabled(false);
         splitPane.setResizeWeight(1.0);
-        splitPane.setOneTouchExpandable(true);
         splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
         //Add the scroll pane to this panel.
         splitPane.setTopComponent(scrollPane);

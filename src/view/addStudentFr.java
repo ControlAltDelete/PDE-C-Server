@@ -96,21 +96,21 @@ public class addStudentFr extends JFrame {
 		txtStudentSection.setBounds(146, 135, 94, 20);
 		frame.getContentPane().add(txtStudentSection);
 		
-		JLabel label = new JLabel("Section:");
-		label.setBounds(52, 141, 84, 14);
-		frame.getContentPane().add(label);
+		JLabel lblStudentLastName = new JLabel("Last Name:");
+		lblStudentLastName.setBounds(37, 60, 99, 14);
+		frame.getContentPane().add(lblStudentLastName);
 		
-		JLabel label_1 = new JLabel("ID Number:");
-		label_1.setBounds(35, 113, 101, 14);
-		frame.getContentPane().add(label_1);
+		JLabel lblStudentFirstName = new JLabel("First Name:");
+		lblStudentFirstName.setBounds(35, 88, 101, 14);
+		frame.getContentPane().add(lblStudentFirstName);
 		
-		JLabel label_2 = new JLabel("First Name:");
-		label_2.setBounds(35, 88, 101, 14);
-		frame.getContentPane().add(label_2);
+		JLabel lblStudentIDNum = new JLabel("ID Number:");
+		lblStudentIDNum.setBounds(35, 113, 101, 14);
+		frame.getContentPane().add(lblStudentIDNum);
 		
-		JLabel label_3 = new JLabel("Last Name:");
-		label_3.setBounds(37, 60, 99, 14);
-		frame.getContentPane().add(label_3);
+		JLabel lblStudentSection = new JLabel("Section:");
+		lblStudentSection.setBounds(52, 141, 84, 14);
+		frame.getContentPane().add(lblStudentSection);
 		
 		JButton btnAddStudent = new JButton("Add Student");
 		btnAddStudent.setBounds(146, 176, 94, 23);
@@ -155,10 +155,10 @@ public class addStudentFr extends JFrame {
 
 		
 		
-		JButton button_1 = new JButton("Submit");
-		button_1.setBounds(344, 176, 135, 23);
-		frame.getContentPane().add(button_1);
-		button_1.addActionListener(new ActionListener() {
+		JButton btnCSVSubmit = new JButton("Submit");
+		btnCSVSubmit.setBounds(344, 176, 135, 23);
+		frame.getContentPane().add(btnCSVSubmit);
+		btnCSVSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String sec = txtCSVSection.getText().replaceAll("\\s", "");
 				if(sec.isEmpty() && txtCSVPath.getText().isEmpty())
@@ -202,14 +202,19 @@ public class addStudentFr extends JFrame {
 		lblOr.setBounds(281, 113, 46, 14);
 		frame.getContentPane().add(lblOr);
 		
-		JButton btnBrowse = new JButton("Browse");
-		btnBrowse.addActionListener(new ActionListener() {
+		JButton btnCSVBrowse = new JButton("Browse");
+		btnCSVBrowse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				chooseFile();
 			}
 		});
-		btnBrowse.setBounds(344, 147, 135, 23);
-		frame.getContentPane().add(btnBrowse);
+		btnCSVBrowse.setBounds(344, 147, 135, 23);
+		frame.getContentPane().add(btnCSVBrowse);
+		
+		txtCSVSection = new JTextField();
+		txtCSVSection.setColumns(10);
+		txtCSVSection.setBounds(393, 63, 86, 20);
+		frame.getContentPane().add(txtCSVSection);
 		
 		txtCSVPath = new JTextField();
 		txtCSVPath.setEditable(false);
@@ -217,18 +222,13 @@ public class addStudentFr extends JFrame {
 		txtCSVPath.setBounds(344, 116, 135, 20);
 		frame.getContentPane().add(txtCSVPath);
 		
-		JLabel label_4 = new JLabel("Class List File:");
-		label_4.setBounds(344, 91, 135, 14);
-		frame.getContentPane().add(label_4);
+		JLabel lblCSVSection = new JLabel("Section:");
+		lblCSVSection.setBounds(344, 66, 46, 14);
+		frame.getContentPane().add(lblCSVSection);
 		
-		JLabel label_5 = new JLabel("Section:");
-		label_5.setBounds(344, 66, 46, 14);
-		frame.getContentPane().add(label_5);
-		
-		txtCSVSection = new JTextField();
-		txtCSVSection.setColumns(10);
-		txtCSVSection.setBounds(393, 63, 86, 20);
-		frame.getContentPane().add(txtCSVSection);
+		JLabel lblCSVClassList = new JLabel("Class List File:");
+		lblCSVClassList.setBounds(344, 91, 135, 14);
+		frame.getContentPane().add(lblCSVClassList);
 		
 		JLabel lblUploadClassList = new JLabel("UPLOAD CLASS LIST");
 		lblUploadClassList.setBounds(348, 21, 171, 20);

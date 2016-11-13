@@ -173,6 +173,78 @@ public class DeliverableDAO extends DAO{
         return deliverables;
     }
     
+    public ArrayList<Deliverable> getDeliverablesByActivity(int aID) throws SQLException, IOException{
+        ArrayList<Deliverable> deliverables = new ArrayList<Deliverable>();
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from Deliverable where ActivityID = ? order by DeliverableID");
+        preparedStatement.setInt(1, aID);
+        ResultSet resultSet = query(preparedStatement);
+        while (resultSet.next()) {
+        	Deliverable dmdl = new Deliverable();
+        	int deliverableID = resultSet.getInt("DeliverableID");
+        	int studentID = resultSet.getInt("StudentID");
+        	int activityID = resultSet.getInt("ActivityID");
+        	String deliverableSourceCodeFileName = resultSet.getString("DeliverableSourceCodeFileName");
+        	Blob b = resultSet.getBlob("DeliverableSourceCode");
+        	InputStream binaryStream = b.getBinaryStream(1, b.length());
+        	byte[] buffer = new byte[binaryStream.available()];
+            binaryStream.read(buffer);
+        	File deliverableSourceCode = new File(deliverableSourceCodeFileName);
+        	OutputStream outStream = new FileOutputStream(deliverableSourceCode);
+        	outStream.write(buffer);
+        	outStream.close();
+        	Timestamp dateSubmitted = resultSet.getTimestamp("DateSubmitted");
+        	float grade = resultSet.getFloat("Grade");
+            dmdl.setDeliverableID(deliverableID);
+            dmdl.setStudentID(studentID);
+            dmdl.setActivityID(activityID);
+            dmdl.setDeliverableSourceCode(deliverableSourceCode);
+            dmdl.setDateSubmitted(dateSubmitted);
+            dmdl.setDeliverableSourceCodeFileName(deliverableSourceCodeFileName);
+            dmdl.setGrade(grade);
+            dmdl.setDeliverableID(deliverableID);
+            deliverables.add(dmdl);
+        }
+        close(preparedStatement, connection);
+        return deliverables;
+    }
+    
+    public ArrayList<Deliverable> getDeliverablesByStudent(int sID) throws SQLException, IOException{
+        ArrayList<Deliverable> deliverables = new ArrayList<Deliverable>();
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from Deliverable where StudentID = ? order by DeliverableID");
+        preparedStatement.setInt(1, sID);
+        ResultSet resultSet = query(preparedStatement);
+        while (resultSet.next()) {
+        	Deliverable dmdl = new Deliverable();
+        	int deliverableID = resultSet.getInt("DeliverableID");
+        	int studentID = resultSet.getInt("StudentID");
+        	int activityID = resultSet.getInt("ActivityID");
+        	String deliverableSourceCodeFileName = resultSet.getString("DeliverableSourceCodeFileName");
+        	Blob b = resultSet.getBlob("DeliverableSourceCode");
+        	InputStream binaryStream = b.getBinaryStream(1, b.length());
+        	byte[] buffer = new byte[binaryStream.available()];
+            binaryStream.read(buffer);
+        	File deliverableSourceCode = new File(deliverableSourceCodeFileName);
+        	OutputStream outStream = new FileOutputStream(deliverableSourceCode);
+        	outStream.write(buffer);
+        	outStream.close();
+        	Timestamp dateSubmitted = resultSet.getTimestamp("DateSubmitted");
+        	float grade = resultSet.getFloat("Grade");
+            dmdl.setDeliverableID(deliverableID);
+            dmdl.setStudentID(studentID);
+            dmdl.setActivityID(activityID);
+            dmdl.setDeliverableSourceCode(deliverableSourceCode);
+            dmdl.setDateSubmitted(dateSubmitted);
+            dmdl.setDeliverableSourceCodeFileName(deliverableSourceCodeFileName);
+            dmdl.setGrade(grade);
+            dmdl.setDeliverableID(deliverableID);
+            deliverables.add(dmdl);
+        }
+        close(preparedStatement, connection);
+        return deliverables;
+    }
+    
     public boolean isLate(int studentID, int activityID)throws SQLException, IOException
     {
     	Timestamp deliverableSubmitted = new Timestamp(System.currentTimeMillis()); // default

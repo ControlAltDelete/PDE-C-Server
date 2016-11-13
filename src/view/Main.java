@@ -11,6 +11,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
+import service.ui.TestCaseBuilder;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;

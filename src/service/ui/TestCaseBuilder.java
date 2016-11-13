@@ -1,12 +1,15 @@
-package view;
+package service.ui;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.GridLayout;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
-import objects.TestCase;
+import controller.cbrc.CBRCEvent;
+import service.cbrc.model.CBRCProblem;
+import service.cbrc.model.TestCase;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -15,8 +18,10 @@ import javax.swing.JFileChooser;
 
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Scanner;
 import java.awt.event.ActionEvent;
 
 public class TestCaseBuilder {
@@ -47,7 +52,6 @@ public class TestCaseBuilder {
 		frmTestCaseUploader.setResizable(false);
 		frmTestCaseUploader.setTitle("Test Case Uploader");
 		frmTestCaseUploader.setBounds(100, 100, 522, 137);
-		frmTestCaseUploader.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmTestCaseUploader.getContentPane().setLayout(null);
 		frmTestCaseUploader.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
@@ -64,14 +68,10 @@ public class TestCaseBuilder {
 		JButton tciBrowseButton = new JButton("Browse...");
 		tciBrowseButton.addActionListener(new ActionListener() 
 		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				JFileChooser jfc = new JFileChooser();
-				int returnVal = jfc.showOpenDialog(tciBrowseButton.getParent());
-				if (returnVal == JFileChooser.APPROVE_OPTION)
-				{
-					tcoFileTextField.setText(jfc.getSelectedFile().getAbsolutePath());
-				}
+			public void actionPerformed(ActionEvent e) {
+				String tci = new CBRCEvent().importTestCase(frmTestCaseUploader);
+				if(!tci.isEmpty())
+					tciFileTextField.setText(tci);
 			}
 		});
 		tciBrowseButton.setBounds(420, 10, 88, 23);
@@ -92,12 +92,9 @@ public class TestCaseBuilder {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				JFileChooser jfc = new JFileChooser();
-				int returnVal = jfc.showOpenDialog(tcoBrowseButton.getParent());
-				if (returnVal == JFileChooser.APPROVE_OPTION)
-				{
-					tcoFileTextField.setText(jfc.getSelectedFile().getAbsolutePath());
-				}
+				String tco = new CBRCEvent().importTestCase(frmTestCaseUploader);
+				if(!tco.isEmpty())
+					tcoFileTextField.setText(tco);
 			}
 		});
 		tcoBrowseButton.setBounds(420, 42, 88, 23);
@@ -106,7 +103,12 @@ public class TestCaseBuilder {
 		JButton btnUpload = new JButton("Upload");
 		btnUpload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TestCase tc = new TestCase(new File(tciFileTextField.getText()), new File(tcoFileTextField.getText()));
+				CBRCMenu c = CBRCMenu.getInstance();
+				TestCase tc = new TestCase(Paths.get(tciFileTextField.getText()), Paths.get(tcoFileTextField.getText()));
+				CBRCProblem prob = c.getProb();
+				prob.getTc().add(tc);
+				c.setProb(prob);
+				frmTestCaseUploader.setVisible(false);
 			}
 		});
 		btnUpload.setBounds(420, 76, 88, 23);

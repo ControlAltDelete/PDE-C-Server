@@ -45,8 +45,8 @@ public class Server extends Thread
 	  try
 	  {
 		CBRCIntegration cbr = new CBRCIntegration();
-		//Path filePath = Paths.get("C:\\Users\\Aljon Jose\\Documents\\DLSU\\THSST-1\\testing3.c");
-		//cbr.runCBRC("yo", filePath);
+		Path filePath = Paths.get("C:\\SampleCodes\\test.c");
+		cbr.runCBRC("yo", filePath);
 		System.out.println("Waiting for client ");
 		Socket server = serverSocket.accept();
 		System.out.println("Just connected to " + server.getRemoteSocketAddress());

@@ -328,11 +328,19 @@ public class DeliverableList extends JPanel {
 									JOptionPane.showMessageDialog(null, "Successfully edited a grade.", "Success", JOptionPane.INFORMATION_MESSAGE);
 								switch(selectedMode)
 								{
-									case FILTER_STUDENT: manipulateDeliverables(ddao.getDeliverablesByStudent(selectedStudent));
-									case FILTER_ACTIVITY: manipulateDeliverables(ddao.getDeliverablesByActivity(selectedActivity));
+									case FILTER_STUDENT: manipulateDeliverables(ddao.getDeliverablesByStudent(selectedStudent)); break;
+									case FILTER_ACTIVITY: manipulateDeliverables(ddao.getDeliverablesByActivity(selectedActivity)); break;
 									case FILTER_ALL:
 									default: refreshData(); break;
 								}
+			        	        tblDeliverable.getColumn(columnNames[0]).setMinWidth(32);
+			        	        tblDeliverable.getColumn(columnNames[0]).setPreferredWidth(32);
+			        	        tblDeliverable.getColumn(columnNames[1]).setMinWidth(24);
+			        	        tblDeliverable.getColumn(columnNames[1]).setPreferredWidth(24);
+			        	        tblDeliverable.getColumn(columnNames[4]).setMinWidth(16);
+			        	        tblDeliverable.getColumn(columnNames[4]).setPreferredWidth(16);	
+			        	        tblDeliverable.getColumn(columnNames[5]).setMinWidth(16);
+			        	        tblDeliverable.getColumn(columnNames[5]).setPreferredWidth(16);
     						}
     						else
     							JOptionPane.showMessageDialog(null, "Grade input should be from 0 - 100.", "Error", JOptionPane.ERROR_MESSAGE);

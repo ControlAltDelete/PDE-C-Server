@@ -1,11 +1,14 @@
 package view;
 import javax.swing.JPanel;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import database.dao.ActivityDAO;
@@ -42,6 +45,7 @@ public class DeliverableList extends JPanel {
 	private DefaultTableModel deliverableModel;
 	private JTable tblDeliverable;
 	private JScrollPane scrollPane; 
+    private ArrayList<Boolean> lateList = new ArrayList<Boolean>();
 	private DeliverableDAO ddao = new DeliverableDAO();
 	final private static int FILTER_ALL = 0, FILTER_STUDENT = 1, FILTER_ACTIVITY = 2;
 	private static int selectedActivity = 0, selectedStudent = 0, selectedMode = FILTER_ALL;
@@ -90,12 +94,12 @@ public class DeliverableList extends JPanel {
         {"1", "11220538", "Pua", "Raymund", "S12", "83", "August"}
         };
         
-        
+        lateList = new ArrayList<Boolean>();
         try
         {
             ArrayList<Deliverable> dArray = new ArrayList<Deliverable>();
         	dArray = ddao.getDeliverables();
-        	data = new Object[dArray.size()][7];
+        	data = new Object[dArray.size()][8];
         	for(int s = 0; s < dArray.size(); s++)
         	{
         		Deliverable del = dArray.get(s);
@@ -110,28 +114,33 @@ public class DeliverableList extends JPanel {
         		contents.add(del.getGrade());
         		contents.add(del.getDateSubmitted());
         		data[s] = contents.toArray();
+        		lateList.add(ddao.isLate(Integer.parseInt(contents.get(1).toString()), Integer.parseInt(contents.get(0).toString())));
         	}
         }
         catch (SQLException sqle)
         {
         	System.out.println("No connection to MySQL.");
-        	data = new Object[1][7];
+        	data = new Object[1][8];
         }
         catch (IOException ioe)
         {
         	ioe.printStackTrace();
-        	data = new Object[1][7];
+        	data = new Object[1][8];
         }
         catch (Exception e)
         {
         	e.printStackTrace();
-        	data = new Object[1][7];
+        	data = new Object[1][8];
         }
  
-        deliverableModel = new DefaultTableModel(data, columnNames){
+        deliverableModel = new DefaultTableModel(data, columnNames)
+        {
         	
         	@Override
-        	public boolean isCellEditable(int row, int column){return false;}
+        	public boolean isCellEditable(int row, int column)
+        	{
+        		return false;
+        	}
         	
         };
         
@@ -144,7 +153,7 @@ public class DeliverableList extends JPanel {
         JPanel buttonContainer = new JPanel();
         tblDeliverable = new JTable(deliverableModel);
         tblDeliverable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tblDeliverable.setAutoCreateRowSorter(true); 
+        tblDeliverable.setAutoCreateRowSorter(false); 
         tblDeliverable.setRowSelectionAllowed(true);
         tblDeliverable.setPreferredScrollableViewportSize(new Dimension(1000, 70));
         tblDeliverable.setFillsViewportHeight(true);
@@ -156,6 +165,22 @@ public class DeliverableList extends JPanel {
         tblDeliverable.getColumn(columnNames[4]).setPreferredWidth(16);	
         tblDeliverable.getColumn(columnNames[5]).setMinWidth(16);
         tblDeliverable.getColumn(columnNames[5]).setPreferredWidth(16);
+        tblDeliverable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+                if (lateList.get(row)) {
+                	setBackground(new Color(208, 53, 53));
+                    setForeground(Color.WHITE);
+                } else {
+                    setBackground(table.getBackground());
+                    setForeground(table.getForeground());
+                }       
+                return this;
+            }   
+        });
         //Create the scroll pane and add the table to it.
         scrollPane = new JScrollPane(tblDeliverable);
         //Add the scroll pane to this panel.
@@ -430,6 +455,7 @@ public class DeliverableList extends JPanel {
 	
 	public void manipulateDeliverables(ArrayList<Deliverable> dArray) throws SQLException, IOException
 	{
+		lateList.clear();
     	Object[][] data = new Object[dArray.size()][7];
     	for(int s = 0; s < dArray.size(); s++)
     	{
@@ -445,6 +471,7 @@ public class DeliverableList extends JPanel {
     		contents.add(del.getGrade());
     		contents.add(del.getDateSubmitted());
     		data[s] = contents.toArray();
+    		lateList.add(ddao.isLate(Integer.parseInt(contents.get(1).toString()), Integer.parseInt(contents.get(0).toString())));
     	}
         deliverableModel = new DefaultTableModel(data, columnNames){
         	@Override
@@ -455,6 +482,7 @@ public class DeliverableList extends JPanel {
 	
 	public void refreshData() throws SQLException, IOException
 	{
+		lateList.clear();
 		ArrayList<Deliverable> dArray = new ArrayList<Deliverable>();
     	dArray = ddao.getDeliverables();
     	Object[][] data = new Object[dArray.size()][7];
@@ -472,6 +500,7 @@ public class DeliverableList extends JPanel {
     		contents.add(del.getGrade());
     		contents.add(del.getDateSubmitted());
     		data[s] = contents.toArray();
+    		lateList.add(ddao.isLate(Integer.parseInt(contents.get(1).toString()), Integer.parseInt(contents.get(0).toString())));
     	}
         deliverableModel = new DefaultTableModel(data, columnNames){
         	@Override

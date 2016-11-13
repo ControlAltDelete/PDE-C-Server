@@ -114,11 +114,6 @@ public class Main {
 		submissionsPanel = DeliverableList.getInstance();
 		dynamicMainPanel.add(submissionsPanel, "name_420733536558155");
 		
-		/*Panel3*/
-		submitScoresPanel submitScoresPanel;
-		submitScoresPanel = new submitScoresPanel();
-		dynamicMainPanel.add(submitScoresPanel, "name_420733543961847");
-		
 		/*Add Student Panel*/
 		addStudent addStudentPanel;
 		addStudentPanel = new addStudent();
@@ -126,7 +121,6 @@ public class Main {
 		
 		studentListPanel.setVisible(false);
 		submissionsPanel.setVisible(false);
-		submitScoresPanel.setVisible(false);
 		uploadFilePanel.setVisible(true);
 		addStudentPanel.setVisible(false);
 		
@@ -224,7 +218,6 @@ public class Main {
 				uploadFilePanel.setVisible(false);
 				studentListPanel.setVisible(true);
 				submissionsPanel.setVisible(false);
-				submitScoresPanel.setVisible(false);
 				addStudentPanel.setVisible(false);
 			}
 		});
@@ -239,7 +232,6 @@ public class Main {
 				testCasesButton.setIcon(new ImageIcon("resource/assets/test.png"));
 				uploadFilePanel.setVisible(false);
 				submissionsPanel.setVisible(true);
-				submitScoresPanel.setVisible(false);
 				studentListPanel.setVisible(false);
 				addStudentPanel.setVisible(false);
 			}
@@ -254,7 +246,6 @@ public class Main {
 				addStudentButton.setIcon(new ImageIcon("resource/assets/add.png"));
 				testCasesButton.setIcon(new ImageIcon("resource/assets/test.png"));
 				uploadFilePanel.setVisible(false);
-				submitScoresPanel.setVisible(true);
 				submissionsPanel.setVisible(false);
 				studentListPanel.setVisible(false);
 				addStudentPanel.setVisible(false);
@@ -271,7 +262,6 @@ public class Main {
 				testCasesButton.setIcon(new ImageIcon("resource/assets/test.png"));
 				uploadFilePanel.setVisible(false);
 				submissionsPanel.setVisible(false);
-				submitScoresPanel.setVisible(false);
 				studentListPanel.setVisible(false);
 				addStudentPanel.setVisible(true);
 			}
@@ -301,7 +291,6 @@ public class Main {
 				uploadFilePanel.setVisible(true);
 				studentListPanel.setVisible(false);
 				submissionsPanel.setVisible(false);
-				submitScoresPanel.setVisible(false);
 				addStudentPanel.setVisible(false);
 			}
 		});

@@ -260,8 +260,6 @@ public class DeliverableDAO extends DAO{
         	activityDeadline = resultSet.getDate(2);
         }
         close(preparedStatement, connection);
-        // deliverable submitted = 11/13/2016
-        // activity deadline = 11/12/2016
     	return deliverableSubmitted.after(activityDeadline);
     }
 

@@ -212,37 +212,44 @@ public class uploadFile extends JPanel {
 		JButton btnSend = new JButton("Send");
 		btnSend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(!fieldChecker(txtActName, txtFilePath, cmbDay, cmbMonth, cmbYear, cmbHour, cmbMinute))
+				Timestamp t = new Timestamp(Integer.parseInt(cmbYear.getSelectedItem().toString()) - 1900, cmbMonth.getSelectedIndex() - 1, Integer.parseInt(cmbDay.getSelectedItem().toString()), Integer.parseInt(cmbHour.getSelectedItem().toString()),Integer.parseInt(cmbMinute.getSelectedItem().toString()), 0, 0);
+				if(new Timestamp(System.currentTimeMillis()).after(t))
 				{
-					JOptionPane.showMessageDialog(null, "Please fill in the required fields to add a new activity.", "Notice", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Deadline is before the date today. Please change the values accordingly.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else
 				{
-					Timestamp t = new Timestamp(Integer.parseInt(cmbYear.getSelectedItem().toString()) - 1900, cmbMonth.getSelectedIndex() - 1, Integer.parseInt(cmbDay.getSelectedItem().toString()), Integer.parseInt(cmbHour.getSelectedItem().toString()),Integer.parseInt(cmbMinute.getSelectedItem().toString()), 0, 0);
-				  	FileManipulation fm = new FileManipulation();
-					ActivityDAO adao = new ActivityDAO();
-					Activity a = new Activity();
-					File chosen = new File(filePathChosen.toUri());
-					a.setActivityName(txtActName.getText());
-					a.setActivityID(0);
-					a.setActivityTimeStamp(new Timestamp(System.currentTimeMillis()));
-					a.setActivityDeadline(t);
-					a.setActivityFile(fm.convertToBinary(chosen));
-					a.setActivityFilename(chosen.getName());
-					try
+					if(!fieldChecker(txtActName, txtFilePath, cmbDay, cmbMonth, cmbYear, cmbHour, cmbMinute))
 					{
-						adao.addActivity(a);
-						JOptionPane.showMessageDialog(null, "Successfully added " + a.getActivityName() + " Activity.", "Notice", JOptionPane.INFORMATION_MESSAGE);
-						resetAllFields(txtActName, txtFilePath, cmbDay, cmbMonth, cmbYear, cmbHour, cmbMinute);
+						JOptionPane.showMessageDialog(null, "Please fill in the required fields to add a new activity.", "Notice", JOptionPane.INFORMATION_MESSAGE);
 					}
-					catch (FileNotFoundException fnfe)
+					else
 					{
-						JOptionPane.showMessageDialog(null, "File not found. It may have been deleted during the process.", "Error", JOptionPane.ERROR_MESSAGE);
-					}
-					catch (SQLException e) 
-					{
-						e.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Something went wrong.", "Error", JOptionPane.ERROR_MESSAGE);
+					  	FileManipulation fm = new FileManipulation();
+						ActivityDAO adao = new ActivityDAO();
+						Activity a = new Activity();
+						File chosen = new File(filePathChosen.toUri());
+						a.setActivityName(txtActName.getText());
+						a.setActivityID(0);
+						a.setActivityTimeStamp(new Timestamp(System.currentTimeMillis()));
+						a.setActivityDeadline(t);
+						a.setActivityFile(fm.convertToBinary(chosen));
+						a.setActivityFilename(chosen.getName());
+						try
+						{
+							adao.addActivity(a);
+							JOptionPane.showMessageDialog(null, "Successfully added " + a.getActivityName() + " Activity.", "Notice", JOptionPane.INFORMATION_MESSAGE);
+							resetAllFields(txtActName, txtFilePath, cmbDay, cmbMonth, cmbYear, cmbHour, cmbMinute);
+						}
+						catch (FileNotFoundException fnfe)
+						{
+							JOptionPane.showMessageDialog(null, "File not found. It may have been deleted during the process.", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+						catch (SQLException e) 
+						{
+							e.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Something went wrong.", "Error", JOptionPane.ERROR_MESSAGE);
+						}
 					}
 				}
 			}

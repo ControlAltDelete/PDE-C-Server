@@ -93,17 +93,20 @@ public class StudentList extends JPanel {
         JPanel buttonContainer = new JPanel();
         splitPane.setBottomComponent(buttonContainer);
         
-        JButton Add = new JButton("Add");
-        Add.addActionListener(new ActionListener() {
+        JButton btnAdd = new JButton("Add");
+        btnAdd.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
 				addStudentFr b = new addStudentFr();
 				b.showFrame();
         	}
         });
-        buttonContainer.add(Add);
         
-        JButton Delete = new JButton("Delete");
-        buttonContainer.add(Delete);
+        JButton btnView = new JButton("View");
+        buttonContainer.add(btnView);
+        buttonContainer.add(btnAdd);
+        
+        JButton btnDelete = new JButton("Delete");
+        buttonContainer.add(btnDelete);
         
         add(splitPane);
         

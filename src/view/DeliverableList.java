@@ -22,6 +22,8 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JSplitPane;
+import javax.swing.JButton;
 
 public class DeliverableList extends JPanel {
 	private JTable table;
@@ -34,6 +36,7 @@ public class DeliverableList extends JPanel {
         String[] columnNames = {"Activity No.",
                                 "ID Number",
                                 "Last Name",
+                                "First Name",
                                 "Section",
                                 "Grade",
                                 "Date Submitted"
@@ -43,16 +46,17 @@ public class DeliverableList extends JPanel {
         		{"ACTIVITY NO.",
                     "ID NUMBER",
                     "LAST NAME",
+                    "FIRST NAME",
                     "SECTION",
                     "GRADE",
                     "DATE SUBMITTED"
                     },
         		
-        {"1", "11220538", "Pua", "S12", "83", "August"},
-        {"1", "11220538", "Pua", "S12", "83", "August"},
-        {"1", "11220538", "Pua", "S12", "83", "August"},
-        {"1", "11220538", "Pua", "S12", "83", "August"},
-        {"1", "11220538", "Pua", "S12", "83", "August"}
+        {"1", "11220538", "Pua", "Raymund", "S12", "83", "August"},
+        {"1", "11220538", "Pua", "Raymund", "S12", "83", "August"},
+        {"1", "11220538", "Pua", "Raymund", "S12", "83", "August"},
+        {"1", "11220538", "Pua", "Raymund", "S12", "83", "August"},
+        {"1", "11220538", "Pua", "Raymund", "S12", "83", "August"}
         };
         
         
@@ -93,23 +97,36 @@ public class DeliverableList extends JPanel {
 //        }
 // 
         DefaultTableModel deliverables = new DefaultTableModel(data, columnNames);
-        JTable table = new JTable(deliverables);
-        table.setAutoCreateRowSorter(true);
-        //table.setEnabled(false);
-        table.setTableHeader(null); 
-        table.setRowSelectionAllowed(true);
-        table.setShowGrid(false);
-        table.setPreferredScrollableViewportSize(new Dimension(1000, 70));
-        table.setFillsViewportHeight(true);
-      //  table.rowAtPoint(getMousePosition());
         
+        JSplitPane splitPane = new JSplitPane();
+        add(splitPane);
+        splitPane.setResizeWeight(1.0);
+        splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
         
- 
- 
+        JPanel buttonContainer = new JPanel();
+        JTable table_1 = new JTable(deliverables);
+        table_1.setAutoCreateRowSorter(true);
+        table_1.setTableHeader(null); 
+        table_1.setRowSelectionAllowed(true);
+        table_1.setShowGrid(false);
+        table_1.setPreferredScrollableViewportSize(new Dimension(1000, 70));
+        table_1.setFillsViewportHeight(true);
         //Create the scroll pane and add the table to it.
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(table_1);
         //Add the scroll pane to this panel.
-        add(scrollPane);
-
+        splitPane.setLeftComponent(scrollPane);
+        splitPane.setRightComponent(buttonContainer);
+        
+        JButton btnFilterByStudent = new JButton("Filter By Student");
+        buttonContainer.add(btnFilterByStudent);
+        
+        JButton btnFilterByActivity = new JButton("Filter By Activity");
+        buttonContainer.add(btnFilterByActivity);
+        
+        JButton btnViewSourceCode = new JButton("View Source Code");
+        buttonContainer.add(btnViewSourceCode);
+        
+        JButton btnPlaceGrade = new JButton("Place Grade");
+        buttonContainer.add(btnPlaceGrade);
 	}
 }

@@ -218,6 +218,7 @@ public class uploadFile extends JPanel {
 				}
 				else
 				{
+					Timestamp t = new Timestamp(Integer.parseInt(cmbYear.getSelectedItem().toString()) - 1900, cmbMonth.getSelectedIndex() - 1, Integer.parseInt(cmbDay.getSelectedItem().toString()), Integer.parseInt(cmbHour.getSelectedItem().toString()),Integer.parseInt(cmbMinute.getSelectedItem().toString()), 0, 0);
 				  	FileManipulation fm = new FileManipulation();
 					ActivityDAO adao = new ActivityDAO();
 					Activity a = new Activity();
@@ -225,7 +226,7 @@ public class uploadFile extends JPanel {
 					a.setActivityName(txtActName.getText());
 					a.setActivityID(0);
 					a.setActivityTimeStamp(new Timestamp(System.currentTimeMillis()));
-					a.setActivityDeadline(new Date(Integer.parseInt(cmbYear.getSelectedItem().toString()), cmbMonth.getSelectedIndex(), Integer.parseInt(cmbDay.getSelectedItem().toString())));
+					a.setActivityDeadline(t);
 					a.setActivityFile(fm.convertToBinary(chosen));
 					a.setActivityFilename(chosen.getName());
 					try

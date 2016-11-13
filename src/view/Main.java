@@ -83,7 +83,7 @@ public class Main {
 		
 		/*Panel1*/
 		StudentList studentListPanel;
-		studentListPanel = new StudentList();
+		studentListPanel = StudentList.getInstance();
 		dynamicMainPanel.add(studentListPanel, "name_420733528968378");
 		
 		/*Panel2*/

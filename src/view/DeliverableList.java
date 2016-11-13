@@ -35,6 +35,7 @@ import javax.swing.ListSelectionModel;
 public class DeliverableList extends JPanel {
 	public static DeliverableList deliverableInstance = null;
 	private JTable tblDeliverable;
+	private JScrollPane scrollPane; 
 	private DeliverableDAO ddao = new DeliverableDAO();
 
 	/**
@@ -125,21 +126,28 @@ public class DeliverableList extends JPanel {
         };
         
         JSplitPane splitPane = new JSplitPane();
+        splitPane.setEnabled(false);
         add(splitPane);
         splitPane.setResizeWeight(1.0);
         splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
         
         JPanel buttonContainer = new JPanel();
-        JTable tableDeliverable = new JTable(deliverables);
-        tableDeliverable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tableDeliverable.setAutoCreateRowSorter(true);
-        tableDeliverable.setTableHeader(null); 
-        tableDeliverable.setRowSelectionAllowed(true);
-        tableDeliverable.setShowGrid(false);
-        tableDeliverable.setPreferredScrollableViewportSize(new Dimension(1000, 70));
-        tableDeliverable.setFillsViewportHeight(true);
+        tblDeliverable = new JTable(deliverables);
+        tblDeliverable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblDeliverable.setAutoCreateRowSorter(true); 
+        tblDeliverable.setRowSelectionAllowed(true);
+        tblDeliverable.setPreferredScrollableViewportSize(new Dimension(1000, 70));
+        tblDeliverable.setFillsViewportHeight(true);
+        tblDeliverable.getColumn(columnNames[0]).setMinWidth(32);
+        tblDeliverable.getColumn(columnNames[0]).setPreferredWidth(32);
+        tblDeliverable.getColumn(columnNames[1]).setMinWidth(24);
+        tblDeliverable.getColumn(columnNames[1]).setPreferredWidth(24);
+        tblDeliverable.getColumn(columnNames[4]).setMinWidth(16);
+        tblDeliverable.getColumn(columnNames[4]).setPreferredWidth(16);	
+        tblDeliverable.getColumn(columnNames[5]).setMinWidth(16);
+        tblDeliverable.getColumn(columnNames[5]).setPreferredWidth(16);
         //Create the scroll pane and add the table to it.
-        JScrollPane scrollPane = new JScrollPane(tableDeliverable);
+        scrollPane = new JScrollPane(tblDeliverable);
         //Add the scroll pane to this panel.
         splitPane.setLeftComponent(scrollPane);
         splitPane.setRightComponent(buttonContainer);
@@ -179,12 +187,12 @@ public class DeliverableList extends JPanel {
         JButton btnPlaceGrade = new JButton("Place Grade");
         btnPlaceGrade.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		int r = tableDeliverable.getSelectedRow();
+        		int r = tblDeliverable.getSelectedRow();
         		if(r > -1)
         		{
-            		String sAID = tableDeliverable.getValueAt(r, 0).toString();
-            		String sSID = tableDeliverable.getValueAt(r, 1).toString();
-            		String sName = tableDeliverable.getValueAt(r, 2).toString() + ", " + tableDeliverable.getValueAt(r, 3).toString();
+            		String sAID = tblDeliverable.getValueAt(r, 0).toString();
+            		String sSID = tblDeliverable.getValueAt(r, 1).toString();
+            		String sName = tblDeliverable.getValueAt(r, 2).toString() + ", " + tblDeliverable.getValueAt(r, 3).toString();
             		String sActivityName = "";
             		try
             		{

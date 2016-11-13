@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
@@ -62,6 +64,27 @@ public class Main {
 	}
 
 	private void initialize() {
+		try
+		{
+            // Set System L&F
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	    } 
+	    catch (UnsupportedLookAndFeelException e) 
+		{
+	       // handle exception
+	    }
+	    catch (ClassNotFoundException e) 
+		{
+	       // handle exception
+	    }
+	    catch (InstantiationException e) 
+		{
+	       // handle exception
+	    }
+	    catch (IllegalAccessException e) 
+		{
+	       // handle exception
+	    }
 		frame = new JFrame();
 		frame.setBounds(100, 100, 850, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

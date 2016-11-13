@@ -83,7 +83,41 @@ public class DeliverableDAO extends DAO{
         	int activityID = resultSet.getInt("ActivityID");
         	String deliverableSourceCodeFileName = resultSet.getString("DeliverableSourceCodeFileName");
         	Blob b = resultSet.getBlob("DeliverableSourceCode");
-        	InputStream binaryStream = b.getBinaryStream(0, b.length());
+        	InputStream binaryStream = b.getBinaryStream(1, b.length());
+        	byte[] buffer = new byte[binaryStream.available()];
+            binaryStream.read(buffer);
+        	File deliverableSourceCode = new File(deliverableSourceCodeFileName);
+        	OutputStream outStream = new FileOutputStream(deliverableSourceCode);
+        	outStream.write(buffer);
+        	outStream.close();
+        	Timestamp dateSubmitted = resultSet.getTimestamp("DateSubmitted");
+        	float grade = resultSet.getFloat("Grade");
+            dmdl.setDeliverableID(deliverableID);
+            dmdl.setStudentID(studentID);
+            dmdl.setActivityID(activityID);
+            dmdl.setDeliverableSourceCode(deliverableSourceCode);
+            dmdl.setDateSubmitted(dateSubmitted);
+            dmdl.setDeliverableSourceCodeFileName(deliverableSourceCodeFileName);
+            dmdl.setGrade(grade);
+        }
+        close(preparedStatement, connection);
+        return dmdl;
+    }
+    
+    public Deliverable getDeliverable (int sID, int aID) throws SQLException, IOException{
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from Deliverable where StudentID = ? AND ActivityID = ?");
+        preparedStatement.setInt(1, sID);
+        preparedStatement.setInt(2, aID);
+        ResultSet resultSet = query(preparedStatement);
+        Deliverable dmdl = new Deliverable();
+        while (resultSet.next()) {
+            int deliverableID = resultSet.getInt("DeliverableID");
+        	int studentID = resultSet.getInt("StudentID");
+        	int activityID = resultSet.getInt("ActivityID");
+        	String deliverableSourceCodeFileName = resultSet.getString("DeliverableSourceCodeFileName");
+        	Blob b = resultSet.getBlob("DeliverableSourceCode");
+        	InputStream binaryStream = b.getBinaryStream(1, b.length());
         	byte[] buffer = new byte[binaryStream.available()];
             binaryStream.read(buffer);
         	File deliverableSourceCode = new File(deliverableSourceCodeFileName);
@@ -116,7 +150,7 @@ public class DeliverableDAO extends DAO{
         	int activityID = resultSet.getInt("ActivityID");
         	String deliverableSourceCodeFileName = resultSet.getString("DeliverableSourceCodeFileName");
         	Blob b = resultSet.getBlob("DeliverableSourceCode");
-        	InputStream binaryStream = b.getBinaryStream(0, b.length());
+        	InputStream binaryStream = b.getBinaryStream(1, b.length());
         	byte[] buffer = new byte[binaryStream.available()];
             binaryStream.read(buffer);
         	File deliverableSourceCode = new File(deliverableSourceCodeFileName);

@@ -34,6 +34,9 @@ public class StudentList extends JPanel {
 	private Object[][] data;
 	private DefaultTableModel studentModel;
 	private JTable tblStudent;
+	private static int selectedActivity;
+	private static int selectedStudent;
+	final private static int FILTER_ALL = 0, FILTER_STUDENT = 1, FILTER_ACTIVITY = 2;
 	final private String[] columnNames = 
 	{
 	    "ID Number",
@@ -144,10 +147,6 @@ public class StudentList extends JPanel {
         				{
         					sqle.printStackTrace();
         				}
-        			}
-        			else
-        			{
-        				
         			}
         		}
         		else

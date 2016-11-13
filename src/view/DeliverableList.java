@@ -158,7 +158,40 @@ public class DeliverableList extends JPanel {
         JButton btnFilterByStudent = new JButton("Filter By Student");
         btnFilterByStudent.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		// DAO
+        		try
+        		{
+        			String sid = (String)JOptionPane.showInputDialog(null, "Input Student ID", "");
+    				if(sid == null) { /* do nothing */ }
+    				else if(sid.trim().isEmpty())
+    				{
+    					JOptionPane.showMessageDialog(null, "Nothing entered.", "Error", JOptionPane.ERROR_MESSAGE);
+    				}
+    				else
+    				{
+						Integer studID = 0;
+						try
+						{
+							studID = Integer.parseInt(sid);
+						}
+						catch (NumberFormatException nfe)
+						{
+					        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+	        			manipulateDeliverables(ddao.getDeliverablesByStudent(studID));
+	        	        tblDeliverable.getColumn(columnNames[0]).setMinWidth(32);
+	        	        tblDeliverable.getColumn(columnNames[0]).setPreferredWidth(32);
+	        	        tblDeliverable.getColumn(columnNames[1]).setMinWidth(24);
+	        	        tblDeliverable.getColumn(columnNames[1]).setPreferredWidth(24);
+	        	        tblDeliverable.getColumn(columnNames[4]).setMinWidth(16);
+	        	        tblDeliverable.getColumn(columnNames[4]).setPreferredWidth(16);	
+	        	        tblDeliverable.getColumn(columnNames[5]).setMinWidth(16);
+	        	        tblDeliverable.getColumn(columnNames[5]).setPreferredWidth(16);
+    				}
+        		}
+        		catch(Exception ex)
+        		{
+        			ex.printStackTrace();
+        		}
         	}
         });
         
@@ -189,7 +222,43 @@ public class DeliverableList extends JPanel {
         JButton btnFilterByActivity = new JButton("Filter By Activity");
         btnFilterByActivity.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		// DAO
+        		try
+        		{
+        			ActivityDAO adao = new ActivityDAO();
+        			ArrayList<String> actLists = adao.getActivityNames();
+        			actLists.add(0, "Select Activity");
+        			String actName = (String)JOptionPane.showInputDialog(null, "Please select an activity to filter", "Select Activity", JOptionPane.QUESTION_MESSAGE, null, actLists.toArray(), "Select Activity");
+    				if(actName == null) { /* do nothing */ }
+    				else if(actName.equals("Select Activity"))
+    				{
+    					JOptionPane.showMessageDialog(null, "Nothing entered.", "Error", JOptionPane.ERROR_MESSAGE);
+    				}
+    				else
+    				{
+						Integer actID = 0;
+						try
+						{
+							actID = adao.getActivity(actName).getActivityID();
+						}
+						catch (NumberFormatException nfe)
+						{
+					        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+	        			manipulateDeliverables(ddao.getDeliverablesByActivity(actID));
+	        	        tblDeliverable.getColumn(columnNames[0]).setMinWidth(32);
+	        	        tblDeliverable.getColumn(columnNames[0]).setPreferredWidth(32);
+	        	        tblDeliverable.getColumn(columnNames[1]).setMinWidth(24);
+	        	        tblDeliverable.getColumn(columnNames[1]).setPreferredWidth(24);
+	        	        tblDeliverable.getColumn(columnNames[4]).setMinWidth(16);
+	        	        tblDeliverable.getColumn(columnNames[4]).setPreferredWidth(16);	
+	        	        tblDeliverable.getColumn(columnNames[5]).setMinWidth(16);
+	        	        tblDeliverable.getColumn(columnNames[5]).setPreferredWidth(16);
+    				}
+        		}
+        		catch(Exception ex)
+        		{
+        			ex.printStackTrace();
+        		}
         	}
         });
         buttonContainer.add(btnFilterByActivity);
@@ -197,7 +266,6 @@ public class DeliverableList extends JPanel {
         JButton btnViewSourceCode = new JButton("View Source Code");
         btnViewSourceCode.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		// DAO
         	}
         });
         buttonContainer.add(btnViewSourceCode);
@@ -274,23 +342,33 @@ public class DeliverableList extends JPanel {
         buttonContainer.add(btnPlaceGrade);
 	}
 	
+	public void manipulateDeliverables(ArrayList<Deliverable> dArray) throws SQLException, IOException
+	{
+    	Object[][] data = new Object[dArray.size()][7];
+    	for(int s = 0; s < dArray.size(); s++)
+    	{
+    		Deliverable del = dArray.get(s);
+    		ArrayList<Object> contents = new ArrayList<Object>();
+    		contents.add(del.getActivityID());
+    		contents.add(del.getStudentID());
+    		StudentDAO sdao = new StudentDAO();
+    		Student stud = sdao.getStudent(Integer.parseInt(contents.get(1).toString()));
+    		contents.add(stud.getStudentLastName());
+    		contents.add(stud.getStudentFirstName());
+    		contents.add(stud.getStudentSection());
+    		contents.add(del.getGrade());
+    		contents.add(del.getDateSubmitted());
+    		data[s] = contents.toArray();
+    	}
+        deliverableModel = new DefaultTableModel(data, columnNames){
+        	@Override
+        	public boolean isCellEditable(int row, int column){return false;}
+        };
+        tblDeliverable.setModel(deliverableModel);
+	}
+	
 	public void refreshData() throws SQLException, IOException
 	{
-//		StudentDAO sdao = new StudentDAO();
-//        ArrayList<Student> sArray = new ArrayList<Student>();
-//    	sArray = sdao.getStudents();
-//    	data = new Object[sArray.size()][4];
-//    	for(int s = 0; s < sArray.size(); s++)
-//    	{
-//    		Student stud = sArray.get(s);
-//    		ArrayList<Object> contents = new ArrayList<Object>();
-//    		contents.add(stud.getStudentID());
-//    		contents.add(stud.getStudentFirstName());
-//    		contents.add(stud.getStudentLastName());
-//    		contents.add(stud.getStudentSection());
-//    		data[s] = contents.toArray();
-//    	}
-//
 		ArrayList<Deliverable> dArray = new ArrayList<Deliverable>();
     	dArray = ddao.getDeliverables();
     	Object[][] data = new Object[dArray.size()][7];

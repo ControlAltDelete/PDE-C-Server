@@ -153,6 +153,7 @@ public class DeliverableList extends JPanel {
         JPanel buttonContainer = new JPanel();
         tblDeliverable = new JTable(deliverableModel);
         tblDeliverable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblDeliverable.getTableHeader().setReorderingAllowed(false);
         tblDeliverable.setAutoCreateRowSorter(false); 
         tblDeliverable.setRowSelectionAllowed(true);
         tblDeliverable.setPreferredScrollableViewportSize(new Dimension(1000, 70));

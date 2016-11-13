@@ -89,6 +89,7 @@ public class StudentList extends JPanel {
  
         tblStudent = new JTable(studentModel);
         tblStudent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblStudent.getTableHeader().setReorderingAllowed(false);
         tblStudent.setAutoCreateRowSorter(true);   //enables clicking the row for sort
         tblStudent.setPreferredScrollableViewportSize(new Dimension(1000, 70));
         tblStudent.setFillsViewportHeight(true);

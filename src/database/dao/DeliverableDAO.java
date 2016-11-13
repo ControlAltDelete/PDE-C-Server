@@ -139,7 +139,7 @@ public class DeliverableDAO extends DAO{
     }
     
     public ArrayList<Deliverable> getDeliverables () throws SQLException, IOException{
-        ArrayList<Deliverable> activities = new ArrayList<Deliverable>();
+        ArrayList<Deliverable> deliverables = new ArrayList<Deliverable>();
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from Deliverable order by DeliverableID");
         ResultSet resultSet = query(preparedStatement);
@@ -167,10 +167,10 @@ public class DeliverableDAO extends DAO{
             dmdl.setDeliverableSourceCodeFileName(deliverableSourceCodeFileName);
             dmdl.setGrade(grade);
             dmdl.setDeliverableID(deliverableID);
-            activities.add(dmdl);
+            deliverables.add(dmdl);
         }
         close(preparedStatement, connection);
-        return activities;
+        return deliverables;
     }
     
     public boolean isLate(int studentID, int activityID)throws SQLException, IOException

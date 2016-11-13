@@ -14,7 +14,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Date;
 
@@ -25,7 +27,7 @@ public class ActivityDAO extends DAO{
         String activityName = amdl.getActivityName();
     	String activityFile = amdl.getActivityFile();
     	Timestamp activityTimeStamp = amdl.getActivityTimeStamp();
-    	Date activityDeadline = amdl.getActivityDeadline();
+    	Timestamp activityDeadline = amdl.getActivityDeadline();
     	String activityFilename = amdl.getActivityFilename();
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("insert into Activity (ActivityName, ActivityFile, ActivityTimestamp, ActivityDeadline, ActivityFilename) values(?, ?, ?, ?, ?)");
@@ -35,7 +37,7 @@ public class ActivityDAO extends DAO{
         blob.setBytes(1, activityFile.getBytes());
         preparedStatement.setBlob(2, blob);
         preparedStatement.setTimestamp(3, activityTimeStamp);
-        preparedStatement.setDate(4, activityDeadline);
+        preparedStatement.setTimestamp(4, activityDeadline);
         preparedStatement.setString(5, activityFilename);
         update(preparedStatement);
         close(preparedStatement, connection);
@@ -96,7 +98,37 @@ public class ActivityDAO extends DAO{
         	byte[] buffer = b.getBytes(1, (int)b.length());
         	String blobContents = new String(buffer);     	
             Timestamp activityTimeStamp = resultSet.getTimestamp("ActivityTimeStamp");
-            Date activityDeadline = resultSet.getDate("ActivityDeadline");
+            Timestamp activityDeadline = resultSet.getTimestamp("ActivityDeadline");
+            amdl.setActivityID(activityID);
+            amdl.setActivityName(activityName);
+            amdl.setActivityFile(blobContents);
+            amdl.setActivityTimeStamp(activityTimeStamp);
+            amdl.setActivityDeadline(activityDeadline);
+            amdl.setActivityFilename(activityFilename);
+            
+        }
+        
+        close(preparedStatement, connection);
+        return amdl;
+    }
+    
+    public Activity getActivity (String actName) throws SQLException, IOException{
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from Activity where ActivityName = ?");
+        preparedStatement.setString(1, actName);
+        ResultSet resultSet = query(preparedStatement);
+        Activity amdl = new Activity();
+       
+        while (resultSet.next()) {
+            int activityID = resultSet.getInt("ActivityID");
+            String activityName = resultSet.getString("ActivityName");
+            String activityFilename = resultSet.getString("ActivityFilename");
+        	Blob b = resultSet.getBlob("ActivityFile");
+       
+        	byte[] buffer = b.getBytes(1, (int)b.length());
+        	String blobContents = new String(buffer);     	
+            Timestamp activityTimeStamp = resultSet.getTimestamp("ActivityTimeStamp");
+            Timestamp activityDeadline = resultSet.getTimestamp("ActivityDeadline");
             amdl.setActivityID(activityID);
             amdl.setActivityName(activityName);
             amdl.setActivityFile(blobContents);
@@ -127,7 +159,7 @@ public class ActivityDAO extends DAO{
             binaryStream.read(buffer);
         	File activityFile = new File(activityFilename);
             Timestamp activityTimeStamp = resultSet.getTimestamp("ActivityTimeStamp");
-            Date activityDeadline = resultSet.getDate("ActivityDeadline");
+            Timestamp activityDeadline = resultSet.getTimestamp("ActivityDeadline");
             amdl.setActivityID(activityID);
             amdl.setActivityName(activityName);
             amdl.setActivityFile(blobContents);

@@ -1,0 +1,398 @@
+[1mdiff --cc .classpath[m
+[1mindex 5c0380f,39545df..0000000[m
+[1m--- a/.classpath[m
+[1m+++ b/.classpath[m
+[36m@@@ -9,24 -9,6 +9,25 @@@[m
+  	<classpathentry kind="lib" path="resource/commons-codec-1.10.jar"/>[m
+  	<classpathentry kind="lib" path="resource/CBR-C.jar"/>[m
+  	<classpathentry kind="lib" path="resource/opencsv-3.8.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derby.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyclient.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_cs.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_de_DE.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_es.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_fr.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_hu.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_it.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_ja_JP.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_ko_KR.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_pl.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_pt_BR.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_ru.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_zh_CN.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyLocale_zh_TW.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbynet.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyoptionaltools.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbyrun.jar"/>[m
+[32m +	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_74/db/lib/derbytools.jar"/>[m
+[32m+ 	<classpathentry kind="lib" path="resource/rsyntaxtextarea-2.5.7.jar"/>[m
+  	<classpathentry kind="output" path="bin"/>[m
+  </classpath>[m
+* Unmerged path src/view/Panel1.java
+[1mdiff --git a/src/view/Panel1.java b/src/view/Panel1.java[m
+[1mdeleted file mode 100644[m
+[1mindex 77bddc4..0000000[m
+[1m--- a/src/view/Panel1.java[m
+[1m+++ /dev/null[m
+[36m@@ -1,110 +0,0 @@[m
+[31m-package view;[m
+[31m-import javax.swing.JPanel;[m
+[31m-import javax.swing.JScrollPane;[m
+[31m-import javax.swing.JSplitPane;[m
+[31m-import javax.swing.JTable;[m
+[31m-[m
+[31m-import java.awt.Dimension;[m
+[31m-import java.awt.GridLayout;[m
+[31m-[m
+[31m-import javax.swing.JLabel;[m
+[31m-import javax.swing.JOptionPane;[m
+[31m-import javax.swing.JTextField;[m
+[31m-import javax.swing.JButton;[m
+[31m-import javax.swing.SwingConstants;[m
+[31m-[m
+[31m-import database.dao.StudentDAO;[m
+[31m-import database.objects.Student;[m
+[31m-[m
+[31m-import java.awt.BorderLayout;[m
+[31m-import java.awt.event.ActionListener;[m
+[31m-import java.sql.SQLException;[m
+[31m-import java.util.ArrayList;[m
+[31m-import java.awt.event.ActionEvent;[m
+[31m-import java.awt.GridBagLayout;[m
+[31m-import java.awt.GridBagConstraints;[m
+[31m-import java.awt.Insets;[m
+[31m-[m
+[31m-public class Panel1 extends JPanel {[m
+[31m-	private JTextField textField;[m
+[31m-	private Object[][] data;[m
+[31m-[m
+[31m-	/**[m
+[31m-	 * Create the panel.[m
+[31m-	 */[m
+[31m-	public Panel1() {[m
+[31m-        [m
+[31m-        String[] columnNames = [m
+[31m-        	{[m
+[31m-	            "ID Number",[m
+[31m-	            "First Name",[m
+[31m-	            "Last Name",[m
+[31m-	            "Section"[m
+[31m-            };[m
+[31m-        [m
+[31m-        try[m
+[31m-        {[m
+[31m-            StudentDAO sdao = new StudentDAO();[m
+[31m-            ArrayList<Student> sArray = new ArrayList<Student>();[m
+[31m-        	sArray = sdao.getStudents();[m
+[31m-        	data = new Object[sArray.size()][4];[m
+[31m-        	for(int s = 0; s < sArray.size(); s++)[m
+[31m-        	{[m
+[31m-        		Student stud = sArray.get(s);[m
+[31m-        		ArrayList<Object> contents = new ArrayList<Object>();[m
+[31m-        		contents.add(stud.getStudentID());[m
+[31m-        		contents.add(stud.getStudentFirstName());[m
+[31m-        		contents.add(stud.getStudentLastName());[m
+[31m-        		contents.add(stud.getStudentSection());[m
+[31m-        		data[s] = contents.toArray();[m
+[31m-        	}[m
+[31m-        }[m
+[31m-        catch (SQLException sqle)[m
+[31m-        {[m
+[31m-			// JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);[m
+[31m-        	data = new Object[1][4];[m
+[31m-        }[m
+[31m-        catch (Exception e)[m
+[31m-        {[m
+[31m-        	e.printStackTrace();[m
+[31m-        	data = new Object[1][4];[m
+[31m-        }[m
+[31m-    	setLayout(new BorderLayout(0, 0));[m
+[31m- [m
+[31m-        final JTable table = new JTable(data, columnNames);[m
+[31m-        table.setEnabled(false);[m
+[31m-        table.setAutoCreateRowSorter(true);   //enables clicking the row for sort[m
+[31m-        table.setPreferredScrollableViewportSize(new Dimension(1000, 70));[m
+[31m-        table.setFillsViewportHeight(true);[m
+[31m- [m
+[31m- [m
+[31m-        //Create the scroll pane and add the table to it.[m
+[31m-        JScrollPane scrollPane = new JScrollPane(table);[m
+[31m-        [m
+[31m-        JSplitPane splitPane = new JSplitPane();[m
+[31m-        splitPane.setEnabled(false);[m
+[31m-        splitPane.setResizeWeight(1.0);[m
+[31m-        splitPane.setOneTouchExpandable(true);[m
+[31m-        splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);[m
+[31m-        //Add the scroll pane to this panel.[m
+[31m-        splitPane.setTopComponent(scrollPane);[m
+[31m-        [m
+[31m-        JPanel buttonContainer = new JPanel();[m
+[31m-        splitPane.setBottomComponent(buttonContainer);[m
+[31m-        [m
+[31m-        JButton Add = new JButton("Add");[m
+[31m-        buttonContainer.add(Add);[m
+[31m-        [m
+[31m-        JButton Edit = new JButton("Edit");[m
+[31m-        buttonContainer.add(Edit);[m
+[31m-        [m
+[31m-        JButton Delete = new JButton("Delete");[m
+[31m-        buttonContainer.add(Delete);[m
+[31m-        [m
+[31m-        add(splitPane);[m
+[31m-        [m
+[31m-[m
+[31m-[m
+[31m-	}[m
+[31m-[m
+[31m-}[m
+* Unmerged path src/view/Panel2.java
+[1mdiff --git a/src/view/Panel2.java b/src/view/Panel2.java[m
+[1mdeleted file mode 100644[m
+[1mindex f8cac61..0000000[m
+[1m--- a/src/view/Panel2.java[m
+[1m+++ /dev/null[m
+[36m@@ -1,95 +0,0 @@[m
+[31m-package view;[m
+[31m-import javax.swing.JPanel;[m
+[31m-[m
+[31m-import java.awt.Dimension;[m
+[31m-import java.awt.GridLayout;[m
+[31m-[m
+[31m-import javax.swing.JLabel;[m
+[31m-import javax.swing.JTextField;[m
+[31m-[m
+[31m-import database.dao.DeliverableDAO;[m
+[31m-import database.dao.StudentDAO;[m
+[31m-import database.objects.Deliverable;[m
+[31m-import database.objects.Student;[m
+[31m-[m
+[31m-import javax.swing.JRadioButton;[m
+[31m-import javax.swing.JTable;[m
+[31m-import javax.swing.JScrollPane;[m
+[31m-import javax.swing.JList;[m
+[31m-import javax.swing.JOptionPane;[m
+[31m-[m
+[31m-import java.awt.event.MouseAdapter;[m
+[31m-import java.awt.event.MouseEvent;[m
+[31m-import java.io.IOException;[m
+[31m-import java.sql.SQLException;[m
+[31m-import java.util.ArrayList;[m
+[31m-[m
+[31m-public class Panel2 extends JPanel {[m
+[31m-	private JTable table;[m
+[31m-	private Object[][] data;[m
+[31m-[m
+[31m-	/**[m
+[31m-	 * Create the panel.[m
+[31m-	 */[m
+[31m-	public Panel2() {[m
+[31m-        super(new GridLayout(1,0));[m
+[31m-        [m
+[31m-        String[] columnNames = {"Activity No.",[m
+[31m-                                "ID Number",[m
+[31m-                                "Last Name",[m
+[31m-                                "Section",[m
+[31m-                                "Grade",[m
+[31m-                                "Date Submitted"[m
+[31m-                                };[m
+[31m-        [m
+[31m-        try[m
+[31m-        {[m
+[31m-            DeliverableDAO ddao = new DeliverableDAO();[m
+[31m-            ArrayList<Deliverable> dArray = new ArrayList<Deliverable>();[m
+[31m-        	dArray = ddao.getDeliverables();[m
+[31m-        	data = new Object[dArray.size()][5];[m
+[31m-        	for(int s = 0; s < dArray.size(); s++)[m
+[31m-        	{[m
+[31m-        		Deliverable del = dArray.get(s);[m
+[31m-        		ArrayList<Object> contents = new ArrayList<Object>();[m
+[31m-        		contents.add(del.getDeliverableID());[m
+[31m-        		contents.add(del.getStudentID());[m
+[31m-        		StudentDAO sdao = new StudentDAO();[m
+[31m-        		Student stud = sdao.getStudent(Integer.parseInt(contents.get(1).toString()));[m
+[31m-        		contents.add(stud.getStudentLastName() + ", " + stud.getStudentFirstName());[m
+[31m-        		contents.add(stud.getStudentSection());[m
+[31m-        		contents.add(del.getDateSubmitted());[m
+[31m-        		data[s] = contents.toArray();[m
+[31m-        	}[m
+[31m-        }[m
+[31m-        catch (SQLException sqle)[m
+[31m-        {[m
+[31m-			// JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);[m
+[31m-        	data = new Object[1][5];[m
+[31m-        }[m
+[31m-        catch (IOException ioe)[m
+[31m-        {[m
+[31m-        	ioe.printStackTrace();[m
+[31m-        	data = new Object[1][5];[m
+[31m-        }[m
+[31m-        catch (Exception e)[m
+[31m-        {[m
+[31m-        	e.printStackTrace();[m
+[31m-        	data = new Object[1][5];[m
+[31m-        }[m
+[31m- [m
+[31m-        final JTable table = new JTable(data, columnNames);[m
+[31m-        table.setAutoCreateRowSorter(true);[m
+[31m-        table.setEnabled(false);[m
+[31m-        table.setPreferredScrollableViewportSize(new Dimension(1000, 70));[m
+[31m-        table.setFillsViewportHeight(true);[m
+[31m- [m
+[31m- [m
+[31m-        //Create the scroll pane and add the table to it.[m
+[31m-        JScrollPane scrollPane = new JScrollPane(table);[m
+[31m- [m
+[31m-        //Add the scroll pane to this panel.[m
+[31m-        add(scrollPane);[m
+[31m-[m
+[31m-	}[m
+[31m-}[m
+* Unmerged path src/view/submitScoresPanel.java
+[1mdiff --git a/src/view/submitScoresPanel.java b/src/view/submitScoresPanel.java[m
+[1mdeleted file mode 100644[m
+[1mindex 6cdec0f..0000000[m
+[1m--- a/src/view/submitScoresPanel.java[m
+[1m+++ /dev/null[m
+[36m@@ -1,142 +0,0 @@[m
+[31m-package view;[m
+[31m-import javax.swing.JPanel;[m
+[31m-import javax.swing.ListSelectionModel;[m
+[31m-[m
+[31m-import database.dao.ActivityDAO;[m
+[31m-import database.dao.DeliverableDAO;[m
+[31m-import database.dao.StudentDAO;[m
+[31m-import database.objects.Activity;[m
+[31m-import database.objects.Student;[m
+[31m-[m
+[31m-import java.io.File;[m
+[31m-import java.io.IOException;[m
+[31m-import java.sql.SQLException;[m
+[31m-import java.util.ArrayList;[m
+[31m-[m
+[31m-import javax.swing.JList;[m
+[31m-import javax.swing.JOptionPane;[m
+[31m-import javax.swing.JLabel;[m
+[31m-import javax.swing.JTextField;[m
+[31m-import javax.swing.JButton;[m
+[31m-import javax.swing.JComboBox;[m
+[31m-import java.awt.event.ActionListener;[m
+[31m-import java.awt.event.ActionEvent;[m
+[31m-[m
+[31m-public class submitScoresPanel extends JPanel {[m
+[31m-	private JTextField txtScore;[m
+[31m-	private Object listData[];[m
+[31m-	private JList<Object> list;[m
+[31m-	private JLabel lblActivityNo;[m
+[31m-	private JButton btnSubmit;[m
+[31m-	private JComboBox<Object> activityList;[m
+[31m-[m
+[31m-	/**[m
+[31m-	 * Create the panel.[m
+[31m-	 * [m
+[31m-	 * [m
+[31m-	 */[m
+[31m-	public submitScoresPanel() {[m
+[31m-		[m
+[31m-		list = new JList<Object>();[m
+[31m-		lblActivityNo = new JLabel("Activity No.");[m
+[31m-		btnSubmit = new JButton("Submit");[m
+[31m-		activityList = new JComboBox<Object>();[m
+[31m-		[m
+[31m-		try[m
+[31m-		{[m
+[31m-			StudentDAO sdao = new StudentDAO();[m
+[31m-			ArrayList<Student> studs = sdao.getStudents(); // send back the received data, get all student list[m
+[31m-			ArrayList<String> studLabel = new ArrayList<String>();[m
+[31m-			for(int s = 0; s < studs.size(); s++)[m
+[31m-			{[m
+[31m-				studLabel.add(studs.get(s).getStudentID() + " - " + studs.get(s).getStudentLastName() + ", " + studs.get(s).getStudentFirstName());[m
+[31m-			}[m
+[31m-			listData = studLabel.toArray();[m
+[31m-		}[m
+[31m-		catch (SQLException sqle)[m
+[31m-		{[m
+[31m-			listData = new String[1];[m
+[31m-			listData[0] = "No SQL Connection";[m
+[31m-			list.setEnabled(false);[m
+[31m-		}[m
+[31m-		[m
+[31m-		setLayout(null);[m
+[31m-		list = new JList<Object>(listData);[m
+[31m-		list.setBounds(10, 10, 194, 278);[m
+[31m-		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);[m
+[31m-		list.setLayoutOrientation(JList.VERTICAL_WRAP);[m
+[31m-		list.setVisible(true);[m
+[31m-		add(list);[m
+[31m-		[m
+[31m-		lblActivityNo.setBounds(214, 11, 87, 14);[m
+[31m-		add(lblActivityNo);[m
+[31m-		[m
+[31m-		txtScore = new JTextField();[m
+[31m-		txtScore.setBounds(311, 33, 103, 20);[m
+[31m-		add(txtScore);[m
+[31m-		txtScore.setColumns(10);[m
+[31m-		[m
+[31m-		JLabel lblScore = new JLabel("Score");[m
+[31m-		lblScore.setBounds(214, 36, 87, 14);[m
+[31m-		add(lblScore);[m
+[31m-		[m
+[31m-		activityList.setBounds(311, 8, 500, 20);[m
+[31m-		[m
+[31m-		try[m
+[31m-		{[m
+[31m-			ActivityDAO adao = new ActivityDAO();[m
+[31m-			ArrayList<Activity> acts = adao.getActivities(); // send back the received data, get all activity list[m
+[31m-			ArrayList<String> actLabel = new ArrayList<String>();[m
+[31m-			for(int a = 0; a < acts.size(); a++)[m
+[31m-				actLabel.add(acts.get(a).getActivityID() + " - " + acts.get(a).getActivityName());[m
+[31m-			Object[] actItem = actLabel.toArray();[m
+[31m-			if(actItem.length == 0)[m
+[31m-			{[m
+[31m-				activityList.addItem("No activities...");[m
+[31m-				txtScore.setEnabled(false);[m
+[31m-				activityList.setEnabled(false);[m
+[31m-				btnSubmit.setEnabled(false);[m
+[31m-			}[m
+[31m-			else[m
+[31m-			{[m
+[31m-				for(int a = 0; a < actItem.length; a++)[m
+[31m-					activityList.addItem(actItem[a]);[m
+[31m-			}[m
+[31m-		}[m
+[31m-		catch (SQLException sqle)[m
+[31m-		{[m
+[31m-			// JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);[m
+[31m-			txtScore.setEnabled(false);[m
+[31m-			activityList.setEnabled(false);[m
+[31m-			btnSubmit.setEnabled(false);[m
+[31m-		}[m
+[31m-		catch (IOException sqle)[m
+[31m-		{[m
+[31m-			JOptionPane.showMessageDialog(null, "File Not Found!", "Error", JOptionPane.ERROR_MESSAGE);[m
+[31m-		}[m
+[31m-		[m
+[31m-		add(activityList);[m
+[31m-		[m
+[31m-		btnSubmit.addActionListener(new ActionListener() {[m
+[31m-			public void actionPerformed(ActionEvent arg0) {[m
+[31m-				float grade = Float.parseFloat(txtScore.getText());[m
+[31m-				String actName = activityList.getSelectedItem().toString();[m
+[31m-				int actID = Integer.parseInt(actName.substring(0, actName.indexOf(" ")));[m
+[31m-				String studName = list.getSelectedValue().toString();[m
+[31m-				int studID = Integer.parseInt(studName.substring(0, studName.indexOf(" ")));[m
+[31m-				DeliverableDAO ddao = new DeliverableDAO();[m
+[31m-				try[m
+[31m-				{[m
+[31m-					ddao.changeGrade(studID, actID, grade);[m
+[31m-				}[m
+[31m-				catch (SQLException sqle)[m
+[31m-				{[m
+[31m-					JOptionPane.showMessageDialog(null, "No Connection to SQL!", "Error", JOptionPane.ERROR_MESSAGE);[m
+[31m-				}[m
+[31m-			}[m
+[31m-		});[m
+[31m-		btnSubmit.setBounds(311, 64, 103, 23);[m
+[31m-		add(btnSubmit);[m
+[31m-[m
+[31m-	}[m
+[31m-}[m

@@ -8,8 +8,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import database.dao.ActivityDAO;
 import database.dao.DeliverableDAO;
 import database.dao.StudentDAO;
+import database.objects.Activity;
 import database.objects.Deliverable;
 import database.objects.Student;
 
@@ -33,6 +35,7 @@ import javax.swing.ListSelectionModel;
 public class DeliverableList extends JPanel {
 	public static DeliverableList deliverableInstance = null;
 	private JTable tblDeliverable;
+	private DeliverableDAO ddao = new DeliverableDAO();
 
 	/**
 	 * Create the panel.
@@ -77,42 +80,43 @@ public class DeliverableList extends JPanel {
         };
         
         
-//        try
-//        {
-//            DeliverableDAO ddao = new DeliverableDAO();
-//            ArrayList<Deliverable> dArray = new ArrayList<Deliverable>();
-//        	dArray = ddao.getDeliverables();
-//        	data = new Object[dArray.size()][5];
-//        	for(int s = 0; s < dArray.size(); s++)
-//        	{
-//        		Deliverable del = dArray.get(s);
-//        		ArrayList<Object> contents = new ArrayList<Object>();
-//        		contents.add(del.getDeliverableID());
-//        		contents.add(del.getStudentID());
-//        		StudentDAO sdao = new StudentDAO();
-//        		Student stud = sdao.getStudent(Integer.parseInt(contents.get(1).toString()));
-//        		contents.add(stud.getStudentLastName() + ", " + stud.getStudentFirstName());
-//        		contents.add(stud.getStudentSection());
-//        		contents.add(del.getDateSubmitted());
-//        		data[s] = contents.toArray();
-//        	}
-//        }
-//        catch (SQLException sqle)
-//        {
-//        	System.out.println("No connection to MySQL.");
-//        	data = new Object[1][5];
-//        }
-//        catch (IOException ioe)
-//        {
-//        	ioe.printStackTrace();
-//        	data = new Object[1][5];
-//        }
-//        catch (Exception e)
-//        {
-//        	e.printStackTrace();
-//        	data = new Object[1][5];
-//        }
-// 
+        try
+        {
+            ArrayList<Deliverable> dArray = new ArrayList<Deliverable>();
+        	dArray = ddao.getDeliverables();
+        	data = new Object[dArray.size()][7];
+        	for(int s = 0; s < dArray.size(); s++)
+        	{
+        		Deliverable del = dArray.get(s);
+        		ArrayList<Object> contents = new ArrayList<Object>();
+        		contents.add(del.getActivityID());
+        		contents.add(del.getStudentID());
+        		StudentDAO sdao = new StudentDAO();
+        		Student stud = sdao.getStudent(Integer.parseInt(contents.get(1).toString()));
+        		contents.add(stud.getStudentLastName());
+        		contents.add(stud.getStudentFirstName());
+        		contents.add(stud.getStudentSection());
+        		contents.add(del.getGrade());
+        		contents.add(del.getDateSubmitted());
+        		data[s] = contents.toArray();
+        	}
+        }
+        catch (SQLException sqle)
+        {
+        	System.out.println("No connection to MySQL.");
+        	data = new Object[1][7];
+        }
+        catch (IOException ioe)
+        {
+        	ioe.printStackTrace();
+        	data = new Object[1][7];
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        	data = new Object[1][7];
+        }
+ 
         DefaultTableModel deliverables = new DefaultTableModel(data, columnNames){
         	
         	@Override
@@ -181,7 +185,22 @@ public class DeliverableList extends JPanel {
             		String sAID = tableDeliverable.getValueAt(r, 0).toString();
             		String sSID = tableDeliverable.getValueAt(r, 1).toString();
             		String sName = tableDeliverable.getValueAt(r, 2).toString() + ", " + tableDeliverable.getValueAt(r, 3).toString();
-            		String grade = (String)JOptionPane.showInputDialog(null, "Place a Grade for " + sSID + " - " + sName + " on " + sAID + "\'s the selected deliverable", "");
+            		String sActivityName = "";
+            		try
+            		{
+            			ActivityDAO adao = new ActivityDAO();
+            			Activity a = adao.getActivity(Integer.parseInt(sAID));
+            			sActivityName = a.getActivityName();
+            		}
+					catch (SQLException sqle)
+					{
+						sqle.printStackTrace();
+					}
+            		catch (IOException ioe)
+            		{
+            			ioe.printStackTrace();
+            		}
+            		String grade = (String)JOptionPane.showInputDialog(null, "Place a Grade for " + sSID + " - " + sName + " on " + sActivityName + "\'s the selected deliverable", "");
     				if(grade == null) { /* do nothing */ }
     				else if(grade.trim().isEmpty())
     				{
@@ -189,15 +208,19 @@ public class DeliverableList extends JPanel {
     				}
     				else
     				{
-    					Integer iGrade = 0;
+    					Float fGrade = 0f;
     					try
     					{
-    						iGrade = Integer.parseInt(grade);
-
-    						if(iGrade >= 0 && iGrade <= 100)
+    						fGrade = Float.parseFloat(grade);
+    						if(fGrade >= 0 && fGrade <= 100)
     						{
-    							JOptionPane.showMessageDialog(null, "Successfully placed a grade.", "Success", JOptionPane.INFORMATION_MESSAGE);
-//								
+    							Deliverable d = ddao.getDeliverable(Integer.parseInt(sSID), Integer.parseInt(sAID));
+    							float prevGrade = d.getGrade();
+								ddao.changeGrade(Integer.parseInt(sSID), Integer.parseInt(sAID), fGrade);
+								if(prevGrade ==	 -1f)
+									JOptionPane.showMessageDialog(null, "Successfully placed a grade.", "Success", JOptionPane.INFORMATION_MESSAGE);
+								else
+									JOptionPane.showMessageDialog(null, "Successfully edited a grade.", "Success", JOptionPane.INFORMATION_MESSAGE);
     						}
     						else
     							JOptionPane.showMessageDialog(null, "Grade input should be from 0 - 100.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -206,10 +229,14 @@ public class DeliverableList extends JPanel {
     					{
     				        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
     					}
-//    					catch (SQLException sqle)
-//    					{
-//    						sqle.printStackTrace();
-//    					}
+    					catch (SQLException sqle)
+    					{
+    						sqle.printStackTrace();
+    					}
+                		catch (IOException ioe)
+                		{
+                			ioe.printStackTrace();
+                		}
     				}
         		}
         		else

@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="resource/commons-codec-1.10.jar"/>
 	<classpathentry kind="lib" path="resource/CBR-C.jar"/>
 	<classpathentry kind="lib" path="resource/opencsv-3.8.jar"/>
+	<classpathentry kind="lib" path="resource/rsyntaxtextarea-2.5.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -23,9 +23,14 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import javax.swing.JSplitPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -277,6 +282,61 @@ public class DeliverableList extends JPanel {
         JButton btnViewSourceCode = new JButton("View Source Code");
         btnViewSourceCode.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		int r = tblDeliverable.getSelectedRow();
+        		if(r > -1)
+        		{
+            		String sAID = tblDeliverable.getValueAt(r, 0).toString();
+            		String sSID = tblDeliverable.getValueAt(r, 1).toString();
+            		String sName = tblDeliverable.getValueAt(r, 2).toString() + ", " + tblDeliverable.getValueAt(r, 3).toString();
+            		String sActivityName = "";
+            		try
+            		{
+            			ActivityDAO adao = new ActivityDAO();
+            			Activity a = adao.getActivity(Integer.parseInt(sAID));
+            			sActivityName = a.getActivityName();
+            		}
+					catch (SQLException sqle)
+					{
+						sqle.printStackTrace();
+					}
+            		catch (IOException ioe)
+            		{
+            			ioe.printStackTrace();
+            		}
+					try
+					{
+						Deliverable d = ddao.getDeliverable(Integer.parseInt(sSID), Integer.parseInt(sAID));
+    					String title = "Source code of " + sSID + " - " + sName + " for " + sActivityName + " - " + d.getDeliverableSourceCodeFileName();
+						FileInputStream inputStream = new FileInputStream(d.getDeliverableSourceCode());
+    					Scanner sc = new Scanner(inputStream);
+    					StringBuilder sb = new StringBuilder();
+    					while(sc.hasNextLine())
+    					{
+    						sb.append(sc.nextLine());
+    						if(sc.hasNextLine()) sb.append(System.getProperty("line.separator"));
+    					}
+    					sc.close();
+    					ViewSource vs = new ViewSource();
+    					vs.setTitle(title);
+    					vs.setTextArea(sb);
+					}
+					catch (NumberFormatException nfe)
+					{
+				        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					catch (SQLException sqle)
+					{
+						sqle.printStackTrace();
+					}
+            		catch (IOException ioe)
+            		{
+            			ioe.printStackTrace();
+            		}
+        		}
+        		else
+        		{
+			        JOptionPane.showMessageDialog(null, "Please select a deliverable to proceed with source code preview.", "Error", JOptionPane.ERROR_MESSAGE);        			
+        		}
         	}
         });
         buttonContainer.add(btnViewSourceCode);
@@ -361,7 +421,7 @@ public class DeliverableList extends JPanel {
         		}
         		else
         		{
-			        JOptionPane.showMessageDialog(null, "Please select a deliverable to proceed with the placement of grade.", "Error", JOptionPane.ERROR_MESSAGE);        			
+			        JOptionPane.showMessageDialog(null, "Please select a deliverable to proceed with the grade placement.", "Error", JOptionPane.ERROR_MESSAGE);        			
         		}
         	}
         });

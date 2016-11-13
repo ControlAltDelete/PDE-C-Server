@@ -52,6 +52,7 @@ public class StudentProfile {
 	 */
 	private void initialize() {
 		studentProfileFrame = new JFrame();
+		studentProfileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		studentProfileFrame.setResizable(false);
 		studentProfileFrame.setSize(640, 360);
 		studentProfileFrame.setTitle("Student Profile");

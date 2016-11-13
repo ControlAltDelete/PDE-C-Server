@@ -4,6 +4,9 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.fileops.FileLoad;
+import database.dao.ActivityDAO;
+import database.objects.Activity;
+import service.FileManipulation;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -12,21 +15,29 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
+
 import java.awt.GridLayout;
 import java.awt.Color;
 import javax.swing.JComboBox;
@@ -35,9 +46,11 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 public class uploadFile extends JPanel {
-	private JTextField activityNo;
+	private JTextField txtActName;
+	private JComboBox cmbYear, cmbMonth, cmbDay;
 	private FileLoad loader;
 	private FileNameExtensionFilter pdfFilter;
+	private Path filePathChosen = null;
     JFileChooser fc;
     JButton b, b1;
     JTextField tf;
@@ -46,7 +59,7 @@ public class uploadFile extends JPanel {
     DataOutputStream dout;
     DataInputStream din;
     int i;
-    private JTextField activityName;
+    private JTextField txtFilePath;
 	/**
 	 * Create the panel.
 	 */
@@ -70,74 +83,96 @@ public class uploadFile extends JPanel {
 		gbl_centerPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		centerPanel.setLayout(gbl_centerPanel);
 		
-		JLabel lblNewLabel = new JLabel("Activity Name");
-		lblNewLabel.setBackground(Color.WHITE);
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.gridwidth = 3;
-		gbc_lblNewLabel.fill = GridBagConstraints.BOTH;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		centerPanel.add(lblNewLabel, gbc_lblNewLabel);
+		JLabel lblActivityName = new JLabel("Activity Name");
+		lblActivityName.setBackground(Color.WHITE);
+		GridBagConstraints gbc_lblActivityName = new GridBagConstraints();
+		gbc_lblActivityName.gridwidth = 3;
+		gbc_lblActivityName.fill = GridBagConstraints.BOTH;
+		gbc_lblActivityName.insets = new Insets(0, 0, 5, 5);
+		gbc_lblActivityName.gridx = 0;
+		gbc_lblActivityName.gridy = 0;
+		centerPanel.add(lblActivityName, gbc_lblActivityName);
 		
-		activityNo = new JTextField();
-		GridBagConstraints gbc_activityNo = new GridBagConstraints();
-		gbc_activityNo.gridwidth = 4;
-		gbc_activityNo.fill = GridBagConstraints.BOTH;
-		gbc_activityNo.insets = new Insets(0, 0, 5, 0);
-		gbc_activityNo.gridx = 0;
-		gbc_activityNo.gridy = 1;
-		centerPanel.add(activityNo, gbc_activityNo);
-		activityNo.setColumns(10);
+		txtActName = new JTextField();
+		GridBagConstraints gbc_txtActName = new GridBagConstraints();
+		gbc_txtActName.gridwidth = 4;
+		gbc_txtActName.fill = GridBagConstraints.BOTH;
+		gbc_txtActName.insets = new Insets(0, 0, 5, 0);
+		gbc_txtActName.gridx = 0;
+		gbc_txtActName.gridy = 1;
+		centerPanel.add(txtActName, gbc_txtActName);
+		txtActName.setColumns(10);
 		
-		JLabel lblActivityNo = new JLabel("Activity Deadline");
-		GridBagConstraints gbc_lblActivityNo = new GridBagConstraints();
-		gbc_lblActivityNo.gridwidth = 3;
-		gbc_lblActivityNo.fill = GridBagConstraints.BOTH;
-		gbc_lblActivityNo.insets = new Insets(0, 0, 5, 5);
-		gbc_lblActivityNo.gridx = 0;
-		gbc_lblActivityNo.gridy = 2;
-		centerPanel.add(lblActivityNo, gbc_lblActivityNo);
+		JLabel lblActivityDeadline = new JLabel("Activity Deadline");
+		GridBagConstraints gbc_lblActivityDeadline = new GridBagConstraints();
+		gbc_lblActivityDeadline.gridwidth = 3;
+		gbc_lblActivityDeadline.fill = GridBagConstraints.BOTH;
+		gbc_lblActivityDeadline.insets = new Insets(0, 0, 5, 5);
+		gbc_lblActivityDeadline.gridx = 0;
+		gbc_lblActivityDeadline.gridy = 2;
+		centerPanel.add(lblActivityDeadline, gbc_lblActivityDeadline);
 		
-		JComboBox comboBox = new JComboBox();
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.fill = GridBagConstraints.BOTH;
-		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox.gridx = 0;
-		gbc_comboBox.gridy = 3;
-		centerPanel.add(comboBox, gbc_comboBox);
+		cmbDay = new JComboBox();
+		cmbDay.setModel(new DefaultComboBoxModel(new String[] {"Day"}));
+		GridBagConstraints gbc_cmbDay = new GridBagConstraints();
+		gbc_cmbDay.fill = GridBagConstraints.BOTH;
+		gbc_cmbDay.insets = new Insets(0, 0, 5, 5);
+		gbc_cmbDay.gridx = 0;
+		gbc_cmbDay.gridy = 3;
+		centerPanel.add(cmbDay, gbc_cmbDay);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		GridBagConstraints gbc_comboBox_1 = new GridBagConstraints();
-		gbc_comboBox_1.fill = GridBagConstraints.BOTH;
-		gbc_comboBox_1.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox_1.gridx = 1;
-		gbc_comboBox_1.gridy = 3;
-		centerPanel.add(comboBox_1, gbc_comboBox_1);
+		cmbMonth = new JComboBox();
+		cmbMonth.setModel(new DefaultComboBoxModel(new String[] {"Month", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}));
+		GridBagConstraints gbc_cmbMonth = new GridBagConstraints();
+		gbc_cmbMonth.fill = GridBagConstraints.BOTH;
+		gbc_cmbMonth.insets = new Insets(0, 0, 5, 5);
+		gbc_cmbMonth.gridx = 1;
+		gbc_cmbMonth.gridy = 3;
+		centerPanel.add(cmbMonth, gbc_cmbMonth);
+		cmbMonth.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				cmbDay.setModel(monthDayYearChecker(cmbMonth.getSelectedItem().toString(), cmbYear.getSelectedItem().toString()));
+			}
+		});
 		
-		JComboBox comboBox_2 = new JComboBox();
-		GridBagConstraints gbc_comboBox_2 = new GridBagConstraints();
-		gbc_comboBox_2.fill = GridBagConstraints.BOTH;
-		gbc_comboBox_2.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox_2.gridx = 2;
-		gbc_comboBox_2.gridy = 3;
-		centerPanel.add(comboBox_2, gbc_comboBox_2);
+		cmbYear = new JComboBox();
+		cmbYear.setModel(new DefaultComboBoxModel(new String[] {"Year", "2016", "2017", "2000", "2400", "1900"}));
+		GridBagConstraints gbc_cmbYear = new GridBagConstraints();
+		gbc_cmbYear.fill = GridBagConstraints.BOTH;
+		gbc_cmbYear.insets = new Insets(0, 0, 5, 5);
+		gbc_cmbYear.gridx = 2;
+		gbc_cmbYear.gridy = 3;
+		centerPanel.add(cmbYear, gbc_cmbYear);
+		cmbYear.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				cmbDay.setModel(monthDayYearChecker(cmbMonth.getSelectedItem().toString(), cmbYear.getSelectedItem().toString()));
+			}
+		});
 		
-		JComboBox comboBox_3 = new JComboBox();
-		GridBagConstraints gbc_comboBox_3 = new GridBagConstraints();
-		gbc_comboBox_3.fill = GridBagConstraints.BOTH;
-		gbc_comboBox_3.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox_3.gridx = 0;
-		gbc_comboBox_3.gridy = 4;
-		centerPanel.add(comboBox_3, gbc_comboBox_3);
+		JComboBox cmbHour = new JComboBox();
+		cmbHour.setModel(new DefaultComboBoxModel(new String[] {"hour", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17",
+		"18"}));
+		GridBagConstraints gbc_cmbHour = new GridBagConstraints();
+		gbc_cmbHour.fill = GridBagConstraints.BOTH;
+		gbc_cmbHour.insets = new Insets(0, 0, 5, 5);
+		gbc_cmbHour.gridx = 0;
+		gbc_cmbHour.gridy = 4;
+		centerPanel.add(cmbHour, gbc_cmbHour);
 		
-		JComboBox comboBox_4 = new JComboBox();
-		GridBagConstraints gbc_comboBox_4 = new GridBagConstraints();
-		gbc_comboBox_4.fill = GridBagConstraints.BOTH;
-		gbc_comboBox_4.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox_4.gridx = 1;
-		gbc_comboBox_4.gridy = 4;
-		centerPanel.add(comboBox_4, gbc_comboBox_4);
+		JComboBox cmbMinute = new JComboBox();
+		cmbMinute.setModel(new DefaultComboBoxModel(new String[] {"min", "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
+				"10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
+				"30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49",
+				"50", "51",
+				"52", "53", "54", "55", "56", "57", "58", "59"}));
+		GridBagConstraints gbc_cmbMinute = new GridBagConstraints();
+		gbc_cmbMinute.fill = GridBagConstraints.BOTH;
+		gbc_cmbMinute.insets = new Insets(0, 0, 5, 5);
+		gbc_cmbMinute.gridx = 1;
+		gbc_cmbMinute.gridy = 4;
+		centerPanel.add(cmbMinute, gbc_cmbMinute);
 		
 		JLabel lblPathFile = new JLabel("Path file");
 		GridBagConstraints gbc_lblPathFile = new GridBagConstraints();
@@ -148,23 +183,23 @@ public class uploadFile extends JPanel {
 		gbc_lblPathFile.gridy = 5;
 		centerPanel.add(lblPathFile, gbc_lblPathFile);
 		
-		activityName = new JTextField();
-		activityName.setEditable(false);
-		GridBagConstraints gbc_activityName = new GridBagConstraints();
-		gbc_activityName.gridwidth = 3;
-		gbc_activityName.fill = GridBagConstraints.BOTH;
-		gbc_activityName.insets = new Insets(0, 0, 5, 5);
-		gbc_activityName.gridx = 0;
-		gbc_activityName.gridy = 6;
-		centerPanel.add(activityName, gbc_activityName);
-		activityName.setColumns(10);
+		txtFilePath = new JTextField();
+		txtFilePath.setEditable(false);
+		GridBagConstraints gbc_txtFilePath = new GridBagConstraints();
+		gbc_txtFilePath.gridwidth = 3;
+		gbc_txtFilePath.fill = GridBagConstraints.BOTH;
+		gbc_txtFilePath.insets = new Insets(0, 0, 5, 5);
+		gbc_txtFilePath.gridx = 0;
+		gbc_txtFilePath.gridy = 6;
+		centerPanel.add(txtFilePath, gbc_txtFilePath);
+		txtFilePath.setColumns(10);
 		
 		JButton btnChooseFile = new JButton("Choose File");
 		btnChooseFile.addActionListener(new ActionListener() 
 			{
 				public void actionPerformed(ActionEvent e) 
 				{
-				  chooseFile(); // Returns FilePath. Upload not yet implemented
+					filePathChosen = chooseFile();
 				}
 			});
 		GridBagConstraints gbc_btnChooseFile = new GridBagConstraints();
@@ -175,6 +210,42 @@ public class uploadFile extends JPanel {
 		centerPanel.add(btnChooseFile, gbc_btnChooseFile);
 		
 		JButton btnSend = new JButton("Send");
+		btnSend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(!fieldChecker(txtActName, txtFilePath, cmbDay, cmbMonth, cmbYear, cmbHour, cmbMinute))
+				{
+					JOptionPane.showMessageDialog(null, "Please fill in the required fields to add a new activity.", "Notice", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else
+				{
+				  	FileManipulation fm = new FileManipulation();
+					ActivityDAO adao = new ActivityDAO();
+					Activity a = new Activity();
+					File chosen = new File(filePathChosen.toUri());
+					a.setActivityName(txtActName.getText());
+					a.setActivityID(0);
+					a.setActivityTimeStamp(new Timestamp(System.currentTimeMillis()));
+					a.setActivityDeadline(new Date(Integer.parseInt(cmbYear.getSelectedItem().toString()), cmbMonth.getSelectedIndex(), Integer.parseInt(cmbDay.getSelectedItem().toString())));
+					a.setActivityFile(fm.convertToBinary(chosen));
+					a.setActivityFilename(chosen.getName());
+					try
+					{
+						adao.addActivity(a);
+						JOptionPane.showMessageDialog(null, "Successfully added " + a.getActivityName() + " Activity.", "Notice", JOptionPane.INFORMATION_MESSAGE);
+						resetAllFields(txtActName, txtFilePath, cmbDay, cmbMonth, cmbYear, cmbHour, cmbMinute);
+					}
+					catch (FileNotFoundException fnfe)
+					{
+						JOptionPane.showMessageDialog(null, "File not found. It may have been deleted during the process.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					catch (SQLException e) 
+					{
+						e.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Something went wrong.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
 		GridBagConstraints gbc_btnSend = new GridBagConstraints();
 		gbc_btnSend.gridwidth = 4;
 		gbc_btnSend.insets = new Insets(0, 0, 5, 0);
@@ -198,7 +269,7 @@ public class uploadFile extends JPanel {
 			String ext = path.toString();
 			if (loader.checkerpdf(ext))
 			{
-				  activityName.setText(ext);
+				  txtFilePath.setText(ext);
 			}
 			else
 			{
@@ -207,5 +278,81 @@ public class uploadFile extends JPanel {
 			}
 		}
 		return filePath;
+	}
+	
+	private DefaultComboBoxModel<String> monthDayYearChecker(String month, String year)
+	{
+		DefaultComboBoxModel<String> res = new DefaultComboBoxModel<String>();
+		boolean leap = false;
+		if((month.equals("Month") && year.equals("Year")) || month.equals("Month") || year.equals("Year"))
+		{
+			res = new DefaultComboBoxModel(new String[] {"Day"});
+		}
+		else
+		{
+			int y = Integer.parseInt(year);
+			leap = ((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0);
+			if(leap)
+			{
+				if(month.equals("Jan") || month.equals("Mar") || month.equals("May") || month.equals("Jul") || month.equals("Aug") || month.equals("Oct") || month.equals("Dec"))
+				{
+					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", 
+						"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28",
+						"29", "30", "31"});
+				}
+				else if(month.equals("Apr") || month.equals("Jun") || month.equals("Sep") || month.equals("Nov"))
+				{
+					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+						"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", 
+						"29", "30"});
+				}
+				else if(month.equals("Feb"))
+				{
+					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", 
+						"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", 
+						"29"});
+				}
+			}
+			else
+			{
+				if(month.equals("Jan") || month.equals("Mar") || month.equals("May") || month.equals("Jul") || month.equals("Aug") || month.equals("Oct") || month.equals("Dec"))
+				{
+					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+						"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28",
+						"29", "30", "31"});
+				}
+				else if(month.equals("Apr") || month.equals("Jun") || month.equals("Sep") || month.equals("Nov"))
+				{
+					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+						"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", 
+						"29", "30"});
+				}
+				else if(month.equals("Feb"))
+				{
+					res = new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+						"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28"});
+				}
+			}
+		}
+		return res;
+	}
+	
+	private boolean fieldChecker(JTextField actname, JTextField path, JComboBox d, JComboBox m, JComboBox y,
+			JComboBox hr, JComboBox min)
+	{
+		return !actname.getText().trim().isEmpty() && !path.getText().trim().isEmpty() && d.getSelectedIndex() !=
+			0 && m.getSelectedIndex() != 0 && hr.getSelectedIndex() != 0 && min.getSelectedIndex() != 0 ? true : false;
+	}
+	
+	private void resetAllFields(JTextField actname, JTextField path, JComboBox d, JComboBox m, JComboBox y,
+			JComboBox hr, JComboBox min)
+	{
+		actname.setText("");
+		path.setText("");
+		d.setSelectedIndex(0);
+		m.setSelectedIndex(0);
+		y.setSelectedIndex(0);
+		hr.setSelectedIndex(0);
+		min.setSelectedIndex(0);
 	}
 }

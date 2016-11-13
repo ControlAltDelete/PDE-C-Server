@@ -88,7 +88,7 @@ public class Main {
 		
 		/*Panel2*/
 		DeliverableList submissionsPanel;
-		submissionsPanel = new DeliverableList();
+		submissionsPanel = DeliverableList.getInstance();
 		dynamicMainPanel.add(submissionsPanel, "name_420733536558155");
 		
 		/*Panel3*/

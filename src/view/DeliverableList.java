@@ -17,6 +17,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -24,15 +26,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JSplitPane;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.ListSelectionModel;
 
 public class DeliverableList extends JPanel {
-	private JTable table;
+	public static DeliverableList deliverableInstance = null;
+	private JTable tblDeliverable;
 
 	/**
 	 * Create the panel.
 	 */
-	public DeliverableList() {
-        super(new GridLayout(1,0));
+	
+	public static DeliverableList getInstance()
+	{
+		if(deliverableInstance == null)
+		{
+			deliverableInstance = new DeliverableList();
+		}
+		return deliverableInstance;
+	}
+	
+	private void initialize()
+	{
+        setLayout(new GridLayout(1,0));
         String[] columnNames = {"Activity No.",
                                 "ID Number",
                                 "Last Name",
@@ -96,7 +113,12 @@ public class DeliverableList extends JPanel {
 //        	data = new Object[1][5];
 //        }
 // 
-        DefaultTableModel deliverables = new DefaultTableModel(data, columnNames);
+        DefaultTableModel deliverables = new DefaultTableModel(data, columnNames){
+        	
+        	@Override
+        	public boolean isCellEditable(int row, int column){return false;}
+        	
+        };
         
         JSplitPane splitPane = new JSplitPane();
         add(splitPane);
@@ -104,29 +126,103 @@ public class DeliverableList extends JPanel {
         splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
         
         JPanel buttonContainer = new JPanel();
-        JTable table_1 = new JTable(deliverables);
-        table_1.setAutoCreateRowSorter(true);
-        table_1.setTableHeader(null); 
-        table_1.setRowSelectionAllowed(true);
-        table_1.setShowGrid(false);
-        table_1.setPreferredScrollableViewportSize(new Dimension(1000, 70));
-        table_1.setFillsViewportHeight(true);
+        JTable tableDeliverable = new JTable(deliverables);
+        tableDeliverable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableDeliverable.setAutoCreateRowSorter(true);
+        tableDeliverable.setTableHeader(null); 
+        tableDeliverable.setRowSelectionAllowed(true);
+        tableDeliverable.setShowGrid(false);
+        tableDeliverable.setPreferredScrollableViewportSize(new Dimension(1000, 70));
+        tableDeliverable.setFillsViewportHeight(true);
         //Create the scroll pane and add the table to it.
-        JScrollPane scrollPane = new JScrollPane(table_1);
+        JScrollPane scrollPane = new JScrollPane(tableDeliverable);
         //Add the scroll pane to this panel.
         splitPane.setLeftComponent(scrollPane);
         splitPane.setRightComponent(buttonContainer);
         
         JButton btnFilterByStudent = new JButton("Filter By Student");
+        btnFilterByStudent.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		// DAO
+        	}
+        });
+        
+        JButton btnRefresh = new JButton("Refresh");
+        btnRefresh.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		// Update Data
+        	}
+        });
+        buttonContainer.add(btnRefresh);
         buttonContainer.add(btnFilterByStudent);
         
         JButton btnFilterByActivity = new JButton("Filter By Activity");
+        btnFilterByActivity.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		// DAO
+        	}
+        });
         buttonContainer.add(btnFilterByActivity);
         
         JButton btnViewSourceCode = new JButton("View Source Code");
+        btnViewSourceCode.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		// DAO
+        	}
+        });
         buttonContainer.add(btnViewSourceCode);
         
         JButton btnPlaceGrade = new JButton("Place Grade");
+        btnPlaceGrade.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		int r = tableDeliverable.getSelectedRow();
+        		if(r > -1)
+        		{
+            		String sAID = tableDeliverable.getValueAt(r, 0).toString();
+            		String sSID = tableDeliverable.getValueAt(r, 1).toString();
+            		String sName = tableDeliverable.getValueAt(r, 2).toString() + ", " + tableDeliverable.getValueAt(r, 3).toString();
+            		String grade = (String)JOptionPane.showInputDialog(null, "Place a Grade for " + sSID + " - " + sName + " on " + sAID + "\'s the selected deliverable", "");
+    				if(grade == null) { /* do nothing */ }
+    				else if(grade.trim().isEmpty())
+    				{
+    					JOptionPane.showMessageDialog(null, "Nothing entered.", "Error", JOptionPane.ERROR_MESSAGE);
+    				}
+    				else
+    				{
+    					Integer iGrade = 0;
+    					try
+    					{
+    						iGrade = Integer.parseInt(grade);
+
+    						if(iGrade >= 0 && iGrade <= 100)
+    						{
+    							JOptionPane.showMessageDialog(null, "Successfully placed a grade.", "Success", JOptionPane.INFORMATION_MESSAGE);
+//								
+    						}
+    						else
+    							JOptionPane.showMessageDialog(null, "Grade input should be from 0 - 100.", "Error", JOptionPane.ERROR_MESSAGE);
+    					}
+    					catch (NumberFormatException nfe)
+    					{
+    				        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
+    					}
+//    					catch (SQLException sqle)
+//    					{
+//    						sqle.printStackTrace();
+//    					}
+    				}
+        		}
+        		else
+        		{
+			        JOptionPane.showMessageDialog(null, "Please select a deliverable to proceed with the placement of grade.", "Error", JOptionPane.ERROR_MESSAGE);        			
+        		}
+        	}
+        });
         buttonContainer.add(btnPlaceGrade);
+	}
+	
+	public DeliverableList()
+	{
+		initialize();
 	}
 }

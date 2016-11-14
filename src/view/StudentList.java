@@ -121,20 +121,27 @@ public class StudentList extends JPanel {
         btnView.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		int r = tblStudent.getSelectedRow();
-        		String sSID = tblStudent.getValueAt(r, 0).toString();
-				StudentDAO sdao = new StudentDAO();
-        		try {
-					new StudentProfile(sdao.getStudent(Integer.parseInt(sSID)));
-				} catch (NumberFormatException nfe) {
-					// TODO Auto-generated catch block
-					nfe.printStackTrace();
-				} catch (IOException ioe) {
-					// TODO Auto-generated catch block
-					ioe.printStackTrace();
-				} catch (SQLException sqle) {
-					// TODO Auto-generated catch block
-					sqle.printStackTrace();
-				}
+        		if(r > -1)
+	        		{
+	        		String sSID = tblStudent.getValueAt(r, 0).toString();
+					StudentDAO sdao = new StudentDAO();
+	        		try {
+						new StudentProfile(sdao.getStudent(Integer.parseInt(sSID)));
+					} catch (NumberFormatException nfe) {
+						// TODO Auto-generated catch block
+						nfe.printStackTrace();
+					} catch (IOException ioe) {
+						// TODO Auto-generated catch block
+						ioe.printStackTrace();
+					} catch (SQLException sqle) {
+						// TODO Auto-generated catch block
+						sqle.printStackTrace();
+					}
+        		}
+        		else
+        		{
+			        JOptionPane.showMessageDialog(null, "Please select a student to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+        		}
         	}
         });
         buttonContainer.add(btnView);
@@ -169,7 +176,7 @@ public class StudentList extends JPanel {
         		}
         		else
         		{
-			        JOptionPane.showMessageDialog(null, "Please select a student to delete.", "Error", JOptionPane.ERROR_MESSAGE);     
+			        JOptionPane.showMessageDialog(null, "Please select a student to delete.", "Error", JOptionPane.ERROR_MESSAGE);
         		}
         	}
         });

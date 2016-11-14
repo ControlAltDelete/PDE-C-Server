@@ -1,6 +1,9 @@
 package view;
 
 import java.awt.EventQueue;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,6 +15,13 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import database.dao.ActivityDAO;
+import database.dao.DeliverableDAO;
+import database.dao.StudentDAO;
+import database.objects.Deliverable;
+import database.objects.Student;
+
 import javax.swing.SwingConstants;
 
 public class StudentProfile {
@@ -21,8 +31,18 @@ public class StudentProfile {
 	private JTextField txtName;
 	private JTextField txtSection;
 	private JTable activityList;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtActivitiesSubmitted;
+	private JTextField txtActivitiesOverall;
+	final private ActivityDAO adao = new ActivityDAO();
+	final private StudentDAO sdao = new StudentDAO();
+	final private DeliverableDAO ddao = new DeliverableDAO();
+	final private String[] columnNames =
+		{
+				"Activity Name",
+				"Source Code",
+				"Date Submitted",
+				"Grade"
+		};
 
 	/**
 	 * Launch the application.
@@ -43,8 +63,153 @@ public class StudentProfile {
 	/**
 	 * Create the application.
 	 */
+	public StudentProfile(Student s) throws IOException, SQLException{
+		initialize(s);
+		studentProfileFrame.setVisible(true);
+	}
+	
+	/**
+	 * Create the application.
+	 */
 	public StudentProfile() {
 		initialize();
+		studentProfileFrame.setVisible(true);
+	}
+	
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize(Student s) throws IOException, SQLException{
+		studentProfileFrame = new JFrame();
+		studentProfileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		studentProfileFrame.setResizable(false);
+		studentProfileFrame.setSize(640, 360);
+		studentProfileFrame.setTitle(s.getStudentID() + " - " + s.getStudentLastName() + ", " + s.getStudentFirstName());
+		studentProfileFrame.getContentPane().setLayout(null);
+		
+		JPanel generalInfoPanel = new JPanel();
+		generalInfoPanel.setBounds(0, 0, 634, 72);
+		studentProfileFrame.getContentPane().add(generalInfoPanel);
+		generalInfoPanel.setLayout(null);
+		
+		JLabel lblIDNum = new JLabel("ID Number");
+		lblIDNum.setBounds(10, 11, 86, 24);
+		generalInfoPanel.add(lblIDNum);
+		
+		txtIDNum = new JTextField();
+		txtIDNum.setEditable(false);
+		txtIDNum.setBounds(106, 11, 86, 24);
+		txtIDNum.setText(Integer.toString(s.getStudentID()));
+		generalInfoPanel.add(txtIDNum);
+		txtIDNum.setColumns(10);
+		
+		JLabel lblName = new JLabel("Name");
+		lblName.setBounds(202, 11, 36, 24);
+		generalInfoPanel.add(lblName);
+		
+		txtName = new JTextField();
+		txtName.setEditable(false);
+		txtName.setBounds(248, 11, 240, 24);
+		txtName.setText(s.getStudentLastName() + ", " + s.getStudentFirstName());
+		txtName.setColumns(10);
+		generalInfoPanel.add(txtName);
+		
+		JLabel lblSection = new JLabel("Section");
+		lblSection.setBounds(498, 11, 48, 24);
+		generalInfoPanel.add(lblSection);
+		
+		txtSection = new JTextField();
+		txtSection.setEditable(false);
+		txtSection.setBounds(556, 11, 48, 24);
+		txtSection.setText(s.getStudentSection());
+		txtSection.setColumns(10);
+		generalInfoPanel.add(txtSection);
+		
+		JLabel lblActivities = new JLabel("Activities:");
+		lblActivities.setBounds(10, 46, 64, 24);
+		generalInfoPanel.add(lblActivities);
+		
+		txtActivitiesSubmitted = new JTextField();
+		txtActivitiesSubmitted.setToolTipText("Activities Done");
+		txtActivitiesSubmitted.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtActivitiesSubmitted.setText(Integer.toString(ddao.getDeliverableCountByStudent(s.getStudentID())));
+		txtActivitiesSubmitted.setEditable(false);
+		txtActivitiesSubmitted.setColumns(10);
+		txtActivitiesSubmitted.setBounds(106, 46, 26, 24);
+		generalInfoPanel.add(txtActivitiesSubmitted);
+		
+		txtActivitiesOverall = new JTextField();
+		txtActivitiesOverall.setToolTipText("Total Activities");
+		txtActivitiesOverall.setText(Integer.toString(adao.getActivityCount()));
+		txtActivitiesOverall.setHorizontalAlignment(SwingConstants.LEFT);
+		txtActivitiesOverall.setEditable(false);
+		txtActivitiesOverall.setColumns(10);
+		txtActivitiesOverall.setBounds(156, 46, 26, 24);
+		generalInfoPanel.add(txtActivitiesOverall);
+		
+		JLabel lblSeparator = new JLabel("/");
+		lblSeparator.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSeparator.setBounds(106, 46, 76, 24);
+		generalInfoPanel.add(lblSeparator);
+		
+		JScrollPane activityPane = new JScrollPane();
+		activityPane.setBounds(10, 83, 614, 237);
+		studentProfileFrame.getContentPane().add(activityPane);
+		activityList.getTableHeader().setReorderingAllowed(false);
+		Object[][] data = new Object[1][4];
+		try
+        {
+            ArrayList<Deliverable> dArray = new ArrayList<Deliverable>();
+        	dArray = ddao.getDeliverablesByStudent(s.getStudentID());
+        	data = new Object[dArray.size()][4];
+        	for(int d = 0; d < dArray.size(); d++)
+        	{
+        		Deliverable del = dArray.get(d);
+        		ArrayList<Object> contents = new ArrayList<Object>();
+        		contents.add(adao.getActivity(del.getActivityID()).getActivityName());
+        		contents.add(del.getDeliverableSourceCodeFileName());
+        		contents.add(del.getDateSubmitted());
+        		float grade = del.getGrade();
+        		if(grade <= -1)
+        			contents.add("NGS");
+        		else
+        			contents.add(grade);
+        		data[d] = contents.toArray();
+        	}
+        }
+
+        catch (SQLException sqle)
+        {
+        	sqle.printStackTrace();
+        	data = new Object[1][4];
+        }
+        catch (IOException ioe)
+        {
+        	ioe.printStackTrace();
+        	data = new Object[1][4];
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        	data = new Object[1][4];
+        }
+		DefaultTableModel deliverables = new DefaultTableModel(data, columnNames)
+        {
+        	
+        	@Override
+        	public boolean isCellEditable(int row, int column)
+        	{
+        		return false;
+        	}
+        	
+        };
+		
+		activityList = new JTable(deliverables);
+		activityList.getColumnModel().getColumn(0).setPreferredWidth(129);
+		activityList.getColumnModel().getColumn(1).setPreferredWidth(226);
+		activityList.getColumnModel().getColumn(2).setPreferredWidth(188);
+		activityList.getColumnModel().getColumn(3).setPreferredWidth(40);
+		activityPane.setViewportView(activityList);
 	}
 
 	/**
@@ -100,34 +265,35 @@ public class StudentProfile {
 		lblActivities.setBounds(10, 46, 64, 24);
 		generalInfoPanel.add(lblActivities);
 		
-		textField = new JTextField();
-		textField.setToolTipText("Activities Done");
-		textField.setHorizontalAlignment(SwingConstants.RIGHT);
-		textField.setText("5");
-		textField.setEditable(false);
-		textField.setColumns(10);
-		textField.setBounds(106, 46, 26, 24);
-		generalInfoPanel.add(textField);
+		txtActivitiesSubmitted = new JTextField();
+		txtActivitiesSubmitted.setToolTipText("Activities Done");
+		txtActivitiesSubmitted.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtActivitiesSubmitted.setText("5");
+		txtActivitiesSubmitted.setEditable(false);
+		txtActivitiesSubmitted.setColumns(10);
+		txtActivitiesSubmitted.setBounds(106, 46, 26, 24);
+		generalInfoPanel.add(txtActivitiesSubmitted);
 		
-		textField_1 = new JTextField();
-		textField_1.setToolTipText("Total Activities");
-		textField_1.setText("10");
-		textField_1.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_1.setEditable(false);
-		textField_1.setColumns(10);
-		textField_1.setBounds(156, 46, 26, 24);
-		generalInfoPanel.add(textField_1);
+		txtActivitiesOverall = new JTextField();
+		txtActivitiesOverall.setToolTipText("Total Activities");
+		txtActivitiesOverall.setText("10");
+		txtActivitiesOverall.setHorizontalAlignment(SwingConstants.LEFT);
+		txtActivitiesOverall.setEditable(false);
+		txtActivitiesOverall.setColumns(10);
+		txtActivitiesOverall.setBounds(156, 46, 26, 24);
+		generalInfoPanel.add(txtActivitiesOverall);
 		
-		JLabel label = new JLabel("/");
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setBounds(106, 46, 76, 24);
-		generalInfoPanel.add(label);
+		JLabel lblSeparator = new JLabel("/");
+		lblSeparator.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSeparator.setBounds(106, 46, 76, 24);
+		generalInfoPanel.add(lblSeparator);
 		
 		JScrollPane activityPane = new JScrollPane();
 		activityPane.setBounds(10, 83, 614, 237);
 		studentProfileFrame.getContentPane().add(activityPane);
 		
 		activityList = new JTable();
+		activityList.getTableHeader().setReorderingAllowed(false);
 		activityList.setModel(new DefaultTableModel(
 			new Object[][] {
 				{"Basic Functions", "Nielson_Niels_BasicFunctions.c", "1/4/2016 1:56:29 PM UTC+0800", "NGS"},

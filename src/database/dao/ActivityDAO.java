@@ -171,6 +171,17 @@ public class ActivityDAO extends DAO{
         close(preparedStatement, connection);
         return activities;
     }
+
+    public int getActivityCount() throws SQLException, IOException{
+    	int result = 0;
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("select count(*) from Activity");
+        ResultSet resultSet = query(preparedStatement);
+        while (resultSet.next()) {
+        	result = resultSet.getInt("count(*)");
+        }
+        return result;
+    }
     
     public ArrayList<String> getActivityNames() throws SQLException
     {

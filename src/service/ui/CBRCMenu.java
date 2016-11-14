@@ -148,12 +148,12 @@ public class CBRCMenu extends JFrame {
 	
 	public void resetMe(){
 		// cbr-c initialisation methods
-		
+		setCBRC();
 		// ui controls
 		btnAddNewTest.setEnabled(true);
 	}
-
-	private void initialize()
+	
+	public void setCBRC()
 	{
 		// CBR-C
 		newGoalKey = 0;
@@ -183,6 +183,11 @@ public class CBRCMenu extends JFrame {
 			e1.printStackTrace();
 		}
 		// END CBR-C
+	}
+
+	private void initialize()
+	{
+		
 		setTitle("CBR-C");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 960, 456);

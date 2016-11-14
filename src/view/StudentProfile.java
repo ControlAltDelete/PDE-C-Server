@@ -12,13 +12,17 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import database.dao.ActivityDAO;
 import database.dao.DeliverableDAO;
 import database.dao.StudentDAO;
+import database.objects.Activity;
 import database.objects.Deliverable;
 import database.objects.Student;
 
@@ -45,34 +49,10 @@ public class StudentProfile {
 		};
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StudentProfile window = new StudentProfile();
-					window.studentProfileFrame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public StudentProfile(Student s) throws IOException, SQLException{
 		initialize(s);
-		studentProfileFrame.setVisible(true);
-	}
-	
-	/**
-	 * Create the application.
-	 */
-	public StudentProfile() {
-		initialize();
 		studentProfileFrame.setVisible(true);
 	}
 	
@@ -155,7 +135,7 @@ public class StudentProfile {
 		JScrollPane activityPane = new JScrollPane();
 		activityPane.setBounds(10, 83, 614, 237);
 		studentProfileFrame.getContentPane().add(activityPane);
-		activityList.getTableHeader().setReorderingAllowed(false);
+		ArrayList<Boolean> lateList = new ArrayList<Boolean>();
 		Object[][] data = new Object[1][4];
 		try
         {
@@ -166,7 +146,8 @@ public class StudentProfile {
         	{
         		Deliverable del = dArray.get(d);
         		ArrayList<Object> contents = new ArrayList<Object>();
-        		contents.add(adao.getActivity(del.getActivityID()).getActivityName());
+        		Activity act = adao.getActivity(del.getActivityID());
+        		contents.add(act.getActivityName());
         		contents.add(del.getDeliverableSourceCodeFileName());
         		contents.add(del.getDateSubmitted());
         		float grade = del.getGrade();
@@ -174,10 +155,10 @@ public class StudentProfile {
         			contents.add("NGS");
         		else
         			contents.add(grade);
+        		lateList.add(ddao.isLate(s.getStudentID(), act.getActivityID()));
         		data[d] = contents.toArray();
         	}
         }
-
         catch (SQLException sqle)
         {
         	sqle.printStackTrace();
@@ -209,6 +190,23 @@ public class StudentProfile {
 		activityList.getColumnModel().getColumn(1).setPreferredWidth(226);
 		activityList.getColumnModel().getColumn(2).setPreferredWidth(188);
 		activityList.getColumnModel().getColumn(3).setPreferredWidth(40);
+		activityList.getTableHeader().setReorderingAllowed(false);
+		activityList.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+                if (lateList.get(row)) {
+                	setBackground(new Color(208, 53, 53));
+                    setForeground(Color.WHITE);
+                } else {
+                    setBackground(table.getBackground());
+                    setForeground(table.getForeground());
+                }       
+                return this;
+            }   
+        });
 		activityPane.setViewportView(activityList);
 	}
 

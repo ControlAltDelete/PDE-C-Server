@@ -121,6 +121,7 @@ public class CBRCMenu extends JFrame {
 		}
 		testcases.addRow(new Object[]{Integer.toString(i), tciContent, tcoContent});
 		table.setModel(testcases);
+		table.getTableHeader().setReorderingAllowed(false);
 	}
 
 	/**

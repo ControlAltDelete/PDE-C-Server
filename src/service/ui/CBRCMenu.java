@@ -11,7 +11,9 @@ import javax.swing.JButton;
 import com.jgoodies.forms.layout.FormLayout;
 import com.cbrc.ast.utils.StudentListRecoveryUtility;
 import com.cbrc.db.utils.DerbyUtils;
+import com.cbrc.gdt.builder.CASTGDTBuilder;
 import com.cbrc.gdt.builder.CASTGDTStudentTracker;
+import com.cbrc.temp.Driver;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
@@ -34,6 +36,7 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -49,6 +52,7 @@ public class CBRCMenu extends JFrame {
 	private JButton btnAddNewTest;
 	private DefaultTableModel testcases;
 	private CASTGDTStudentTracker students;
+	private CASTGDTBuilder builder;
 	private CBRCProblem prob;
 	private int newGoalKey = 0;
 	private static CBRCMenu menu = null;
@@ -151,6 +155,7 @@ public class CBRCMenu extends JFrame {
 		// CBR-C
 		newGoalKey = 0;
 		students = new CASTGDTStudentTracker();
+		builder = new CASTGDTBuilder();
 		try
 		{
 			newGoalKey = DerbyUtils.addNewGoal(prob.getProblemName(), prob.getProblemDesc());
@@ -336,13 +341,21 @@ public class CBRCMenu extends JFrame {
 						try
 						{
 							studID = Integer.parseInt(sid);
+							Driver.registerNewStudent(students, builder.getSuperGoal().getDBID(), sid, sName);
+							JOptionPane.showMessageDialog(null, "Student Information submitted to Database.", "Success", JOptionPane.INFORMATION_MESSAGE);
 						}
 						catch (NumberFormatException nfe)
 						{
 					        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
 						}
-//						Driver.registerNewStudent(br, students, builder.getSuperGoal().getDBID(), sid, sName);
-						JOptionPane.showMessageDialog(null, "Student Information submitted to Database.", "Success", JOptionPane.INFORMATION_MESSAGE);
+						catch (SQLException sqle)
+						{
+							sqle.printStackTrace();
+						}
+						catch (IOException ioe)
+						{
+							ioe.printStackTrace();
+						}
 					}
 				}
 			}
@@ -370,18 +383,18 @@ public class CBRCMenu extends JFrame {
 					try
 					{
 						goalID = Integer.parseInt(gid);
-//						StudentListRecoveryUtility slru =  new StudentListRecoveryUtility();
-//						students = slru.recoverStudents(goalID, newGoalKey);
+						StudentListRecoveryUtility slru =  new StudentListRecoveryUtility();
+						students = slru.recoverStudents(goalID, newGoalKey);
 						JOptionPane.showMessageDialog(null, "Successfully Recovered Students", "Success", JOptionPane.INFORMATION_MESSAGE);
 					}
 					catch (NumberFormatException nfe)
 					{
 				        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
 					}
-//					catch (SQLException sqle)
-//					{
-//						sqle.printStackTrace();
-//					}
+					catch (SQLException sqle)
+					{
+						sqle.printStackTrace();
+					}
 				}
 			}
 		});

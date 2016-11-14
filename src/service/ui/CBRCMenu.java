@@ -149,7 +149,6 @@ public class CBRCMenu extends JFrame {
 	private void initialize()
 	{
 		// CBR-C
-		/*
 		newGoalKey = 0;
 		students = new CASTGDTStudentTracker();
 		try
@@ -158,9 +157,8 @@ public class CBRCMenu extends JFrame {
 		}
 		catch(SQLException sqle)
 		{
-			
+			sqle.printStackTrace();
 		}
-		*/
 		// END CBR-C
 		setTitle("CBR-C");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -269,15 +267,6 @@ public class CBRCMenu extends JFrame {
 		table.setModel(new DefaultTableModel(
 			
 		));
-		/*
-		GridBagConstraints gbc_table = new GridBagConstraints();
-		gbc_table.insets = new Insets(0, 0, 5, 0);
-		gbc_table.gridwidth = 3;
-		gbc_table.fill = GridBagConstraints.BOTH;
-		gbc_table.gridx = 1;
-		gbc_table.gridy = 8;
-		pnlDetails.add(table, gbc_table);
-		*/
 		
 		JScrollPane scrollPane = new JScrollPane(table);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -407,7 +396,7 @@ public class CBRCMenu extends JFrame {
 		JButton btnPrintGDT = new JButton("Print GDT");
 		btnPrintGDT.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				new CBRCGDTView();
 			}
 		});
 		GridBagConstraints gbc_btnPrintGDT = new GridBagConstraints();

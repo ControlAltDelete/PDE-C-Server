@@ -140,7 +140,7 @@ public class StudentList extends JPanel {
         		}
         		else
         		{
-			        JOptionPane.showMessageDialog(null, "Please select a student to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+			        JOptionPane.showMessageDialog(null, "Please select a student to view.", "Error", JOptionPane.ERROR_MESSAGE);
         		}
         	}
         });

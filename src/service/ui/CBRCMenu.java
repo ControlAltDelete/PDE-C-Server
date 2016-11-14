@@ -11,8 +11,10 @@ import javax.swing.JButton;
 import com.jgoodies.forms.layout.FormLayout;
 import com.cbrc.ast.utils.StudentListRecoveryUtility;
 import com.cbrc.db.utils.DerbyUtils;
+import com.cbrc.gdt.builder.CASTCodeAnnotator;
 import com.cbrc.gdt.builder.CASTGDTBuilder;
 import com.cbrc.gdt.builder.CASTGDTStudentTracker;
+import com.cbrc.nodes.gdt.PlanGDTNode;
 import com.cbrc.temp.Driver;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
@@ -54,6 +56,7 @@ public class CBRCMenu extends JFrame {
 	private CASTGDTStudentTracker students;
 	private CASTGDTBuilder builder;
 	private CBRCProblem prob;
+	private PlanGDTNode correctPlan;
 	private int newGoalKey = 0;
 	private static CBRCMenu menu = null;
 	
@@ -155,7 +158,6 @@ public class CBRCMenu extends JFrame {
 		// CBR-C
 		newGoalKey = 0;
 		students = new CASTGDTStudentTracker();
-		builder = new CASTGDTBuilder();
 		try
 		{
 			newGoalKey = DerbyUtils.addNewGoal(prob.getProblemName(), prob.getProblemDesc());
@@ -163,6 +165,22 @@ public class CBRCMenu extends JFrame {
 		catch(SQLException sqle)
 		{
 			sqle.printStackTrace();
+		}
+		CASTCodeAnnotator codeAnnotator = new CASTCodeAnnotator(prob.getFirstSolution().toFile());
+		try {
+			codeAnnotator.annotateCode();
+			builder = new CASTGDTBuilder(newGoalKey, prob.getProblemDesc());
+			builder.processFirstCode(codeAnnotator.getHeadNode(), "");
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} catch (Exception e1) {
+			e1.printStackTrace();
 		}
 		// END CBR-C
 		setTitle("CBR-C");
@@ -409,7 +427,7 @@ public class CBRCMenu extends JFrame {
 		JButton btnPrintGDT = new JButton("Print GDT");
 		btnPrintGDT.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new CBRCGDTView();
+				new CBRCGDTView(builder);
 			}
 		});
 		GridBagConstraints gbc_btnPrintGDT = new GridBagConstraints();

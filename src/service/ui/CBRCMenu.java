@@ -1,24 +1,15 @@
 package service.ui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
 import javax.swing.JButton;
-import com.jgoodies.forms.layout.FormLayout;
 import com.cbrc.ast.utils.StudentListRecoveryUtility;
 import com.cbrc.db.utils.DerbyUtils;
 import com.cbrc.gdt.builder.CASTCodeAnnotator;
 import com.cbrc.gdt.builder.CASTGDTBuilder;
 import com.cbrc.gdt.builder.CASTGDTStudentTracker;
-import com.cbrc.nodes.gdt.PlanGDTNode;
 import com.cbrc.temp.Driver;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.RowSpec;
 
 import service.cbrc.model.CBRCProblem;
 import service.cbrc.model.TestCase;
@@ -27,9 +18,7 @@ import javax.swing.JSeparator;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.FlowLayout;
 import javax.swing.JTable;
-import javax.swing.BoxLayout;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -56,7 +45,6 @@ public class CBRCMenu extends JFrame {
 	private CASTGDTStudentTracker students;
 	private CASTGDTBuilder builder;
 	private CBRCProblem prob;
-	private PlanGDTNode correctPlan;
 	private int newGoalKey = 0;
 	private static CBRCMenu menu = null;
 	
@@ -204,7 +192,11 @@ public class CBRCMenu extends JFrame {
 		JButton btnStartNewProblem = new JButton("Start New Problem");
 		btnStartNewProblem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new CBRCInitalProblem();
+				int confirmed = JOptionPane.showConfirmDialog(null, 
+				        "If you start a new problem, then the previous problem will be invalid. Do you want to continue?", "Caution",
+				        JOptionPane.YES_NO_OPTION);
+				if(confirmed == JOptionPane.YES_OPTION)
+					new CBRCInitalProblem();
 			}
 		});
 		GridBagConstraints gbc_btnStartNewProblem = new GridBagConstraints();
@@ -364,7 +356,7 @@ public class CBRCMenu extends JFrame {
 						try
 						{
 							studID = Integer.parseInt(sid);
-							Driver.registerNewStudent(students, builder.getSuperGoal().getDBID(), sid, sName);
+							Driver.registerNewStudent(students, builder.getSuperGoal().getDBID(), Integer.toString(studID), sName);
 							JOptionPane.showMessageDialog(null, "Student Information submitted to Database.", "Success", JOptionPane.INFORMATION_MESSAGE);
 						}
 						catch (NumberFormatException nfe)

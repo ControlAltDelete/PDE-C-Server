@@ -3,6 +3,7 @@ package service.ui;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JTextArea;
@@ -28,21 +29,6 @@ import java.awt.FlowLayout;
 public class CBRCGDTView {
 
 	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new CBRCGDTView();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -71,6 +57,7 @@ public class CBRCGDTView {
 		
 		JTextArea txtGDTForm = new JTextArea();
 		txtGDTForm.setEditable(false);
+		txtGDTForm.setText(initExtractGDT(builder));
 		pnlGDTForm.add(txtGDTForm, BorderLayout.CENTER);
 		
 		JPanel pnlController = new JPanel();
@@ -87,10 +74,25 @@ public class CBRCGDTView {
 				int res = jfc.showSaveDialog(frame);
 				if(res == JFileChooser.APPROVE_OPTION)
 				{
-					Path path = Paths.get(jfc.getSelectedFile().getAbsolutePath());
-					FileSave fs = new FileSave();
-					fs.writeFile(path, txtGDTForm.toString());
-					System.out.println("Saved GDT to " + path.toString());
+					String fileName = jfc.getSelectedFile().getAbsolutePath();
+					Path path = Paths.get(fileName);
+					if(fileName.endsWith(".txt"))
+					{
+						if(!fileName.substring(0, fileName.indexOf(".txt")).endsWith("\\"))
+						{
+							FileSave fs = new FileSave();
+							fs.writeFile(path, txtGDTForm.getText());
+							JOptionPane.showMessageDialog(null, "Saved to " + fileName, "Success", JOptionPane.INFORMATION_MESSAGE);
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, "Enter a file name.", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Not a text file.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		});
@@ -113,13 +115,7 @@ public class CBRCGDTView {
 		JButton btnRefresh = new JButton("Refresh");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				StringBuilder sb = new StringBuilder();
-				try {
-					sb = Driver.showGDT(builder);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-				txtGDTForm.setText(sb.toString());
+				extractGDT(builder, txtGDTForm);
 			}
 		});
 		pnlControllerCtr.add(btnRefresh);
@@ -204,6 +200,30 @@ public class CBRCGDTView {
 	  	{
 	  		txtGDTForm.setFont(new Font("Monaco", Font.PLAIN, 13));
 	  	}
+	}
+	
+	public String initExtractGDT(CASTGDTBuilder builder)
+	{
+		try
+		{
+			return Driver.showGDT(builder).toString();
+		}
+		catch(Exception e)
+		{
+			return "Error retrieving GDT";
+		}
+	}
+	
+	public void extractGDT(CASTGDTBuilder builder, JTextArea txtArea)
+	{
+
+		try {
+			StringBuilder sb = Driver.showGDT(builder);
+			txtArea.setText(sb.toString());
+		} catch (Exception ex) {
+			txtArea.setText("Error retrieving GDT");
+			ex.printStackTrace();	
+		}
 	}
 
 }

@@ -1,20 +1,15 @@
 package service.ui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
 import javax.swing.JButton;
-import com.jgoodies.forms.layout.FormLayout;
 import com.cbrc.ast.utils.StudentListRecoveryUtility;
 import com.cbrc.db.utils.DerbyUtils;
+import com.cbrc.gdt.builder.CASTCodeAnnotator;
+import com.cbrc.gdt.builder.CASTGDTBuilder;
 import com.cbrc.gdt.builder.CASTGDTStudentTracker;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.RowSpec;
+import com.cbrc.temp.Driver;
 
 import service.cbrc.model.CBRCProblem;
 import service.cbrc.model.TestCase;
@@ -23,9 +18,7 @@ import javax.swing.JSeparator;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.FlowLayout;
 import javax.swing.JTable;
-import javax.swing.BoxLayout;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -34,6 +27,7 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -49,6 +43,7 @@ public class CBRCMenu extends JFrame {
 	private JButton btnAddNewTest;
 	private DefaultTableModel testcases;
 	private CASTGDTStudentTracker students;
+	private CASTGDTBuilder builder;
 	private CBRCProblem prob;
 	private int newGoalKey = 0;
 	private static CBRCMenu menu = null;
@@ -121,6 +116,7 @@ public class CBRCMenu extends JFrame {
 		}
 		testcases.addRow(new Object[]{Integer.toString(i), tciContent, tcoContent});
 		table.setModel(testcases);
+		table.getTableHeader().setReorderingAllowed(false);
 	}
 
 	/**
@@ -140,15 +136,14 @@ public class CBRCMenu extends JFrame {
 	
 	public void resetMe(){
 		// cbr-c initialisation methods
-		
+		setCBRC();
 		// ui controls
 		btnAddNewTest.setEnabled(true);
 	}
-
-	private void initialize()
+	
+	public void setCBRC()
 	{
 		// CBR-C
-		/*
 		newGoalKey = 0;
 		students = new CASTGDTStudentTracker();
 		try
@@ -157,10 +152,30 @@ public class CBRCMenu extends JFrame {
 		}
 		catch(SQLException sqle)
 		{
-			
+			sqle.printStackTrace();
 		}
-		*/
+		CASTCodeAnnotator codeAnnotator = new CASTCodeAnnotator(prob.getFirstSolution().toFile());
+		try {
+			codeAnnotator.annotateCode();
+			builder = new CASTGDTBuilder(newGoalKey, prob.getProblemDesc());
+			builder.processFirstCode(codeAnnotator.getHeadNode(), "");
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		// END CBR-C
+	}
+
+	private void initialize()
+	{
+		
 		setTitle("CBR-C");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 960, 456);
@@ -177,7 +192,11 @@ public class CBRCMenu extends JFrame {
 		JButton btnStartNewProblem = new JButton("Start New Problem");
 		btnStartNewProblem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new CBRCInitalProblem();
+				int confirmed = JOptionPane.showConfirmDialog(null, 
+				        "If you start a new problem, then the previous problem will be invalid. Do you want to continue?", "Caution",
+				        JOptionPane.YES_NO_OPTION);
+				if(confirmed == JOptionPane.YES_OPTION)
+					new CBRCInitalProblem();
 			}
 		});
 		GridBagConstraints gbc_btnStartNewProblem = new GridBagConstraints();
@@ -268,15 +287,6 @@ public class CBRCMenu extends JFrame {
 		table.setModel(new DefaultTableModel(
 			
 		));
-		/*
-		GridBagConstraints gbc_table = new GridBagConstraints();
-		gbc_table.insets = new Insets(0, 0, 5, 0);
-		gbc_table.gridwidth = 3;
-		gbc_table.fill = GridBagConstraints.BOTH;
-		gbc_table.gridx = 1;
-		gbc_table.gridy = 8;
-		pnlDetails.add(table, gbc_table);
-		*/
 		
 		JScrollPane scrollPane = new JScrollPane(table);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -346,13 +356,21 @@ public class CBRCMenu extends JFrame {
 						try
 						{
 							studID = Integer.parseInt(sid);
+							Driver.registerNewStudent(students, builder.getSuperGoal().getDBID(), Integer.toString(studID), sName);
+							JOptionPane.showMessageDialog(null, "Student Information submitted to Database.", "Success", JOptionPane.INFORMATION_MESSAGE);
 						}
 						catch (NumberFormatException nfe)
 						{
 					        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
 						}
-//						Driver.registerNewStudent(br, students, builder.getSuperGoal().getDBID(), sid, sName);
-						JOptionPane.showMessageDialog(null, "Student Information submitted to Database.", "Success", JOptionPane.INFORMATION_MESSAGE);
+						catch (SQLException sqle)
+						{
+							sqle.printStackTrace();
+						}
+						catch (IOException ioe)
+						{
+							ioe.printStackTrace();
+						}
 					}
 				}
 			}
@@ -380,18 +398,18 @@ public class CBRCMenu extends JFrame {
 					try
 					{
 						goalID = Integer.parseInt(gid);
-//						StudentListRecoveryUtility slru =  new StudentListRecoveryUtility();
-//						students = slru.recoverStudents(goalID, newGoalKey);
+						StudentListRecoveryUtility slru =  new StudentListRecoveryUtility();
+						students = slru.recoverStudents(goalID, newGoalKey);
 						JOptionPane.showMessageDialog(null, "Successfully Recovered Students", "Success", JOptionPane.INFORMATION_MESSAGE);
 					}
 					catch (NumberFormatException nfe)
 					{
 				        JOptionPane.showMessageDialog(null, "Not a number!", "Error", JOptionPane.ERROR_MESSAGE);
 					}
-//					catch (SQLException sqle)
-//					{
-//						sqle.printStackTrace();
-//					}
+					catch (SQLException sqle)
+					{
+						sqle.printStackTrace();
+					}
 				}
 			}
 		});
@@ -406,7 +424,7 @@ public class CBRCMenu extends JFrame {
 		JButton btnPrintGDT = new JButton("Print GDT");
 		btnPrintGDT.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				new CBRCGDTView(builder);
 			}
 		});
 		GridBagConstraints gbc_btnPrintGDT = new GridBagConstraints();

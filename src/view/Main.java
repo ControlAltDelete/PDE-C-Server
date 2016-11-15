@@ -11,6 +11,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
+import server.Server;
 import service.ui.TestCaseBuilder;
 
 import java.awt.Color;
@@ -49,8 +50,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Main window = new Main();
-					window.frame.setVisible(true);
+					new Main();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -211,6 +211,9 @@ public class Main {
 				addStudentPanel.setVisible(false);
 			}
 		});
+		
+		frame.setVisible(true);
+		Server.main(new String[0]);
 	}
 }
 

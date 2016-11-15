@@ -47,6 +47,7 @@ public class CBRCMenu extends JFrame {
 	private CBRCProblem prob;
 	private int newGoalKey = 0;
 	private static CBRCMenu menu = null;
+	public static boolean feedOnGoing = false;
 	
 	/**
 	 * Create the frame.
@@ -117,6 +118,7 @@ public class CBRCMenu extends JFrame {
 		testcases.addRow(new Object[]{Integer.toString(i), tciContent, tcoContent});
 		table.setModel(testcases);
 		table.getTableHeader().setReorderingAllowed(false);
+		feedOnGoing = true;
 	}
 
 	/**
@@ -323,7 +325,14 @@ public class CBRCMenu extends JFrame {
 		JButton btnStartSession = new JButton("Start Session");
 		btnStartSession.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				btnAddNewTest.setEnabled(false);
+				if(!feedOnGoing)
+				{
+					btnAddNewTest.setEnabled(false);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Problem feeding is on going.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		GridBagConstraints gbc_btnStartSession = new GridBagConstraints();

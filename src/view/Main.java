@@ -12,6 +12,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
 import server.Server;
+import service.ServerHandler;
 import service.ui.TestCaseBuilder;
 
 import java.awt.Color;
@@ -61,6 +62,8 @@ public class Main {
 
 	
 	public Main(){
+	  ServerHandler sHandler = new ServerHandler();
+	  sHandler.runServer();
 		initialize();
 		
 	}
@@ -212,8 +215,9 @@ public class Main {
 			}
 		});
 		
-		frame.setVisible(true);
-		Server.main(new String[0]);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);	
 	}
+	
 }
 

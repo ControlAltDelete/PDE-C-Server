@@ -10,7 +10,7 @@ public class MySQLConnection extends DatabaseFactory
     private String driver = "com.mysql.jdbc.Driver";
     private String url = "jdbc:mysql://localhost:3306/Classroom";
     private String username = "root";
-    private String password = "gwapo";
+    private String password = "p@ssword";
     
     public MySQLConnection(String u, String p)
     {

@@ -14,4 +14,3 @@ hs_err_pid*
 
 # Classpath
 *.classpath
-src/database/MySQLConnection.java

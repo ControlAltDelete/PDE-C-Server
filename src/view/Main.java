@@ -230,20 +230,20 @@ public class Main {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
-//		int confirmed = JOptionPane.showConfirmDialog(null, 
-//		        "Activate CBR-C?", "Question",
-//		        JOptionPane.YES_NO_OPTION);
-//		if(confirmed == JOptionPane.YES_OPTION)
-//		{
-//			setCBRCStatus(true);
-//			setCBRCFirst(true);
-//			new CBRCInitalProblem();
-//			System.out.println("CBR-C used");
-//		}
-//		else
-//		{
-//			System.out.println("CBR-C Not used");
-//		}
+		int confirmed = JOptionPane.showConfirmDialog(null, 
+		        "Activate CBR-C?", "Question",
+		        JOptionPane.YES_NO_OPTION);
+		if(confirmed == JOptionPane.YES_OPTION)
+		{
+			setCBRCStatus(true);
+			setCBRCFirst(true);
+			new CBRCInitalProblem();
+			System.out.println("CBR-C used");
+		}
+		else
+		{
+			System.out.println("CBR-C Not used");
+		}
 			
 	}
 

@@ -18,7 +18,7 @@ public class FileDecoder {
 			
 			// Write a content byte array into file system  
 			 
-			FileOutputStream contentOutFile = new FileOutputStream(System.getProperty("user.dir")+"/src/"+filename,true);
+			FileOutputStream contentOutFile = new FileOutputStream(System.getProperty("user.dir")+"/resource/receivedFiles/"+filename,false);
 			contentOutFile.write(contentByteArray);
 			
 			

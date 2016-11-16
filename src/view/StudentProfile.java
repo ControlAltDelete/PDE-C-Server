@@ -220,6 +220,7 @@ public class StudentProfile {
 		studentProfileFrame.setSize(640, 360);
 		studentProfileFrame.setTitle("Student Profile");
 		studentProfileFrame.getContentPane().setLayout(null);
+		studentProfileFrame.setLocationRelativeTo(null);
 		
 		JPanel generalInfoPanel = new JPanel();
 		generalInfoPanel.setBounds(0, 0, 634, 72);
@@ -323,5 +324,6 @@ public class StudentProfile {
 		activityList.getColumnModel().getColumn(2).setPreferredWidth(188);
 		activityList.getColumnModel().getColumn(3).setPreferredWidth(40);
 		activityPane.setViewportView(activityList);
+		
 	}
 }

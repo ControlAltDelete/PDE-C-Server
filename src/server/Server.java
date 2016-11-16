@@ -106,7 +106,7 @@ public class Server implements Runnable
 		    FileDecoder fd = new FileDecoder();
 		    fd.convertToFile(info.get(3), info.get(5));
 		    Deliverable del = new Deliverable(Integer.parseInt(info.get(0)), Integer.parseInt(info.get(1)), 
-		    		Integer.parseInt(info.get(2)), new File(System.getProperty("user.dir")+"/src/"+info.get(5)), 
+		    		Integer.parseInt(info.get(2)), new File(System.getProperty("user.dir")+"/resource/receivedFiles/"+info.get(5)), 
 		    		new Timestamp(System.currentTimeMillis()), info.get(5), Float.parseFloat(info.get(6)));
 		    DeliverableDAO ddao = new DeliverableDAO();
 		    ddao.addDeliverable(del);

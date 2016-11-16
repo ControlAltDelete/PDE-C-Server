@@ -13,6 +13,7 @@ import com.cbrc.temp.Driver;
 
 import service.cbrc.model.CBRCProblem;
 import service.cbrc.model.TestCase;
+import view.Main;
 
 import javax.swing.JSeparator;
 import java.awt.GridBagLayout;
@@ -26,6 +27,8 @@ import javax.swing.JOptionPane;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -114,8 +117,8 @@ public class CBRCMenu extends JFrame {
 			{
 				fnfe.printStackTrace();
 			}
+			testcases.addRow(new Object[]{Integer.toString(i), tciContent, tcoContent});
 		}
-		testcases.addRow(new Object[]{Integer.toString(i), tciContent, tcoContent});
 		table.setModel(testcases);
 		table.getTableHeader().setReorderingAllowed(false);
 		feedOnGoing = true;
@@ -180,7 +183,22 @@ public class CBRCMenu extends JFrame {
 	{
 		
 		setTitle("CBR-C");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) 
+			{
+				int confirmed = JOptionPane.showConfirmDialog(null, 
+						"CBR-C will not be used if you will close the plugin. Continue?", "Caution",
+						JOptionPane.YES_NO_OPTION);
+				if (confirmed == JOptionPane.YES_OPTION) 
+				{
+					Main.setCBRCStatus(false);
+					System.out.println("CBR-C not used");
+					dispose();
+				}
+			}
+		});
 		setBounds(100, 100, 960, 456);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

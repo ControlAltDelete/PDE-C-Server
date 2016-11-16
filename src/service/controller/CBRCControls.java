@@ -11,11 +11,21 @@ import com.cbrc.gdt.builder.CASTGDTBuilder;
 import com.cbrc.gdt.builder.CASTGDTStudentTracker;
 import com.cbrc.temp.Driver;
 
+import service.cbrc.model.TestCase;
+
 public class CBRCControls {
 	
 	public String feedSourceCode(CASTGDTStudentTracker students, CASTGDTBuilder builder, Path path,
-			ArrayList<File> tci, ArrayList<File> tco, String sID)
+			ArrayList<TestCase> tc, String sID)
 	{
+		// split testcases to two
+		ArrayList<File> tci = new ArrayList<File>();
+		ArrayList<File> tco = new ArrayList<File>();
+		for(int i = 0; i < tc.size(); i++)
+		{
+			tci.add(tc.get(i).getTci().toFile());
+			tco.add(tc.get(i).getTco().toFile());
+		}
 		String result = "";
 		try {
 			String faulty = "";

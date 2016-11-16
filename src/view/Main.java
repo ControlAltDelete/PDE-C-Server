@@ -40,6 +40,7 @@ import javax.swing.ImageIcon;
 public class Main {
 	
 	private JFrame frame;
+	private static Main m = null;
 	private static boolean CBRCStatus = false;
 	private static boolean CBRCFirst = false;
 	GridBagLayout Layout = new GridBagLayout();
@@ -48,6 +49,13 @@ public class Main {
 	FileNameExtensionFilter cFilter = new FileNameExtensionFilter(
 	     "PDF (*.PDF)", "pdf");
 
+	public static Main getInstance(){
+		if(m == null)
+		{
+			m = new Main();
+		}
+		return m;
+	}
 	
 	/**
 	 * Launch the application.
@@ -56,7 +64,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new Main();
+					Main m = Main.getInstance();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -66,7 +74,7 @@ public class Main {
 
 
 	
-	public Main(){
+	private Main(){
 	  ServerHandler sHandler = new ServerHandler();
 	  sHandler.runServer();
 		initialize();

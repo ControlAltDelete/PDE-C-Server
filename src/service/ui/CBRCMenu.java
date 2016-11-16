@@ -122,7 +122,7 @@ public class CBRCMenu extends JFrame {
 		}
 		table.setModel(testcases);
 		table.getTableHeader().setReorderingAllowed(false);
-		setFeedOnGoing(true);
+		setFeedOnGoing(false);
 	}
 
 	/**
@@ -348,6 +348,7 @@ public class CBRCMenu extends JFrame {
 				if(!isFeedOnGoing())
 				{
 					btnAddNewTest.setEnabled(false);
+					setFeedOnGoing(true);
 				}
 				else
 				{

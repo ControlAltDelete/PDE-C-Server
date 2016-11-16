@@ -70,15 +70,15 @@ public class CBRCInitalProblem extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent arg0) 
 			{
-				if(Main.isCBRCFirst())
+				if(Main.getInstance().isCBRCFirst())
 				{
 					int confirmed = JOptionPane.showConfirmDialog(null, 
 							"CBR-C will not be used if you will close the plugin. Continue?", "Caution",
 							JOptionPane.YES_NO_OPTION);
 					if (confirmed == JOptionPane.YES_OPTION) 
 					{
-						Main.setCBRCFirst(false);
-						Main.setCBRCStatus(false);
+						Main.getInstance().setCBRCFirst(false);
+						Main.getInstance().setCBRCStatus(false);
 						System.out.println("CBR-C not used");
 						dispose();
 					}
@@ -311,7 +311,7 @@ public class CBRCInitalProblem extends JFrame {
 					c.setTestcases(testcases);
 					c.setProb(prob);
 					c.resetMe();
-					Main.setCBRCFirst(false);
+					Main.getInstance().setCBRCFirst(false);
 					setVisible(false);
 				}
 			}

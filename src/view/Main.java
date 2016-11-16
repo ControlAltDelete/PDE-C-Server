@@ -41,8 +41,8 @@ public class Main {
 	
 	private JFrame frame;
 	private static Main m = null;
-	private static boolean CBRCStatus = false;
-	private static boolean CBRCFirst = false;
+	private boolean CBRCStatus = false;
+	private boolean CBRCFirst = false;
 	GridBagLayout Layout = new GridBagLayout();
 	
 	final JFileChooser fileChooser = new JFileChooser();
@@ -78,7 +78,6 @@ public class Main {
 	  ServerHandler sHandler = new ServerHandler();
 	  sHandler.runServer();
 		initialize();
-		
 	}
 
 	private void initialize() {
@@ -231,42 +230,42 @@ public class Main {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
-		int confirmed = JOptionPane.showConfirmDialog(null, 
-		        "Activate CBR-C?", "Question",
-		        JOptionPane.YES_NO_OPTION);
-		if(confirmed == JOptionPane.YES_OPTION)
-		{
-			setCBRCStatus(true);
-			setCBRCFirst(true);
-			new CBRCInitalProblem();
-			System.out.println("CBR-C used");
-		}
-		else
-		{
-			System.out.println("CBR-C Not used");
-		}
+//		int confirmed = JOptionPane.showConfirmDialog(null, 
+//		        "Activate CBR-C?", "Question",
+//		        JOptionPane.YES_NO_OPTION);
+//		if(confirmed == JOptionPane.YES_OPTION)
+//		{
+//			setCBRCStatus(true);
+//			setCBRCFirst(true);
+//			new CBRCInitalProblem();
+//			System.out.println("CBR-C used");
+//		}
+//		else
+//		{
+//			System.out.println("CBR-C Not used");
+//		}
 			
 	}
 
 
 
-	public static boolean isCBRCFirst() {
+	public boolean isCBRCFirst() {
 		return CBRCFirst;
 	}
 
 
 
-	public static void setCBRCFirst(boolean cBRCFirst) {
+	public void setCBRCFirst(boolean cBRCFirst) {
 		CBRCFirst = cBRCFirst;
 	}
 
 
 
-	public static boolean isCBRCStatus() {
+	public boolean isCBRCStatus() {
 		return CBRCStatus;
 	}
 
-	public static void setCBRCStatus(boolean cBRCStatus) {
+	public void setCBRCStatus(boolean cBRCStatus) {
 		CBRCStatus = cBRCStatus;
 	}
 	

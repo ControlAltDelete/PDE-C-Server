@@ -2,6 +2,8 @@ package view;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -13,6 +15,7 @@ import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
 import server.Server;
 import service.ServerHandler;
+import service.ui.CBRCInitalProblem;
 import service.ui.TestCaseBuilder;
 
 import java.awt.Color;
@@ -37,6 +40,8 @@ import javax.swing.ImageIcon;
 public class Main {
 	
 	private JFrame frame;
+	private static boolean CBRCStatus = false;
+	private static boolean CBRCFirst = false;
 	GridBagLayout Layout = new GridBagLayout();
 	
 	final JFileChooser fileChooser = new JFileChooser();
@@ -216,7 +221,45 @@ public class Main {
 		});
 		
 		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);	
+		frame.setVisible(true);
+
+		int confirmed = JOptionPane.showConfirmDialog(null, 
+		        "Activate CBR-C?", "Question",
+		        JOptionPane.YES_NO_OPTION);
+		if(confirmed == JOptionPane.YES_OPTION)
+		{
+			setCBRCStatus(true);
+			setCBRCFirst(true);
+			new CBRCInitalProblem();
+			System.out.println("CBR-C used");
+		}
+		else
+		{
+			System.out.println("CBR-C Not used");
+		}
+			
+	}
+
+
+
+	public static boolean isCBRCFirst() {
+		return CBRCFirst;
+	}
+
+
+
+	public static void setCBRCFirst(boolean cBRCFirst) {
+		CBRCFirst = cBRCFirst;
+	}
+
+
+
+	public static boolean isCBRCStatus() {
+		return CBRCStatus;
+	}
+
+	public static void setCBRCStatus(boolean cBRCStatus) {
+		CBRCStatus = cBRCStatus;
 	}
 	
 }

@@ -125,8 +125,12 @@ public class Server implements Runnable
 		    ddao.addDeliverable(del);
 		    if(Main.getInstance().isCBRCStatus())
 		    {
-//		    	cbrctrls.feedSourceCode(students, builder, Paths.get(del.getDeliverableSourceCode().toURI()), CBRCMenu.getInstance().getProb(), tco, sID)
-		    	
+		    	CBRCMenu cbrc = CBRCMenu.getInstance();
+		    	if(cbrc.isFeedOnGoing())
+		    	{
+			    	String feedback = cbrctrls.feedSourceCode(cbrc.getStudents(), cbrc.getBuilder(), Paths.get(del.getDeliverableSourceCode().toURI()), cbrc.getProb().getTc(), del.getStudentID());
+				    downloadFeedback(feedback);
+		    	}
 		    }
 		}
 
@@ -232,6 +236,21 @@ public class Server implements Runnable
 	{
 	  ex.printStackTrace();
 	}
+  }
+  
+  private void downloadFeedback(String content) throws SQLException, IOException
+  {
+	try
+	{
+	  writer.writeBytes(content);
+	  writer.flush();
+	}
+	
+	catch (Exception ex)
+	{
+	  ex.printStackTrace();
+	}
+	
   }
   
   private void downloadActivity(int activityId) throws SQLException, IOException

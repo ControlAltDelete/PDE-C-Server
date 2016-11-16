@@ -16,8 +16,9 @@ import service.cbrc.model.TestCase;
 public class CBRCControls {
 	
 	public String feedSourceCode(CASTGDTStudentTracker students, CASTGDTBuilder builder, Path path,
-			ArrayList<TestCase> tc, String sID)
+			ArrayList<TestCase> tc, int studentID)
 	{
+		String sID = Integer.toString(studentID);
 		// split testcases to two
 		ArrayList<File> tci = new ArrayList<File>();
 		ArrayList<File> tco = new ArrayList<File>();

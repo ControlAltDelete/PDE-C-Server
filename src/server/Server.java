@@ -24,10 +24,12 @@ import database.objects.Student;
 import service.CBRCIntegration;
 import service.FileDecoder;
 import service.FileManipulation;
+import service.controller.CBRCControls;
 
 public class Server implements Runnable
 {
   public static final int PORT_NO = 2021;
+  public final CBRCControls cbrctrls = new CBRCControls();
   private ServerSocket serverSocket;
   private DataOutputStream writer;
   

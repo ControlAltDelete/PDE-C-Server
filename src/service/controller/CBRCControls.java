@@ -13,9 +13,10 @@ import com.cbrc.temp.Driver;
 
 public class CBRCControls {
 	
-	public void feedSourceCode(CASTGDTStudentTracker students, CASTGDTBuilder builder, Path path,
+	public String feedSourceCode(CASTGDTStudentTracker students, CASTGDTBuilder builder, Path path,
 			ArrayList<File> tci, ArrayList<File> tco, String sID)
 	{
+		String result = "";
 		try {
 			String faulty = "";
 			// show code
@@ -26,7 +27,7 @@ public class CBRCControls {
 			if(confirmed == JOptionPane.YES_OPTION)
 				faulty = "Y";
 			else faulty = "N";
-			Driver.submitNewCode(students, builder, path.toString(), tci, tco, sID, path.toString(), faulty);
+			result = Driver.submitNewCode(students, builder, path.toString(), tci, tco, sID, path.toString(), faulty);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -43,6 +44,7 @@ public class CBRCControls {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return result;
 	}
 	
 	public String getFeedback()

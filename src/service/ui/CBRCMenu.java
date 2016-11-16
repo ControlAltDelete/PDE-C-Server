@@ -161,6 +161,7 @@ public class CBRCMenu extends JFrame {
 			codeAnnotator.annotateCode();
 			builder = new CASTGDTBuilder(newGoalKey, prob.getProblemDesc());
 			builder.processFirstCode(codeAnnotator.getHeadNode(), "");
+			builder.setDebug(true);
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
 		} catch (InstantiationException e1) {

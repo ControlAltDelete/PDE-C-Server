@@ -26,6 +26,8 @@ import service.CBRCIntegration;
 import service.FileDecoder;
 import service.FileManipulation;
 import service.controller.CBRCControls;
+import service.ui.CBRCMenu;
+import view.Main;
 
 public class Server implements Runnable
 {
@@ -121,6 +123,11 @@ public class Server implements Runnable
 		    		new Timestamp(System.currentTimeMillis()), info.get(5), Float.parseFloat(info.get(6)));
 		    DeliverableDAO ddao = new DeliverableDAO();
 		    ddao.addDeliverable(del);
+		    if(Main.getInstance().isCBRCStatus())
+		    {
+//		    	cbrctrls.feedSourceCode(students, builder, Paths.get(del.getDeliverableSourceCode().toURI()), CBRCMenu.getInstance().getProb(), tco, sID)
+		    	
+		    }
 		}
 
 		else

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -48,6 +49,7 @@ public class Server implements Runnable
 //		Path filePath = Paths.get("C:\\SampleCodes\\test.c");
 //		cbr.runCBRC("yo", filePath);
 		System.out.println("Waiting for client ");
+		checkIfFoldersExists();
 		Socket server = serverSocket.accept();
 		System.out.println("Just connected to " + server.getRemoteSocketAddress());
 		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(server.getInputStream()));
@@ -107,6 +109,13 @@ public class Server implements Runnable
 		    clientSentence = "";
 		    FileDecoder fd = new FileDecoder();
 		    fd.convertToFile(info.get(3), info.get(5));
+		    
+		    if (!Files.exists(Paths.get(System.getProperty("user.dir")+"/resource/receivedFiles/")))
+		    {
+		      System.out.println("hey");
+		      Files.createDirectories(Paths.get(System.getProperty("user.dir")+"/resource/receivedFiles/"));
+		    }
+		    
 		    Deliverable del = new Deliverable(Integer.parseInt(info.get(0)), Integer.parseInt(info.get(1)), 
 		    		Integer.parseInt(info.get(2)), new File(System.getProperty("user.dir")+"/resource/receivedFiles/"+info.get(5)), 
 		    		new Timestamp(System.currentTimeMillis()), info.get(5), Float.parseFloat(info.get(6)));
@@ -141,12 +150,46 @@ public class Server implements Runnable
 	}
   }
   
+  private void checkIfFoldersExists()
+  {
+	if (!Files.exists(Paths.get("resource/receivedFiles/")))
+    {
+      System.out.println("hey");
+      
+      try
+	  {
+		Files.createDirectories(Paths.get("resource/receivedFiles/"));
+	  } 
+      catch (IOException e)
+	  {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	  }
+    }
+	
+	if (!Files.exists(Paths.get("resource/activityFile/")))
+    {
+      System.out.println("hey");
+      
+      try
+	  {
+		Files.createDirectories(Paths.get("resource/activityFile/"));
+	  } 
+      catch (IOException e)
+	  {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	  }
+    }
+  }
+
   private void sendActivity() throws SQLException
   {
     FileManipulation fm = new FileManipulation();
 	ActivityDAO adao = new ActivityDAO();
 		
 	ArrayList<String> activityNames = adao.getActivityNames();
+	
 	File activityFile;
 	activityFile = new File("resource/activityFile/activityEntries.txt");
 

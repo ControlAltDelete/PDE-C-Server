@@ -111,7 +111,11 @@ public class DeliverableList extends JPanel {
         		contents.add(stud.getStudentLastName());
         		contents.add(stud.getStudentFirstName());
         		contents.add(stud.getStudentSection());
-        		contents.add(del.getGrade());
+        		float gradez = del.getGrade();
+        		if(gradez == -1.0)
+        			contents.add("NGS");
+        		else
+        			contents.add(gradez);
         		contents.add(del.getDateSubmitted());
         		data[s] = contents.toArray();
         		lateList.add(ddao.isLate(Integer.parseInt(contents.get(1).toString()), Integer.parseInt(contents.get(0).toString())));
@@ -469,7 +473,12 @@ public class DeliverableList extends JPanel {
     		contents.add(stud.getStudentLastName());
     		contents.add(stud.getStudentFirstName());
     		contents.add(stud.getStudentSection());
-    		contents.add(del.getGrade());
+    		float gradez = del.getGrade();
+    		if(gradez == -1.0)
+    			contents.add("NGS");
+    		else
+    			contents.add(gradez);
+    		contents.add(del.getDateSubmitted());
     		contents.add(del.getDateSubmitted());
     		data[s] = contents.toArray();
     		lateList.add(ddao.isLate(Integer.parseInt(contents.get(1).toString()), Integer.parseInt(contents.get(0).toString())));
@@ -498,7 +507,12 @@ public class DeliverableList extends JPanel {
     		contents.add(stud.getStudentLastName());
     		contents.add(stud.getStudentFirstName());
     		contents.add(stud.getStudentSection());
-    		contents.add(del.getGrade());
+    		float gradez = del.getGrade();
+    		if(gradez == -1.0)
+    			contents.add("NGS");
+    		else
+    			contents.add(gradez);
+    		contents.add(del.getDateSubmitted());
     		contents.add(del.getDateSubmitted());
     		data[s] = contents.toArray();
     		lateList.add(ddao.isLate(Integer.parseInt(contents.get(1).toString()), Integer.parseInt(contents.get(0).toString())));

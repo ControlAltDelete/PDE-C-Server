@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS `Classroom`.`Activity` ;
 CREATE TABLE IF NOT EXISTS `Classroom`.`Activity` (
   `ActivityID` INT NOT NULL AUTO_INCREMENT,
   `ActivityName` VARCHAR(512) NOT NULL,
-  `ActivityFile` BLOB NOT NULL,
+  `ActivityFile` MEDIUMBLOB NOT NULL,
   `ActivityTimestamp` TIMESTAMP NOT NULL,
   `ActivityDeadline` DATETIME NOT NULL,
   `ActivityFilename` VARCHAR(512) NOT NULL,

@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import controller.cbrc.CBRCEvent;
 import service.cbrc.model.CBRCProblem;
 import service.cbrc.model.TestCase;
+import view.Main;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -23,6 +24,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,14 +57,6 @@ public class CBRCInitalProblem extends JFrame {
 	 * Create the frame.
 	 */
 	public CBRCInitalProblem() {
-		try
-		{
-		  UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch (Exception e)
-		{
-			
-		}
 		CBRCEvent ev = new CBRCEvent();
 		Color clrError = new Color(255, 0, 0);
 		Color clrOk = new Color(255, 255, 255);
@@ -70,7 +65,30 @@ public class CBRCInitalProblem extends JFrame {
 		DefaultListModel<String> lmtco = new DefaultListModel<String>();
 		setResizable(false);
 		setTitle("CBR-C");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) 
+			{
+				if(Main.getInstance().isCBRCFirst())
+				{
+					int confirmed = JOptionPane.showConfirmDialog(null, 
+							"CBR-C will not be used if you will close the plugin. Continue?", "Caution",
+							JOptionPane.YES_NO_OPTION);
+					if (confirmed == JOptionPane.YES_OPTION) 
+					{
+						Main.getInstance().setCBRCFirst(false);
+						Main.getInstance().setCBRCStatus(false);
+						System.out.println("CBR-C not used");
+						dispose();
+					}
+				}
+				else
+				{
+					dispose();
+				}
+			}
+		});
 		setBounds(100, 100, 400, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -293,6 +311,7 @@ public class CBRCInitalProblem extends JFrame {
 					c.setTestcases(testcases);
 					c.setProb(prob);
 					c.resetMe();
+					Main.getInstance().setCBRCFirst(false);
 					setVisible(false);
 				}
 			}

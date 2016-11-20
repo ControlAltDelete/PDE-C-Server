@@ -2,6 +2,8 @@ package view;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -12,6 +14,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
 import server.Server;
+import service.ServerHandler;
+import service.ui.CBRCInitalProblem;
 import service.ui.TestCaseBuilder;
 
 import java.awt.Color;
@@ -36,12 +40,22 @@ import javax.swing.ImageIcon;
 public class Main {
 	
 	private JFrame frame;
+	private static Main m = null;
+	private boolean CBRCStatus = false;
+	private boolean CBRCFirst = false;
 	GridBagLayout Layout = new GridBagLayout();
 	
 	final JFileChooser fileChooser = new JFileChooser();
 	FileNameExtensionFilter cFilter = new FileNameExtensionFilter(
 	     "PDF (*.PDF)", "pdf");
 
+	public static Main getInstance(){
+		if(m == null)
+		{
+			m = new Main();
+		}
+		return m;
+	}
 	
 	/**
 	 * Launch the application.
@@ -50,7 +64,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new Main();
+					Main m = Main.getInstance();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -60,9 +74,10 @@ public class Main {
 
 
 	
-	public Main(){
+	private Main(){
+	  ServerHandler sHandler = new ServerHandler();
+	  sHandler.runServer();
 		initialize();
-		
 	}
 
 	private void initialize() {
@@ -212,8 +227,47 @@ public class Main {
 			}
 		});
 		
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		Server.main(new String[0]);
+
+		int confirmed = JOptionPane.showConfirmDialog(null, 
+		        "Activate CBR-C?", "Question",
+		        JOptionPane.YES_NO_OPTION);
+		if(confirmed == JOptionPane.YES_OPTION)
+		{
+			setCBRCStatus(true);
+			setCBRCFirst(true);
+			new CBRCInitalProblem();
+			System.out.println("CBR-C used");
+		}
+		else
+		{
+			System.out.println("CBR-C Not used");
+		}
+			
 	}
+
+
+
+	public boolean isCBRCFirst() {
+		return CBRCFirst;
+	}
+
+
+
+	public void setCBRCFirst(boolean cBRCFirst) {
+		CBRCFirst = cBRCFirst;
+	}
+
+
+
+	public boolean isCBRCStatus() {
+		return CBRCStatus;
+	}
+
+	public void setCBRCStatus(boolean cBRCStatus) {
+		CBRCStatus = cBRCStatus;
+	}
+	
 }
 

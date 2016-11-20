@@ -279,6 +279,10 @@ public class uploadFile extends JPanel {
 			{
 				  txtFilePath.setText(ext);
 			}
+
+			
+			
+
 			else
 			{
 				JOptionPane.showMessageDialog(null, "Not a PDF File.", "Error", JOptionPane.ERROR_MESSAGE);

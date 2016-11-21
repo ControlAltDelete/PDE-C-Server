@@ -8,7 +8,7 @@ import org.apache.commons.codec.binary.Base64;
 
 public class FileDecoder {
 	
-	public byte[] convertToFile(String content, String filename){
+	public byte[] convertToFile(String content, String filename, int idNo){
         byte[] contentByteArray = null;  
        try{
              //Converting a Base64 String into Content byte array 
@@ -18,7 +18,7 @@ public class FileDecoder {
 			
 			// Write a content byte array into file system  
 			 
-			FileOutputStream contentOutFile = new FileOutputStream(System.getProperty("user.dir")+"/resource/receivedFiles/"+filename,false);
+			FileOutputStream contentOutFile = new FileOutputStream(System.getProperty("user.dir")+"/resource/receivedFiles/"+ filename,false);
 			contentOutFile.write(contentByteArray);
 			
 			

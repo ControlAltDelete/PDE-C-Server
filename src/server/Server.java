@@ -74,8 +74,8 @@ public class Server implements Runnable
 		    
 		    info.add(clientSentence);
 		    clientSentence = "";
-		    FileDecoder fd = new FileDecoder();
-		    fd.convertToFile(info.get(2), info.get(5));
+//		    FileDecoder fd = new FileDecoder();
+//		    fd.convertToFile(info.get(2), info.get(5));
 //		    Activity act = new Activity(Integer.parseInt(info.get(0)), info.get(1), new File(System.getProperty("user.dir")+"/src/"+info.get(5)), 
 //		    		new Timestamp(System.currentTimeMillis()), new Date(System.currentTimeMillis()), info.get(5));
 //		    ActivityDAO adao = new ActivityDAO();
@@ -110,16 +110,10 @@ public class Server implements Runnable
 		    info.add(clientSentence);
 		    clientSentence = "";
 		    FileDecoder fd = new FileDecoder();
-		    fd.convertToFile(info.get(3), info.get(5));
-		    
-		    if (!Files.exists(Paths.get(System.getProperty("user.dir")+"/resource/receivedFiles/")))
-		    {
-		      System.out.println("hey");
-		      Files.createDirectories(Paths.get(System.getProperty("user.dir")+"/resource/receivedFiles/"));
-		    }
+		    fd.convertToFile(info.get(3), info.get(1) + "-" + info.get(5), Integer.parseInt(info.get(1)));
 		    
 		    Deliverable del = new Deliverable(Integer.parseInt(info.get(0)), Integer.parseInt(info.get(1)), 
-		    		Integer.parseInt(info.get(2)), new File(System.getProperty("user.dir")+"/resource/receivedFiles/"+info.get(5)), 
+		    		Integer.parseInt(info.get(2)), new File(System.getProperty("user.dir")+"/resource/receivedFiles/"+info.get(1) + "-" +info.get(5)), 
 		    		new Timestamp(System.currentTimeMillis()), info.get(5), Float.parseFloat(info.get(6)));
 		    DeliverableDAO ddao = new DeliverableDAO();
 		    ddao.addDeliverable(del);

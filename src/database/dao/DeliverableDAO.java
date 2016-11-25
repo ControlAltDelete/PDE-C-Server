@@ -41,12 +41,13 @@ public class DeliverableDAO extends DAO{
         close(preparedStatement, connection);
     }
 	
-	public void changeGrade (int studentID, int activityID, Float newGrade) throws SQLException{
+	public void changeGrade (int studentID, int activityID, int deliverableID, Float newGrade) throws SQLException{
         Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("update Deliverable set Grade = ? where StudentID = ? AND ActivityID = ?");
+        PreparedStatement preparedStatement = connection.prepareStatement("update Deliverable set Grade = ? where StudentID = ? AND ActivityID = ? AND DeliverableID = ?");
         preparedStatement.setFloat(1, newGrade);
         preparedStatement.setInt(2, studentID);
         preparedStatement.setInt(3, activityID);
+        preparedStatement.setInt(4, deliverableID);
         update(preparedStatement);
         close(preparedStatement, connection);
     }

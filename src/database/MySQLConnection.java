@@ -14,11 +14,13 @@ public class MySQLConnection extends DatabaseFactory
     
     public MySQLConnection(String u, String p)
     {
-       
+       this.username = u;
+       this.password = p;
     }
 
     public MySQLConnection()
     {
+    	
     }
     
     @Override

@@ -7,14 +7,28 @@ import java.sql.Statement;
 public abstract class DatabaseFactory 
 {
 	
+	public static DatabaseFactory db = null;
+	
 	public static DatabaseFactory getInstance() 
 	{
-		return new MySQLConnection();
+		if(db == null) 
+		{
+			db = new MySQLConnection();
+		}
+		
+		return db;
 	}
 
 	public static DatabaseFactory getInstance(String u, String p)
 	{
-		return new MySQLConnection(u, p);
+
+		if(db == null) 
+		{
+			db = new MySQLConnection(u, p);
+		}
+		
+		return db;
+		
 	}
 
 	public abstract Connection getConnection();

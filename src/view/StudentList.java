@@ -170,7 +170,8 @@ public class StudentList extends JPanel {
         				}
         				catch(SQLException sqle)
         				{
-        					sqle.printStackTrace();
+        			        JOptionPane.showMessageDialog(null, "Cannot delete student. Operation cancelled.", "Error", JOptionPane.ERROR_MESSAGE);
+        					// sqle.printStackTrace();
         				}
         			}
         		}

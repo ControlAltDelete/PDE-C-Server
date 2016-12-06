@@ -13,6 +13,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
+import database.DatabaseFactory;
 import server.Server;
 import service.ServerHandler;
 import service.ui.CBRCInitalProblem;
@@ -43,6 +44,7 @@ public class Main {
 	private static Main m = null;
 	private boolean CBRCStatus = false;
 	private boolean CBRCFirst = false;
+	public static String u = "", p = "";
 	GridBagLayout Layout = new GridBagLayout();
 	
 	final JFileChooser fileChooser = new JFileChooser();
@@ -74,34 +76,12 @@ public class Main {
 
 
 	
-	private Main(){
-	  ServerHandler sHandler = new ServerHandler();
-	  sHandler.runServer();
-		initialize();
+	private Main()
+	{
+		new SimpleLogin();
 	}
 
-	private void initialize() {
-		try
-		{
-            // Set System L&F
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	    } 
-	    catch (UnsupportedLookAndFeelException e) 
-		{
-	       // handle exception
-	    }
-	    catch (ClassNotFoundException e) 
-		{
-	       // handle exception
-	    }
-	    catch (InstantiationException e) 
-		{
-	       // handle exception
-	    }
-	    catch (IllegalAccessException e) 
-		{
-	       // handle exception
-	    }
+	public void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 850, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -411,7 +411,8 @@ public class DeliverableList extends JPanel {
     						{
     							Deliverable d = ddao.getDeliverable(Integer.parseInt(sSID), Integer.parseInt(sAID));
     							float prevGrade = d.getGrade();
-								ddao.changeGrade(Integer.parseInt(sSID), Integer.parseInt(sAID), fGrade);
+    							int deliverableId = d.getDeliverableID();
+								ddao.changeGrade(Integer.parseInt(sSID), Integer.parseInt(sAID), deliverableId, fGrade);
 								if(prevGrade ==	 -1f)
 									JOptionPane.showMessageDialog(null, "Successfully placed a grade.", "Success", JOptionPane.INFORMATION_MESSAGE);
 								else

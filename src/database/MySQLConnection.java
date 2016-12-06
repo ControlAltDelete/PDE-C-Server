@@ -8,17 +8,19 @@ public class MySQLConnection extends DatabaseFactory
 {
 
     private String driver = "com.mysql.jdbc.Driver";
-    private String url = "jdbc:mysql://localhost:3306/Classroom";
+    private String url = "jdbc:mysql://localhost:3306/Classroom?autoReconnect=true&useSSL=false";
     private String username;
     private String password;
     
     public MySQLConnection(String u, String p)
     {
-       
+       this.username = u;
+       this.password = p;
     }
 
     public MySQLConnection()
     {
+    	
     }
     
     @Override

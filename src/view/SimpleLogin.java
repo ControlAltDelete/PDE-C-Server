@@ -28,6 +28,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import javax.swing.JPanel;
 
+/**
+ * The popup frame of MySQL Login.
+ * <p>
+ *  This frame will be used to login using your MySQL settings.
+ * </p>
+ * 
+ * @author In Yong S. Lee
+ */
 public class SimpleLogin {
 
 	private JFrame frmLogin;
@@ -35,23 +43,7 @@ public class SimpleLogin {
 	private JPasswordField txtPassword;
 
 	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					SimpleLogin window = new SimpleLogin();
-//					window.frmLogin.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
-	/**
-	 * Create the application.
+	 * Create the frame <code>SimpleLogin</code>.
 	 */
 	public SimpleLogin() {
 		initialize();

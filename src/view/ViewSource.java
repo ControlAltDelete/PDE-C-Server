@@ -13,29 +13,43 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import java.awt.GridBagConstraints;
 
+/**
+ * The popup frame of <code>ViewSource</code>.
+ * 
+ * <p>
+ *  Contains the source code given the selected deliverable made by the student in the given activity.
+ * </p>
+ * 
+ * @author In Yong S. Lee
+ */
 public class ViewSource {
 
 	private JFrame frame;
 	private RSyntaxTextArea editorPane;
+	
 	/**
-	 * Create the application.
+	 * Create the frame <code>ViewSource</code>.
 	 */
 	public ViewSource() {
 		initialize();
 	}
-	
 
+	/**
+	 * Sets the <code>editorPane</code> to its respective contents of the source code.
+	 * @param text the source code contents.
+	 */
 	public void setTextArea(StringBuilder text) {
 		editorPane.setText(text.toString());
 	}
 	
+	/**
+	 * Sets the title to its respective title.
+	 * @param title the <code>frame</code> <code>title</code> bar to set
+	 */
 	public void setTitle(String title) {
 		frame.setTitle(title);
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
 		frame.setVisible(true);

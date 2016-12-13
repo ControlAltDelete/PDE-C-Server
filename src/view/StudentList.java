@@ -29,7 +29,20 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.ListSelectionModel;
 
+/**
+ * The <code>JPanel</code> implementation of <code>StudentList</code>.
+ * 
+ * <p>
+ *  Contains the list of students registered for the current term in COMPRO1.
+ * </p>
+ * 
+ * @author In Yong S. Lee
+ * @author Raymund Zebedee P. Pua
+ */
 public class StudentList extends JPanel {
+	/**
+	 * The instance of <code>StudentList</code>.
+	 */
 	public static StudentList studentInstance = null;
 	private JTextField textField;
 	private Object[][] data;
@@ -43,6 +56,10 @@ public class StudentList extends JPanel {
 	    "Section"
 	};
 
+	/**
+	 * Gets the instance of the <code>StudentList</code>, if it exists. Otherwise, it will create a new instance of the <code>StudentList</code>.
+	 * @return the <code>StudentList</code>'s instance
+	 */
 	public static StudentList getInstance(){
 		if(studentInstance == null)
 		{
@@ -186,13 +203,17 @@ public class StudentList extends JPanel {
 	}
 	
 	/**
-	 * Create the panel.
+	 * Create the frame <code>StudentList</code>.
 	 */
 	public StudentList()
 	{
 		initialize();
 	}
-	
+
+	/**
+	 * Refreshes the table of <code>StudentList</code>.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+	 */
 	public void refreshData() throws SQLException
 	{
 		StudentDAO sdao = new StudentDAO();

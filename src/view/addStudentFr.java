@@ -25,6 +25,12 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.SwingConstants;
 
+/**
+ * The popup frame of Add Student View.
+ * 
+ * @author In Yong S. Lee
+ * @author Raymund Zebedee P. Pua
+ */
 public class addStudentFr extends JFrame {
 	
 	private FileLoad loader;
@@ -40,7 +46,7 @@ public class addStudentFr extends JFrame {
 	private JTextField txtCSVSection;;
 
 	/**
-	 * Launch the application.
+	 * Shows the <code>addStudentFr</code> frame. It will show the Add Student for the Professor to use.
 	 */
 	public void showFrame() {
 		frame.setVisible(true);
@@ -48,12 +54,15 @@ public class addStudentFr extends JFrame {
 		}
 
 	/**
-	 * Create the frame.
+	 * Create the frame <code>addStudentFr</code>.
 	 */
 	public addStudentFr(){
 		initialize();
 	}
-	
+
+	/**
+	 * Initializes the components of the given <code>frame</code>. 
+	 */
 	public void initialize() {
 		loader = new FileLoad();
 		fc = new JFileChooser();
@@ -329,6 +338,10 @@ public class addStudentFr extends JFrame {
 
 	}
 	
+	/**
+	 * Chooses a CSV file through <code>JFileChooser</code>.
+	 * @return the absolute <code>Path</code> of CSV file. 
+	 */
 	public Path chooseFile()
 	{
 		int returnVal = fc.showOpenDialog(this);

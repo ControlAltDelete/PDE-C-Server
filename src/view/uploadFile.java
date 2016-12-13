@@ -30,6 +30,7 @@ import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.BorderLayout;
@@ -45,6 +46,16 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+/**
+ * The <code>JPanel</code> implementation of <code>uploadFile</code>.
+ * 
+ * <p>
+ *  Contains the form that allows you to upload the activity.
+ * </p>
+ * 
+ * @author In Yong S. Lee
+ * @author Raymund Zebedee P. Pua
+ */
 public class uploadFile extends JPanel {
 	private JTextField txtActName;
 	private JComboBox cmbYear, cmbMonth, cmbDay;
@@ -60,8 +71,9 @@ public class uploadFile extends JPanel {
     DataInputStream din;
     int i;
     private JTextField txtFilePath;
-	/**
-	 * Create the panel.
+	
+    /**
+	 * Create the panel <code>uploadFile</code>.
 	 */
 	public uploadFile() {
 		loader = new FileLoad();
@@ -137,7 +149,7 @@ public class uploadFile extends JPanel {
 		});
 		
 		cmbYear = new JComboBox();
-		cmbYear.setModel(new DefaultComboBoxModel(new String[] {"Year", "2016", "2017", "2000", "2400", "1900"}));
+		cmbYear.setModel(new DefaultComboBoxModel(new String[] {"Year", Integer.toString(Calendar.getInstance().get(Calendar.YEAR)), Integer.toString(Calendar.getInstance().get(Calendar.YEAR) + 1), Integer.toString(Calendar.getInstance().get(Calendar.YEAR) + 2), Integer.toString(Calendar.getInstance().get(Calendar.YEAR) + 3), Integer.toString(Calendar.getInstance().get(Calendar.YEAR) + 4)}));
 		GridBagConstraints gbc_cmbYear = new GridBagConstraints();
 		gbc_cmbYear.fill = GridBagConstraints.BOTH;
 		gbc_cmbYear.insets = new Insets(0, 0, 5, 5);
@@ -265,6 +277,10 @@ public class uploadFile extends JPanel {
 
 	}
 	
+	/**
+	 * Chooses a PDF file through <code>JFileChooser</code>.
+	 * @return the absolute <code>Path</code> of PDF file. 
+	 */
 	public Path chooseFile()
 	{
 		int returnVal = fc.showOpenDialog(this);

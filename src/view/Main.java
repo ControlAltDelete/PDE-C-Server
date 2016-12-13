@@ -38,19 +38,36 @@ import javax.security.auth.login.CredentialExpiredException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
+/**
+ * The actual window of PDE-C Server.
+ * 
+ * @author In Yong S. Lee
+ * @author Raymund Zebedee P. Pua
+ */
 public class Main {
 	
 	private JFrame frame;
 	private static Main m = null;
 	private boolean CBRCStatus = false;
 	private boolean CBRCFirst = false;
-	public static String u = "", p = "";
+	/**
+	 * The username to issue.
+	 */
+	public static String u = "";
+	/**
+	 * The password to issue.
+	 */
+	public static String p = "";
 	GridBagLayout Layout = new GridBagLayout();
 	
 	final JFileChooser fileChooser = new JFileChooser();
 	FileNameExtensionFilter cFilter = new FileNameExtensionFilter(
 	     "PDF (*.PDF)", "pdf");
 
+	/**
+	 * Gets the instance of the <code>Main</code>, if it exists. Otherwise, it will create a new instance of the <code>Main</code>.
+	 * @return the <code>Main</code>'s instance
+	 */
 	public static Main getInstance(){
 		if(m == null)
 		{
@@ -61,6 +78,7 @@ public class Main {
 	
 	/**
 	 * Launch the application.
+	 * @param args the arguments that will be issued while running the program.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -75,12 +93,14 @@ public class Main {
 	}
 
 
-	
 	private Main()
 	{
 		new SimpleLogin();
 	}
-
+	
+	/**
+	 * Initializes the components of the given <code>frame</code>. 
+	 */
 	public void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 850, 700);
@@ -218,24 +238,34 @@ public class Main {
 			
 	}
 
-
-
+	/**
+	 * Checks if the CBR-C is used or not.
+	 * @return <code>true</code> if CBR-C is currently used, <code>false</code> otherwise.
+	 */
 	public boolean isCBRCFirst() {
 		return CBRCFirst;
 	}
 
-
-
+	/**
+	 * Sets the CBR-C according to its usage.
+	 * @param cBRCFirst the <code>cBRCFirst</code> to set
+	 */
 	public void setCBRCFirst(boolean cBRCFirst) {
 		CBRCFirst = cBRCFirst;
 	}
 
-
-
+	/**
+	 * Checks if the CBR-C is activated or not.
+	 * @return <code>true</code> if CBR-C is active, <code>false</code> otherwise.
+	 */
 	public boolean isCBRCStatus() {
 		return CBRCStatus;
 	}
 
+	/**
+	 * Sets the CBR-C according to its activity.
+	 * @param cBRCStatus the <code>cBRCStatus</code> to set
+	 */
 	public void setCBRCStatus(boolean cBRCStatus) {
 		CBRCStatus = cBRCStatus;
 	}

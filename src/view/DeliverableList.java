@@ -40,7 +40,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ListSelectionModel;
 
+/**
+ * The <code>JPanel</code> implementation of <code>DeliverableList</code>.
+ * 
+ * <p>
+ *  Contains the list of deliverables submitted by different students. The professor can also filter the student and the activities from there.
+ * </p>
+ * 
+ * @author In Yong S. Lee
+ * @author Raymund Zebedee P. Pua
+ */
 public class DeliverableList extends JPanel {
+	/**
+	 * The instance of <code>DeliverableList</code>.
+	 */
 	public static DeliverableList deliverableInstance = null;
 	private DefaultTableModel deliverableModel;
 	private JTable tblDeliverable;
@@ -61,9 +74,9 @@ public class DeliverableList extends JPanel {
 	};
 	
 	/**
-	 * Create the panel.
+	 * Gets the instance of the <code>DeliverableList</code>, if it exists. Otherwise, it will create a new instance of the <code>DeliverableList</code>.
+	 * @return the <code>DeliverableList</code>'s instance
 	 */
-	
 	public static DeliverableList getInstance()
 	{
 		if(deliverableInstance == null)
@@ -458,7 +471,13 @@ public class DeliverableList extends JPanel {
         });
         buttonContainer.add(btnPlaceGrade);
 	}
-	
+
+	/**
+	 * Manipulates the table of <code>DeliverableList</code>.
+	 * @param dArray the Deliverable Array to modify.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     * @throws IOException if the said source code(s) cannot be read
+	 */
 	public void manipulateDeliverables(ArrayList<Deliverable> dArray) throws SQLException, IOException
 	{
 		lateList.clear();
@@ -490,7 +509,12 @@ public class DeliverableList extends JPanel {
         };
         tblDeliverable.setModel(deliverableModel);
 	}
-	
+
+	/**
+	 * Refreshes the table of <code>DeliverableList</code>.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     * @throws IOException if the said source code(s) cannot be read
+	 */
 	public void refreshData() throws SQLException, IOException
 	{
 		lateList.clear();
@@ -524,7 +548,10 @@ public class DeliverableList extends JPanel {
         };
         tblDeliverable.setModel(deliverableModel);
 	}
-	
+
+	/**
+	 * Create the panel <code>DeliverableList</code>.
+	 */
 	public DeliverableList()
 	{
 		initialize();

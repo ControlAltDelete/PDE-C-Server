@@ -1,5 +1,5 @@
 /**
- * Consists of server-related functionalities
+ * Consists of server-related functionalities.
  * 
  * @author Alexander John D. Jose
  */

@@ -48,6 +48,7 @@ public abstract class DatabaseFactory
 
 	/**
 	 * Gets the current connection of the database.
+	 * @return the database connection
 	 */
 	public abstract Connection getConnection();
 
@@ -55,6 +56,7 @@ public abstract class DatabaseFactory
 	 * Tests the current connection of the Database.
 	 * @param u the <code>username</code> to use
 	 * @param p the <code>password</code> to use
+	 * @return the database connection
 	 */
 	public abstract Connection testConnection(String u, String p);
 

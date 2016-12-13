@@ -281,7 +281,9 @@ public class DeliverableDAO extends DAO{
     }
     
     /**
-     * Determines if the said <code>StudentID</code> submits past the deadline given the <code>activityID</code>.
+     * Determines if the said <code>studentID</code> submits past the deadline given the <code>activityID</code>.
+     * @param studentID the target <code>Student</code>, to check the deliverable submitted by the student.
+     * @param activityID the target <code>Activity</code>, to check its <code>ActivityDeadline</code> property.
      * @return <code>true</code> if late, <code>false</code> otherwise.
 	 * @throws SQLException if the connection fails or the querying of the table is refused
      */

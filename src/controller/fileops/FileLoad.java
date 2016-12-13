@@ -122,6 +122,7 @@ public class FileLoad
    * @param csv The <code>csv</code> File in Absolute Path
    * @param section The <code>section</code> to specify
    * @return The Student List
+   * @throws IOException if the <code>csv</code> file cannot be read
    */
   public ArrayList<Student> readCSV(String csv, String section) throws IOException{
 	     CSVReader reader = new CSVReader(new FileReader(csv));
@@ -160,6 +161,7 @@ public class FileLoad
    * @param csv The <code>csv</code> File in Absolute Path
    * @param section The <code>section</code> to specify
    * @return The Student List
+   * @throws IOException if the <code>csv</code> file cannot be read
    */
   public ArrayList<Student> readCSVfr(String csv, String section) throws IOException
   {

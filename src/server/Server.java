@@ -22,7 +22,6 @@ import database.dao.StudentDAO;
 import database.objects.Activity;
 import database.objects.Deliverable;
 import database.objects.Student;
-import service.CBRCIntegration;
 import service.FileDecoder;
 import service.FileManipulation;
 import service.controller.CBRCControls;
@@ -47,9 +46,6 @@ public class Server implements Runnable
 	{
 	  try
 	  {
-//		CBRCIntegration cbr = new CBRCIntegration();
-//		Path filePath = Paths.get("C:\\SampleCodes\\test.c");
-//		cbr.runCBRC("yo", filePath);
 		System.out.println("Waiting for client ");
 		checkIfFoldersExists();
 		Socket server = serverSocket.accept();

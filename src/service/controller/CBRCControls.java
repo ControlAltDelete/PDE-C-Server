@@ -13,8 +13,26 @@ import com.cbrc.temp.Driver;
 
 import service.cbrc.model.TestCase;
 
+/**
+ * Consists of controller that handles the backend of CBR-C.
+ * 
+ * <p>
+ *  <b>Warning</b>:This is still in beta and is not yet fully functional.
+ * </p>
+ * 
+ * @author In Yong S. Lee
+ */
 public class CBRCControls {
 	
+	/**
+	 * Feeds the source code accordingly.
+	 * @param students The list of students
+	 * @param builder The Goal Decomposition Tree Builder
+	 * @param path The path for the target source code
+	 * @param tc The <code>TestCase</code>s
+	 * @param studentID The StudentID to use
+	 * @return The Feedback Result
+	 */
 	public String feedSourceCode(CASTGDTStudentTracker students, CASTGDTBuilder builder, Path path,
 			ArrayList<TestCase> tc, int studentID)
 	{
@@ -58,6 +76,10 @@ public class CBRCControls {
 		return result;
 	}
 	
+	/**
+	 * A not yet implemented feature of CBR-C (GUI Version). It should return the feedback.
+	 * @return The Feedback
+	 */
 	public String getFeedback()
 	{
 		return "not yet implemented";

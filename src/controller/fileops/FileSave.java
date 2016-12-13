@@ -6,25 +6,42 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.BufferedWriter;
 
-public class FileSave {
+/**
+ * Handles the actual writing of C Files in PDE-C.
+ * 
+ * @author Alexander John D. Jose
+ *
+ */
 
-  public FileSave()
-  {
-		
-  }
-	
-  public void writeFile(Path path, String contents)
-  {
-	Charset charset = Charset.forName("UTF-8");
-	String s = contents;
-	
-	try (BufferedWriter writer = Files.newBufferedWriter(path, charset))
+public class FileSave
+{
+
+	/**
+	 * Creates an instance of FileSave.
+	 */
+	public FileSave()
 	{
-	    writer.write(s, 0, s.length());
-	} 
-	catch (IOException x) 
-	{
-	    System.err.format("IOException: %s%n", x);
+	
 	}
-  }
+	
+	/**
+	 * Saves a file using the said <code>path</code>. <br>
+	 * Writes the source code of the <code>path</code> specified.
+	 * @param path The Path Specified
+	 * @param contents The contents of the source code from the editor.
+	 */
+	public void writeFile(Path path, String contents)
+	{
+		Charset charset = Charset.forName("UTF-8");
+		String s = contents;
+	
+		try (BufferedWriter writer = Files.newBufferedWriter(path, charset))
+		{
+			writer.write(s, 0, s.length());
+		}
+		catch (IOException x) 
+		{
+			System.err.format("IOException: %s%n", x);
+		}
+	}
 }

@@ -111,15 +111,9 @@ public class Main {
 		submissionsPanel = DeliverableList.getInstance();
 		dynamicMainPanel.add(submissionsPanel, "name_420733536558155");
 		
-		/*Add Student Panel*/
-		addStudent addStudentPanel;
-		addStudentPanel = new addStudent();
-		dynamicMainPanel.add(addStudentPanel);
-		
 		studentListPanel.setVisible(false);
 		submissionsPanel.setVisible(false);
 		uploadFilePanel.setVisible(true);
-		addStudentPanel.setVisible(false);
 		
 		Color backgroundLeftMenu = Color.decode("0xa0a0a0");
 		
@@ -179,7 +173,6 @@ public class Main {
 				uploadFilePanel.setVisible(false);
 				studentListPanel.setVisible(true);
 				submissionsPanel.setVisible(false);
-				addStudentPanel.setVisible(false);
 			}
 		});
 		
@@ -191,7 +184,6 @@ public class Main {
 				uploadFilePanel.setVisible(false);
 				submissionsPanel.setVisible(true);
 				studentListPanel.setVisible(false);
-				addStudentPanel.setVisible(false);
 			}
 		});
 		
@@ -203,7 +195,6 @@ public class Main {
 				uploadFilePanel.setVisible(true);
 				studentListPanel.setVisible(false);
 				submissionsPanel.setVisible(false);
-				addStudentPanel.setVisible(false);
 			}
 		});
 		

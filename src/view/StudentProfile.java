@@ -59,13 +59,14 @@ public class StudentProfile {
 	/**
 	 * Shows the student profile frame through the constructor.
 	 * @param s The <code>Student</code> model to view.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
 	 */
-	public StudentProfile(Student s) throws IOException, SQLException{
+	public StudentProfile(Student s) throws SQLException{
 		initialize(s);
 		studentProfileFrame.setVisible(true);
 	}
 
-	private void initialize(Student s) throws IOException, SQLException{
+	private void initialize(Student s) throws SQLException{
 		studentProfileFrame = new JFrame();
 		studentProfileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		studentProfileFrame.setResizable(false);

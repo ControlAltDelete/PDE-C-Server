@@ -147,9 +147,6 @@ public class StudentList extends JPanel {
 					} catch (NumberFormatException nfe) {
 						// TODO Auto-generated catch block
 						nfe.printStackTrace();
-					} catch (IOException ioe) {
-						// TODO Auto-generated catch block
-						ioe.printStackTrace();
 					} catch (SQLException sqle) {
 						// TODO Auto-generated catch block
 						sqle.printStackTrace();

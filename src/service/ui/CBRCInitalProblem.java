@@ -31,6 +31,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
+/**
+ * The initialization of the problem for CBR-C, in Graphical User Interface form.
+ * 
+ * <p>
+ *  This is the current effective port at the moment, as a feature request by Mr. Ryan Samuel Dimaunahan.
+ * </p>
+ * @author In Yong S. Lee
+ */
 public class CBRCInitalProblem extends JFrame {
 
 	private JPanel contentPane;
@@ -39,22 +47,7 @@ public class CBRCInitalProblem extends JFrame {
 	private JTextField txtFirstSolutionFile;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new CBRCInitalProblem();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
+	 * Create the frame <code>CBRCInitialProblem</code>.
 	 */
 	public CBRCInitalProblem() {
 		CBRCEvent ev = new CBRCEvent();
@@ -323,10 +316,13 @@ public class CBRCInitalProblem extends JFrame {
 			setVisible(true);
 	}
 	
+	/**
+	 * Creates a new instance of CBR-C Problem.
+	 * @return a new CBR-C Problem
+	 */
 	public CBRCProblem newWindow()
 	{
 		CBRCProblem prob = new CBRCProblem();
-		
 		return prob;
 	}
 }

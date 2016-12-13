@@ -36,6 +36,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 
+/**
+ * The actual CBR-C Menu that gives the summary of the initial problem made by the professor.
+ * 
+ * <p>
+ *  <b>Warning</b>:This is still in beta and is not yet fully functional.
+ * </p>
+ * @author InYong
+ *
+ */
 public class CBRCMenu extends JFrame {
 
 	private JPanel contentPane;
@@ -60,7 +69,11 @@ public class CBRCMenu extends JFrame {
 	{
 		initialize();
 	}
-	
+
+	/**
+	 * Gets the instance of the <code>CBRCMenu</code>, if it exists. Otherwise, it will create a new instance of the <code>CBRCMenu</code>.
+	 * @return the <code>CBRCMenu</code>'s instance
+	 */
 	public static CBRCMenu getInstance()
 	{
 		if(menu == null)
@@ -71,14 +84,19 @@ public class CBRCMenu extends JFrame {
 	}
 	
 	/**
-	 * @return the prob
+	 * Gets the <code>prob</code> property.
+	 * @return the <code>prob</code>
 	 */
 	public CBRCProblem getProb() {
 		return prob;
 	}
 
 	/**
-	 * @param prob the prob to set
+	 * Sets the <code>prob</code> to its preferred value.
+	 * <p>
+	 *  <b>Warning</b>:This is still in beta and will not parse new lines at the moment.
+	 * </p>
+	 * @param prob the <code>prob</code> to set
 	 */
 	public void setProb(CBRCProblem prob) {
 		this.prob = prob;
@@ -126,6 +144,7 @@ public class CBRCMenu extends JFrame {
 	}
 
 	/**
+	 * Gets the <code>testcases</code> property.
 	 * @return the testcases
 	 */
 	public DefaultTableModel getTestcases() {
@@ -133,6 +152,7 @@ public class CBRCMenu extends JFrame {
 	}
 
 	/**
+	 * Sets the <code>testcases</code> to its preferred value.
 	 * @param testcases the testcases to set
 	 */
 	public void setTestcases(DefaultTableModel testcases) {
@@ -140,6 +160,9 @@ public class CBRCMenu extends JFrame {
 		table.setModel(testcases);
 	}
 	
+	/**
+	 * Reinitializes the <code>CBRCMenu</code>.
+	 */
 	public void resetMe(){
 		// cbr-c initialisation methods
 		setCBRC();
@@ -147,6 +170,9 @@ public class CBRCMenu extends JFrame {
 		btnAddNewTest.setEnabled(true);
 	}
 	
+	/**
+	 * Sets the CBR-C to its default values.
+	 */
 	public void setCBRC()
 	{
 		// CBR-C
@@ -468,26 +494,50 @@ public class CBRCMenu extends JFrame {
 		setVisible(true);
 	}
 
+	/**
+	 * Gets the <code>students</code> property.
+	 * @return the students being tracked in CBR-C
+	 */
 	public CASTGDTStudentTracker getStudents() {
 		return students;
 	}
 
+	/**
+	 * Sets the <code>testcases</code> to its preferred value.
+	 * @param students the students to set
+	 */
 	public void setStudents(CASTGDTStudentTracker students) {
 		this.students = students;
 	}
 
+	/**
+	 * Gets the <code>builder</code> property.
+	 * @return the GDT builder for CBR-C
+	 */
 	public CASTGDTBuilder getBuilder() {
 		return builder;
 	}
 
+	/**
+	 * Sets the <code>builder</code> to its preferred value.
+	 * @param builder the GDT builder to set
+	 */
 	public void setBuilder(CASTGDTBuilder builder) {
 		this.builder = builder;
 	}
 
+	/**
+	 * Checks whether accepting feedbacks is ongoing.
+	 * @return <code>true</code> if the CBR-C is accepting feedbacks, <code>false</code> otherwise.
+	 */
 	public boolean isFeedOnGoing() {
 		return feedOnGoing;
 	}
 
+	/**
+	 * Sets the <code>feedOnGoing</code> to its preferred value.
+	 * @param feedOnGoing the feedOnGoing to set
+	 */
 	public void setFeedOnGoing(boolean feedOnGoing) {
 		this.feedOnGoing = feedOnGoing;
 	}

@@ -20,28 +20,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.awt.event.ActionEvent;
 
+/**
+ * Older/Prototype version of CBR-C Options.
+ * 
+ * @author In Yong S. Lee
+ */
+
+@Deprecated
 public class CBRCOptions extends JFrame {
 
 	private JPanel contentPane;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CBRCOptions frame = new CBRCOptions();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
+	 * Create the frame <code>CBRCOptions</code>.
 	 */
 	public CBRCOptions() {
 		setTitle("CBR-C Commands");

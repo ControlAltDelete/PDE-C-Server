@@ -24,21 +24,28 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 
+/**
+ * Shows the Test Case Builder <code>JFrame</code>.
+ * 
+ * @author In Yong S. Lee
+ */
 public class TestCaseBuilder {
 
 	private JFrame frmTestCaseUploader;
 	private JTextField tciFileTextField;
 	private JTextField tcoFileTextField;
 
-	/**
-	 * Launch the application.
-	 */
-	public void showFrame() {
-		frmTestCaseUploader.setVisible(true);
-		}
 
 	/**
-	 * Create the application.
+	 * Shows the <code>TestCaseBuilder</code> frame. It will show the Test Case Uploader for the Professor to use.
+	 */
+	public void showFrame()
+	{
+		frmTestCaseUploader.setVisible(true);
+	}
+
+	/**
+	 * Create the frame <code>ViewSource</code>.
 	 */
 	public TestCaseBuilder() {
 		initialize();

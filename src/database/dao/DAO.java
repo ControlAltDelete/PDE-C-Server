@@ -7,6 +7,15 @@ import java.sql.SQLException;
 
 import database.DatabaseFactory;
 
+/**
+ * The superclass that represents the general Data Access Object.
+ * 
+ * <p>
+ * This executes the general commands of executing the query and updates of the current database being used, which is MySQL.
+ * </p>
+ * 
+ * @author In Yong S. Lee
+ */
 public class DAO
 {
 	

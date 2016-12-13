@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.io.BufferedWriter;
 
 /**
- * Handles the actual writing of C Files in PDE-C.
+ * Handles the actual writing of C Files in PDE-C Server.
  * 
  * @author Alexander John D. Jose
  *

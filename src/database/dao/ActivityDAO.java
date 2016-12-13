@@ -20,8 +20,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Date;
 
+/**
+ * The Data Access Object that involves the querying and updating the <code>Activity</code> table.
+ * 
+ * <p>
+ * This executes the commands of executing the query and updates of <code>Activity</code> table.
+ * </p>
+ * 
+ * @author In Yong S. Lee
+ */
 public class ActivityDAO extends DAO{
 	
+	/**
+	 * Adds <code>Activity</code> using its model representation to the <code>Activity</code> table in the database.
+	 * @param amdl The <code>Activity</code> Model Representation to add.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+	 * @throws FileNotFoundException if the PDF file being uploaded is not found during the process
+	 */
 	public void addActivity (Activity amdl) throws SQLException, FileNotFoundException{
         //int activityID = amdl.getActivityID();
         String activityName = amdl.getActivityName();
@@ -42,7 +57,12 @@ public class ActivityDAO extends DAO{
         update(preparedStatement);
         close(preparedStatement, connection);
     }
-    
+
+	/**
+	 * Removes the <code>Activity</code> according to <code>activityID</code>.
+	 * @param activityID the <code>Activity</code> ID to delete.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+	 */
     public void deleteActivity (int activityID) throws SQLException{
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("delete from Activity where ActivityID = ?");
@@ -51,16 +71,28 @@ public class ActivityDAO extends DAO{
         close(preparedStatement, connection);
     }
     
-    public void changeDate (int activityID, Date newDate) throws SQLException{
+    /**
+	 * Sets the <code>newDeadline</code> of submission of the <code>Activity</code> according to <code>activityID</code>.
+	 * @param activityID the target <code>Activity</code> ID.
+	 * @param newDeadline the <code>newDeadline</code> to issue for <code>ActivityDeadline</code>.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+	 */
+    public void changeDate (int activityID, Timestamp newDeadline) throws SQLException{
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("update Activity set ActivityDeadline = ?, ActivityTimestamp = ? where ActivityID = ?");
-        preparedStatement.setDate(1, newDate);
+        preparedStatement.setTimestamp(1, newDeadline);
         preparedStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
         preparedStatement.setInt(3, activityID);
         update(preparedStatement);
         close(preparedStatement, connection);
     }
-    
+
+    /**
+	 * Sets the <code>newName</code> of the <code>Activity</code> according to <code>activityID</code>.
+	 * @param activityID the target <code>Activity</code> ID.
+	 * @param newName the <code>newName</code> to issue for <code>ActivityName</code>.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+	 */
     public void changeName (int activityID, String newName) throws SQLException{
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("update Activity set ActivityName = ?, ActivityTimestamp = ? where ActivityID = ?");
@@ -70,7 +102,14 @@ public class ActivityDAO extends DAO{
         update(preparedStatement);
         close(preparedStatement, connection);
     }
-    
+
+    /**
+	 * Sets the <code>newFile</code> of the <code>Activity</code> according to <code>activityID</code>.
+	 * @param activityID the target <code>Activity</code> ID.
+	 * @param newFile the <code>newFile</code> to issue for <code>ActivityFile</code>.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+	 * @throws FileNotFoundException if the PDF file being uploaded is not found during the process
+	 */
     public void updateFile (int activityID, File newFile) throws SQLException, FileNotFoundException{
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("update Activity set ActivityFile = ?, ActivityFileName = ?, ActivityTimestamp = ? where ActivityID = ?");
@@ -82,6 +121,13 @@ public class ActivityDAO extends DAO{
         close(preparedStatement, connection);
     }
     
+    /**
+     * Retrieves the <code>Activity</code> according to <code>idNumber</code>.
+     * @param idNumber the target <code>Activity</code> ID.
+     * @return The <code>Activity</code> Model Representation according to <code>idNumber</code>.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     * @throws IOException if the said PDF file cannot be read
+     */
     public Activity getActivity (int idNumber) throws SQLException, IOException{
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from Activity where ActivityID = ?");
@@ -111,7 +157,14 @@ public class ActivityDAO extends DAO{
         close(preparedStatement, connection);
         return amdl;
     }
-    
+
+    /**
+     * Retrieves the <code>Activity</code> according to <code>actName</code>.
+     * @param actName the target <code>ActivityName</code>.
+     * @return The <code>Activity</code> Model Representation according to <code>ActivityName</code>.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     * @throws IOException if the said PDF file cannot be read
+     */
     public Activity getActivity (String actName) throws SQLException, IOException{
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from Activity where ActivityName = ?");
@@ -141,7 +194,13 @@ public class ActivityDAO extends DAO{
         close(preparedStatement, connection);
         return amdl;
     }
-    
+
+    /**
+     * Retrieves the <code>Activity</code>(ies) from the database.
+     * @return The <code>Activity</code>(ies) from the database.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     * @throws IOException if the one of the PDF file(s) cannot be read
+     */
     public ArrayList<Activity> getActivities () throws SQLException, IOException{ // not yet updated to current edit
         ArrayList<Activity> activities = new ArrayList<Activity>();
         Connection connection = getConnection();
@@ -172,7 +231,12 @@ public class ActivityDAO extends DAO{
         return activities;
     }
 
-    public int getActivityCount() throws SQLException, IOException{
+    /**
+     * Retrieves the total number of activities uploaded by the professor-in-charge.
+     * @return the number of activities uploaded by the professor-in-charge.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     */
+    public int getActivityCount() throws SQLException{
     	int result = 0;
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select count(*) from Activity");
@@ -183,6 +247,11 @@ public class ActivityDAO extends DAO{
         return result;
     }
     
+    /**
+     * Retrieves the <code>Activity</code> names from the database.
+     * @return The <code>Activity</code> names from the database.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     */
     public ArrayList<String> getActivityNames() throws SQLException
     {
       ArrayList<String> names = new ArrayList<String>();

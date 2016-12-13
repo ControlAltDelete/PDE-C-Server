@@ -18,8 +18,24 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+/**
+ * The Data Access Object that involves the querying and updating the <code>Deliverable</code> table.
+ * 
+ * <p>
+ * This executes the commands of executing the query and updates of <code>Deliverable</code> table.
+ * </p>
+ * 
+ * @author In Yong S. Lee
+ * @author Alexander John D. Jose.
+ */
 public class DeliverableDAO extends DAO{
-	
+
+	/**
+	 * Adds <code>Deliverable</code> using its model representation to the <code>Deliverable</code> table in the database.
+	 * @param dmdl The <code>Deliverable</code> Model Representation to add.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+	 * @throws FileNotFoundException if the source code being uploaded is not found during the process
+	 */
 	public void addDeliverable (Deliverable dmdl) throws SQLException, FileNotFoundException{
         //int deliverableID = dmdl.getDeliverableID();
     	int studentID = dmdl.getStudentID();
@@ -63,7 +79,12 @@ public class DeliverableDAO extends DAO{
         update(preparedStatement);
         close(preparedStatement, connection);
     }
-    
+
+	/**
+	 * Deletes the <code>Deliverable</code> according to <code>deliverableID</code>.
+	 * @param deliverableID the <code>Deliverable</code> ID to delete.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+	 */
     public void deleteDeliverable (int deliverableID) throws SQLException{
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("delete from Deliverable where DeliverableID = ?");
@@ -71,40 +92,15 @@ public class DeliverableDAO extends DAO{
         update(preparedStatement);
         close(preparedStatement, connection);
     }
-    
-    public Deliverable getDeliverable (int idNumber) throws SQLException, IOException{
-        Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("select * from Deliverable where DeliverableID = ?");
-        preparedStatement.setInt(1, idNumber);
-        ResultSet resultSet = query(preparedStatement);
-        Deliverable dmdl = new Deliverable();
-        while (resultSet.next()) {
-            int deliverableID = resultSet.getInt("DeliverableID");
-        	int studentID = resultSet.getInt("StudentID");
-        	int activityID = resultSet.getInt("ActivityID");
-        	String deliverableSourceCodeFileName = resultSet.getString("DeliverableSourceCodeFileName");
-        	Blob b = resultSet.getBlob("DeliverableSourceCode");
-        	InputStream binaryStream = b.getBinaryStream(1, b.length());
-        	byte[] buffer = new byte[binaryStream.available()];
-            binaryStream.read(buffer);
-        	File deliverableSourceCode = new File(deliverableSourceCodeFileName);
-        	OutputStream outStream = new FileOutputStream(deliverableSourceCode);
-        	outStream.write(buffer);
-        	outStream.close();
-        	Timestamp dateSubmitted = resultSet.getTimestamp("DateSubmitted");
-        	float grade = resultSet.getFloat("Grade");
-            dmdl.setDeliverableID(deliverableID);
-            dmdl.setStudentID(studentID);
-            dmdl.setActivityID(activityID);
-            dmdl.setDeliverableSourceCode(deliverableSourceCode);
-            dmdl.setDateSubmitted(dateSubmitted);
-            dmdl.setDeliverableSourceCodeFileName(deliverableSourceCodeFileName);
-            dmdl.setGrade(grade);
-        }
-        close(preparedStatement, connection);
-        return dmdl;
-    }
-    
+
+    /**
+     * Retrieves the <code>Deliverable</code> according to <code>sID</code> and <code>aID</code>.
+     * @param sID the target <code>Student</code> ID.
+     * @param aID the target <code>Activity</code> ID.
+     * @return The <code>Deliverable</code> Model Representation according to <code>Student</code> ID and <code>Activity</code> ID.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     * @throws IOException if the source code cannot be read
+     */
     public Deliverable getDeliverable (int sID, int aID) throws SQLException, IOException{
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from Deliverable where StudentID = ? AND ActivityID = ?");
@@ -138,7 +134,13 @@ public class DeliverableDAO extends DAO{
         close(preparedStatement, connection);
         return dmdl;
     }
-    
+
+    /**
+     * Retrieves the <code>Deliverable</code>s from the database.
+     * @return The <code>Deliverable</code>s from the database.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     * @throws IOException if the one of the source code(s) cannot be read
+     */
     public ArrayList<Deliverable> getDeliverables () throws SQLException, IOException{
         ArrayList<Deliverable> deliverables = new ArrayList<Deliverable>();
         Connection connection = getConnection();
@@ -173,7 +175,14 @@ public class DeliverableDAO extends DAO{
         close(preparedStatement, connection);
         return deliverables;
     }
-    
+
+    /**
+     * Retrieves the <code>Deliverable</code>s according to <code>aID</code>.
+     * @param aID the <code>ActivityID</code>.
+     * @return the number of activities uploaded by the professor-in-charge.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     * @throws IOException if the one of the source code(s) cannot be read
+     */
     public ArrayList<Deliverable> getDeliverablesByActivity(int aID) throws SQLException, IOException{
         ArrayList<Deliverable> deliverables = new ArrayList<Deliverable>();
         Connection connection = getConnection();
@@ -209,7 +218,14 @@ public class DeliverableDAO extends DAO{
         close(preparedStatement, connection);
         return deliverables;
     }
-    
+
+    /**
+     * Retrieves the <code>Deliverable</code>s according to <code>sID</code>.
+     * @param sID the <code>StudentID</code>.
+     * @return the number of activities uploaded by the professor-in-charge.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     * @throws IOException if the one of the source code(s) cannot be read
+     */
     public ArrayList<Deliverable> getDeliverablesByStudent(int sID) throws SQLException, IOException{
         ArrayList<Deliverable> deliverables = new ArrayList<Deliverable>();
         Connection connection = getConnection();
@@ -245,8 +261,14 @@ public class DeliverableDAO extends DAO{
         close(preparedStatement, connection);
         return deliverables;
     }
-    
-    public int getDeliverableCountByStudent(int sID) throws SQLException, IOException{
+
+    /**
+     * Retrieves the total number of <code>Deliverable</code>s submitted by the student.
+     * @param sID the <code>StudentID</code>.
+     * @return the number of activities uploaded by the professor-in-charge.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     */
+    public int getDeliverableCountByStudent(int sID) throws SQLException{
     	int result = 0;
         Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select count(distinct ActivityID) as ActivitiesObtained from Deliverable where StudentID = ? order by DeliverableID");
@@ -258,7 +280,12 @@ public class DeliverableDAO extends DAO{
         return result;
     }
     
-    public boolean isLate(int studentID, int activityID)throws SQLException, IOException
+    /**
+     * Determines if the said <code>StudentID</code> submits past the deadline given the <code>activityID</code>.
+     * @return <code>true</code> if late, <code>false</code> otherwise.
+	 * @throws SQLException if the connection fails or the querying of the table is refused
+     */
+    public boolean isLate(int studentID, int activityID)throws SQLException
     {
     	Timestamp deliverableSubmitted = new Timestamp(System.currentTimeMillis()); // default
     	Timestamp activityDeadline = new Timestamp(System.currentTimeMillis()); // default

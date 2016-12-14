@@ -31,7 +31,7 @@ import view.Main;
 /** 
  * The heart of PDE-C server, which means that this class manages all of the required functionality to make
  * PDE-C Server communicate with PDE-C
- * @author Alexander John Jose
+ * @author Alexander John D. Jose
  *
  */
 public class Server implements Runnable
@@ -118,7 +118,7 @@ public class Server implements Runnable
 		    info.add(clientSentence);
 		    clientSentence = "";
 		    FileDecoder fd = new FileDecoder();
-		    fd.convertToFile(info.get(3), info.get(1) + "-" + info.get(5), Integer.parseInt(info.get(1)));
+		    fd.convertToFile(info.get(3), info.get(1) + "-" + info.get(5));
 		    
 		    Deliverable del = new Deliverable(Integer.parseInt(info.get(0)), Integer.parseInt(info.get(1)), 
 		    		Integer.parseInt(info.get(2)), new File(System.getProperty("user.dir")+"/resource/receivedFiles/"+info.get(1) + "-" +info.get(5)), 

@@ -6,9 +6,8 @@ import java.io.IOException;
 
 import org.apache.commons.codec.binary.Base64;
 /**
- * FileDecoder class
- * @author Alexander John Jose
- *
+ * A class that decodes files.
+ * @author Alexander John D. Jose
  */
 public class FileDecoder {
   /**
@@ -17,7 +16,7 @@ public class FileDecoder {
    * @param filename file name
    * @return a converted <code>byte[]</code> of the file
    */
-	public byte[] convertToFile(String content, String filename, int idNo){
+	public byte[] convertToFile(String content, String filename){
         byte[] contentByteArray = null;  
        try{
              //Converting a Base64 String into Content byte array 

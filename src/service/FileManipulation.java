@@ -11,7 +11,7 @@ import org.apache.commons.codec.binary.Base64;
 
 /**
  * This class is mostly used for converting a <code>base 64 String</code> into a file.
- * @author Alexander John Jose
+ * @author Alexander John D. Jose
  *
  */
 
@@ -50,8 +50,8 @@ public class FileManipulation {
         
         /**
          * Unused method for converting to image.
-         * @param imageDataString
-         * @param filename
+         * @param imageDataString The image data string representation.
+         * @param filename The file name.
          * @return the byte array of an image.
          */
         public byte[] convertToImage(String imageDataString, String filename){

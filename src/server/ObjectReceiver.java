@@ -9,7 +9,7 @@ import api.component.PObject;
 
 /**
  * Facilitates the receiving of <code>PObject</code> from PDE-C
- * @author Alexander John Jose
+ * @author Alexander John D. Jose
  *
  */
 public class ObjectReceiver extends Thread

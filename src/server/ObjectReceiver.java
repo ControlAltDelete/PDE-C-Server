@@ -19,7 +19,7 @@ public class ObjectReceiver extends Thread
   /**
    * Constructor of <code>ObjectReceiver</code>
    * @param port the port number where the connection should happen
-   * @throws IOException
+   * @throws IOException If the said object cannot be read.
    */
   public ObjectReceiver(int port) throws IOException
   {

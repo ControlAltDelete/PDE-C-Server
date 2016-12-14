@@ -28,6 +28,12 @@ import service.controller.CBRCControls;
 import service.ui.CBRCMenu;
 import view.Main;
 
+/** 
+ * The heart of PDE-C server, which means that this class manages all of the required functionality to make
+ * PDE-C Server communicate with PDE-C
+ * @author Alexander John Jose
+ *
+ */
 public class Server implements Runnable
 {
   public static final int PORT_NO = 2021;
@@ -40,12 +46,18 @@ public class Server implements Runnable
 	serverSocket = new ServerSocket(port);
   }
   
+  /**
+   * Runs the Server
+   */
   public void run()
   {
 	while(true)
 	{
 	  try
 	  {
+//		CBRCIntegration cbr = new CBRCIntegration();
+//		Path filePath = Paths.get("C:\\SampleCodes\\test.c");
+//		cbr.runCBRC("yo", filePath);
 		System.out.println("Waiting for client ");
 		checkIfFoldersExists();
 		Socket server = serverSocket.accept();
@@ -151,6 +163,9 @@ public class Server implements Runnable
 	}
   }
   
+  /**
+   * Checks if the required folder of PDE-C Server exists in the installation directory
+   */
   private void checkIfFoldersExists()
   {
 	if (!Files.exists(Paths.get("resource/receivedFiles/")))
@@ -184,6 +199,10 @@ public class Server implements Runnable
     }
   }
 
+  /**
+   * Sends the activity file to PDE-C
+   * @throws SQLException
+   */
   private void sendActivity() throws SQLException
   {
     FileManipulation fm = new FileManipulation();
@@ -228,6 +247,12 @@ public class Server implements Runnable
 	}
   }
   
+  /**
+   * 
+   * @param content
+   * @throws SQLException
+   * @throws IOException
+   */
   private void downloadFeedback(String content) throws SQLException, IOException
   {
 	try
@@ -243,6 +268,12 @@ public class Server implements Runnable
 	
   }
   
+  /**
+   * Facilitates the retrieving of activity from the database and sending it to PDE-C
+   * @param activityId the ID of a file that will be retrieved from the database and sent to PDE-C
+   * @throws SQLException
+   * @throws IOException
+   */
   private void downloadActivity(int activityId) throws SQLException, IOException
   {
 	ActivityDAO adao = new ActivityDAO();

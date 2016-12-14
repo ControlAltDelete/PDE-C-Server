@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Used for receiving an <code>Object</code> from PDE-C Client.
- * @author Alexander John Jose
+ * @author Alexander John D. Jose
  *
  */
 public class PObject extends Object implements Serializable

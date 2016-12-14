@@ -7,15 +7,28 @@ import java.net.Socket;
 
 import api.component.PObject;
 
+/**
+ * Facilitates the receiving of <code>PObject</code> from PDE-C
+ * @author Alexander John Jose
+ *
+ */
 public class ObjectReceiver extends Thread
 {
   private ServerSocket serverSocket;
   
+  /**
+   * Constructor of <code>ObjectReceiver</code>
+   * @param port the port number where the connection should happen
+   * @throws IOException
+   */
   public ObjectReceiver(int port) throws IOException
   {
 	serverSocket = new ServerSocket(port);
   }
   
+  /**
+   * Runs the <code>ObjectReceiver</code>
+   */
   public void run()
   {
 	while(true)
@@ -35,21 +48,6 @@ public class ObjectReceiver extends Thread
 	  {
 	    ex.printStackTrace();
 	  }
-	}
-  }
-  
-  public static void main(String[] args)
-  {
-	int port = 2022;
-	try
-	{
-	  Thread t = new ObjectReceiver(port);
-	  t.start();
-	}
-	
-	catch (Exception ex)
-	{
-	  ex.printStackTrace();
 	}
   }
 }
